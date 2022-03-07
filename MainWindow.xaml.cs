@@ -38,11 +38,19 @@ namespace PriceTicker
             gui = this;
             ServerSocket socketServer = new();
             socketServer.SetupServer();
+            InitUi();
+
+
+        }
+
+        private void InitUi()
+        {
             NbEtiquettes = Properties.Settings.Default.nbEtiquettes;
             nbLignes = Properties.Settings.Default.nbLignes;
             nbColonnes = Properties.Settings.Default.nbColonnes;
             OnPageNumber = Properties.Settings.Default.OnPageNumber;
             nbPages = Properties.Settings.Default.Pagenumber;
+            ValiderRecherche.IsEnabled = false;
 
 
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + 1 + ".bmp"))
@@ -69,18 +77,20 @@ namespace PriceTicker
             }
             else
             {
-                if(!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale2.bmp")){
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale2.bmp"))
+                {
                     btnPrecedent.Visibility = Visibility.Hidden;
                     btnSuivant.Visibility = Visibility.Hidden;
                     pageNumber.Visibility = Visibility.Hidden;
 
-                }else
+                }
+                else
                 {
                     btnPrecedent.Visibility = Visibility.Visible;
                     btnSuivant.Visibility = Visibility.Hidden;
                     pageNumber.Visibility = Visibility.Visible;
                 }
-                
+
                 nbPages = Properties.Settings.Default.Pagenumber;
                 pageSelected = nbPages;
                 pageNumber.Text = pageSelected.ToString();
@@ -97,7 +107,6 @@ namespace PriceTicker
                 _image.EndInit();
                 imgEtiquette.Source = _image;
             }
-            
         }
 
         public void UpdateLogText(String Data, TextBox Target)
@@ -543,6 +552,16 @@ namespace PriceTicker
 
         }
 
+        private void InputIdJaja_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(IdRecherche.Text.ToString().Equals(""))
+            {
+                ValiderRecherche.IsEnabled = false;
+            }else
+            {
+                ValiderRecherche.IsEnabled = true;
+            }
+        }
     }
 
 }
