@@ -185,6 +185,7 @@ namespace PriceTicker
 
                                     Prix = PrixXml.ReadElementContentAsString() + " €";
                                     Debug.WriteLine("Prix : " + Prix);
+                                    TicketCrafter(IdJaja, Libelle, Prix);
                                     break;
                                 }
                             }
@@ -194,8 +195,6 @@ namespace PriceTicker
                 {
                     Debug.WriteLine("Aucun produit trouvé pour l'ID Jaja demandé (ID demandé => " + Id + " )");
                 }
-
-                TicketCrafter(IdJaja, Libelle, Prix);
 
             }), DispatcherPriority.SystemIdle);
            
@@ -209,7 +208,14 @@ namespace PriceTicker
 
         private void ValiderRecherche_Click(object sender, RoutedEventArgs e)
         {
-            FindPriceById(IdRecherche.Text);
+            if(!IdRecherche.Text.ToString().Equals(""))
+            {
+                FindPriceById(IdRecherche.Text);
+            }else
+            {
+                Debug.WriteLine("Champ ID vide");
+            }
+            
         }
 
         private static void TicketCrafter(String IdJaja, String Libelle, String Prix)
