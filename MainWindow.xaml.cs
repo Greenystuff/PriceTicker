@@ -100,14 +100,6 @@ namespace PriceTicker
             
         }
 
-        public void UpdateUiText(String Data, TextBlock Target)
-        {
-                Dispatcher.BeginInvoke(new Action(() => {
-                    Target.Text = Data;
-                }), DispatcherPriority.SystemIdle);
-                Thread.Sleep(100);
-        }
-
         public void UpdateLogText(String Data, TextBox Target)
         {
             Dispatcher.BeginInvoke(new Action(() => {
@@ -128,7 +120,20 @@ namespace PriceTicker
         {
             Dispatcher.BeginInvoke(new Action(() => {
 
-                Debug.WriteLine("Recherche de l'ID demandé dans les XML");
+                if(!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
+                {
+                    Debug.WriteLine("Dossier JajaCD non trouvé");
+                    MessageBox.Show("Veuillez Installer JajaCD ! (Ou alors le développer a enfin décidé de sécuriser son système et d'arrêter avec les XML...)");
+                    return;
+                }
+                if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml"))
+                {
+                    Debug.WriteLine("XML non trouvés");
+                    MessageBox.Show("Veuillez lancer JajaCD pour mettre à jour les informations produit");
+                    return;
+                }
+
+                Debug.WriteLine("Recherche de l'ID demandé dans les XML (ID => " + Id + " )");
                 XmlTextReader ProduitsXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
                 XmlTextReader PrixXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Tarif_Produit.xml");
 
@@ -185,6 +190,9 @@ namespace PriceTicker
                             }
                         }
                     }
+                }else
+                {
+                    Debug.WriteLine("Aucun produit trouvé pour l'ID Jaja demandé (ID demandé => " + Id + " )");
                 }
 
                 TicketCrafter(IdJaja, Libelle, Prix);
@@ -206,7 +214,7 @@ namespace PriceTicker
 
         private static void TicketCrafter(String IdJaja, String Libelle, String Prix)
         {
-            
+            Debug.WriteLine("Création de l'étiquette...");
             string PatronEtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_etiquette_murale.bmp";
             string EtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Etiquette.bmp";
             Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(PatronEtiquettePath);
@@ -267,16 +275,17 @@ namespace PriceTicker
                 memory.Close();
                 memory.Dispose();
                 bitmap.Dispose();
+                Debug.WriteLine("Étiquette crée avec succès !");
 
 
-                }
+            }
             gui.PagesCrafter();
 
         }
 
         private void PagesCrafter()
         {
-
+            
             string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
             string imageFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Etiquette.bmp";
             string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + nbPages + ".bmp";
@@ -286,6 +295,7 @@ namespace PriceTicker
 
             if(File.Exists(FeuilleFinalePath))
             {
+                Debug.WriteLine("Mise à jour de la page " + nbPages);
                 Bitmap bitmapFeuilleFinale = (Bitmap)System.Drawing.Image.FromFile(FeuilleFinalePath);
                 using (Graphics graphics = Graphics.FromImage(bitmapFeuilleFinale))
                 {
@@ -317,6 +327,7 @@ namespace PriceTicker
             }
             else
             {
+                Debug.WriteLine("Création de la première page d'étiquettes");
                 using (Graphics graphics = Graphics.FromImage(bitmapFeuille))
                 {
                     graphics.DrawImage(bitmapEtiquette, Etiquette);
@@ -437,6 +448,7 @@ namespace PriceTicker
             for (int i = 1; i <= nbPages; i++)
             {
                 string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + i + ".bmp";
+                Debug.WriteLine("Page " + i + " effacée");
                 File.Delete(FeuilleFinalePath);
             }
             Properties.Settings.Default.Pagenumber = 1;
@@ -469,8 +481,6 @@ namespace PriceTicker
             _image.UriSource = lastPageUri;
             _image.EndInit();
             imgEtiquette.Source = _image;
-
-            
 
         }
 
