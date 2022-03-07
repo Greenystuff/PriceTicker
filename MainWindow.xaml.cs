@@ -225,7 +225,7 @@ namespace PriceTicker
             
         }
 
-        private static void TicketCrafter(String IdJaja, String Libelle, String Prix)
+        private void TicketCrafter(String IdJaja, String Libelle, String Prix)
         {
             Debug.WriteLine("Création de l'étiquette...");
             string PatronEtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_etiquette_murale.bmp";
@@ -292,7 +292,7 @@ namespace PriceTicker
 
 
             }
-            gui.PagesCrafter();
+            PagesCrafter();
 
         }
 
