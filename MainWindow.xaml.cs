@@ -39,8 +39,6 @@ namespace PriceTicker
             ServerSocket socketServer = new();
             socketServer.SetupServer();
             InitUi();
-
-
         }
 
         private void InitUi()
