@@ -107,7 +107,7 @@ namespace PriceTicker
             }
         }
 
-        public void UpdateLogText(String Data, TextBox Target)
+        public void UpdateLogText(string Data, TextBox Target)
         {
             Dispatcher.BeginInvoke(new Action(() => {
                 if (Target.Text == "")
@@ -123,11 +123,13 @@ namespace PriceTicker
             }), DispatcherPriority.SystemIdle);
         }
 
-        public void FindPriceById(String Id)
+        public bool FindPriceById(string Id)
         {
-            Dispatcher.BeginInvoke(new Action(() => {
 
-                if(!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
+            Dispatcher.Invoke(new Action(() =>
+            {
+
+                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
                 {
                     Debug.WriteLine("Dossier JajaCD non trouvé");
                     MessageBox.Show("Veuillez Installer JajaCD ! (Ou alors le développer a enfin décidé de sécuriser son système et d'arrêter avec les XML...)");
@@ -198,13 +200,23 @@ namespace PriceTicker
                             }
                         }
                     }
-                }else
+                }
+                else
                 {
                     Debug.WriteLine("Aucun produit trouvé pour l'ID Jaja demandé (ID demandé => " + Id + " )");
                 }
 
+
             }), DispatcherPriority.SystemIdle);
-           
+          
+            if (Libelle != null)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

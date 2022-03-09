@@ -52,7 +52,7 @@ namespace PriceTicker
             socket.BeginReceive(buffer, 0, BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
             IPEndPoint ClientIP = (IPEndPoint)socket.RemoteEndPoint;
             IPAddress ipadress = ClientIP.Address;
-            //name = Dns.GetHostEntry(ipadress).HostName.ToString();
+            //DeviceName = Dns.GetHostEntry(ipadress).HostName.ToString();
             AdressIpClient = ipadress.ToString();
             MainWindow.gui.UpdateLogText(ipadress.ToString() + " s'est connecté ! ", MainWindow.gui.LogBox);
             
@@ -92,8 +92,16 @@ namespace PriceTicker
             if (text.ToLower() != "")
             {
                 MainWindow.gui.UpdateLogText("ID reçu : " + text, MainWindow.gui.LogBox);
-                MainWindow.gui.FindPriceById(text);
+                bool IdFound = MainWindow.gui.FindPriceById(text);
+                if (IdFound)
+                {
+                    current.Send(Encoding.UTF8.GetBytes("Id trouvé !"));
+                }else
+                {
+                    current.Send(Encoding.UTF8.GetBytes("Aucun ID ne correspond à la recherche..."));
+                }
                 Debug.WriteLine("ID reçu : " + text);
+                
             }
             else
             {
