@@ -22,6 +22,7 @@ namespace PriceTicker
     public partial class MainWindow : Window
     {
         public static MainWindow? gui;
+        ServerSocket socketServer;
         String? IdJaja = null;
         String? Libelle = null;
         String? Prix = null;
@@ -36,7 +37,7 @@ namespace PriceTicker
         {
             InitializeComponent();
             gui = this;
-            ServerSocket socketServer = new();
+            socketServer = new();
             socketServer.SetupServer();
             InitUi();
         }
@@ -123,7 +124,7 @@ namespace PriceTicker
             }), DispatcherPriority.SystemIdle);
         }
 
-        public bool FindPriceById(string Id)
+        public System.Collections.Generic.List<String> FindPriceById(string Id)
         {
 
             Dispatcher.Invoke(new Action(() =>
@@ -171,9 +172,9 @@ namespace PriceTicker
                         else
                         {
                             Product_ID = "";
-                            IdJaja = null;
-                            Prix = null;
-                            Libelle = null;
+                            IdJaja = "";
+                            Prix = "";
+                            Libelle = "";
                         }
                     }
                 }
@@ -208,16 +209,18 @@ namespace PriceTicker
 
 
             }), DispatcherPriority.SystemIdle);
-          
-            if (Libelle != null)
-            {
-                return true;
-            }else
-            {
-                return false;
-            }
+
+            System.Collections.Generic.List<string> ProductSpecList = new System.Collections.Generic.List<string>();
+            ProductSpecList.Add(IdJaja);
+            ProductSpecList.Add(Libelle);
+            ProductSpecList.Add(Prix);
+
+            return ProductSpecList;
+
 
         }
+
+        
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {

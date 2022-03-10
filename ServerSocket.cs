@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace PriceTicker
 {
@@ -92,11 +94,17 @@ namespace PriceTicker
             if (text.ToLower() != "")
             {
                 MainWindow.gui.UpdateLogText("ID reçu : " + text, MainWindow.gui.LogBox);
-                bool IdFound = MainWindow.gui.FindPriceById(text);
-                if (IdFound)
+                List<String> ProductSpecList = new List<String>();
+                ProductSpecList = MainWindow.gui.FindPriceById(text);
+                if (!ProductSpecList[0].Equals(""))
                 {
-                    current.Send(Encoding.UTF8.GetBytes("Id trouvé !"));
-                }else
+
+                    current.Send(Encoding.UTF8.GetBytes(ProductSpecList[0]));
+                    current.Send(Encoding.UTF8.GetBytes(ProductSpecList[1]));
+                    current.Send(Encoding.UTF8.GetBytes(ProductSpecList[2]));
+
+                }
+                else
                 {
                     current.Send(Encoding.UTF8.GetBytes("Aucun ID ne correspond à la recherche..."));
                 }
