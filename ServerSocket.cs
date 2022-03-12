@@ -4,9 +4,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows.Threading;
 
 namespace PriceTicker
 {
@@ -96,20 +93,11 @@ namespace PriceTicker
                 MainWindow.gui.UpdateLogText("ID reçu : " + text, MainWindow.gui.LogBox);
                 List<String> ProductSpecList = new List<String>();
                 ProductSpecList = MainWindow.gui.FindPriceById(text);
-                if (!ProductSpecList[0].Equals(""))
-                {
+                Debug.WriteLine("Id envoyé au client : " + ProductSpecList[0]);
+                Debug.WriteLine("Libellé envoyé au client : " + ProductSpecList[1]);
+                Debug.WriteLine("Prix envoyé au client : " + ProductSpecList[2]);
 
-                    current.Send(Encoding.UTF8.GetBytes(ProductSpecList[0]));
-                    current.Send(Encoding.UTF8.GetBytes(ProductSpecList[1]));
-                    current.Send(Encoding.UTF8.GetBytes(ProductSpecList[2]));
-
-                }
-                else
-                {
-                    current.Send(Encoding.UTF8.GetBytes("Aucun ID ne correspond à la recherche..."));
-                }
-                Debug.WriteLine("ID reçu : " + text);
-                
+                current.Send(Encoding.UTF8.GetBytes(ProductSpecList[0] + ";" + ProductSpecList[1] + ";" + ProductSpecList[2]));
             }
             else
             {

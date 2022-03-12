@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Cache;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -23,9 +22,9 @@ namespace PriceTicker
     {
         public static MainWindow? gui;
         ServerSocket socketServer;
-        String? IdJaja = null;
-        String? Libelle = null;
-        String? Prix = null;
+        String? IdJaja = "N/A";
+        String? Libelle = "Aucun Produit ne correspond à l'Id demandé";
+        String? Prix = "N/A";
         int NbEtiquettes = 0;
         int OnPageNumber = 0;
         int nbColonnes = 0;
@@ -172,9 +171,9 @@ namespace PriceTicker
                         else
                         {
                             Product_ID = "";
-                            IdJaja = "";
-                            Prix = "";
-                            Libelle = "";
+                            IdJaja = "N/A";
+                            Prix = "N/A";
+                            Libelle = "Aucun Produit ne correspond à l'Id demandé";
                         }
                     }
                 }
@@ -211,7 +210,7 @@ namespace PriceTicker
             }), DispatcherPriority.SystemIdle);
 
             System.Collections.Generic.List<string> ProductSpecList = new System.Collections.Generic.List<string>();
-            ProductSpecList.Add(IdJaja);
+            ProductSpecList.Add(Id);
             ProductSpecList.Add(Libelle);
             ProductSpecList.Add(Prix);
 
