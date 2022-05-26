@@ -107,23 +107,9 @@ namespace PriceTicker
             }
         }
 
-        public void UpdateLogText(string Data, TextBox Target)
-        {
-            Dispatcher.BeginInvoke(new Action(() => {
-                if (Target.Text == "")
-                {
-                    Target.Text += Data ;
-                }
-                else
-                {
-                    Target.Text += "\n" + Data;
-                }
-                    
-                
-            }), DispatcherPriority.SystemIdle);
-        }
 
-        public System.Collections.Generic.List<String> FindPriceById(string Id)
+
+        public System.Collections.Generic.List<String> FindPriceById(string Id, String typeEtiquette)
         {
 
             Dispatcher.Invoke(new Action(() =>
@@ -192,9 +178,29 @@ namespace PriceTicker
                                 {
                                     PrixXml.ReadToNextSibling("prix_ttc");
 
-                                    Prix = PrixXml.ReadElementContentAsString() + " €";
-                                    Debug.WriteLine("Prix : " + Prix);
-                                    TicketCrafter(IdJaja, Libelle, Prix);
+                                    
+                                    Prix = PrixXml.ReadElementContentAsString().Replace(".", ",");
+                                    Debug.WriteLine("Prix non arrondi : " + Prix);
+                                    decimal RoundedPrice = Math.Round(decimal.Parse(Prix), 2, MidpointRounding.AwayFromZero);
+                                    Prix = RoundedPrice.ToString() + " €";
+                                    Debug.WriteLine("Prix : " + RoundedPrice);
+
+                                    switch (typeEtiquette)
+                                    {
+                                        case "Murale": WallTicketCrafter(IdJaja, Libelle, Prix);
+                                            break;
+
+                                        case "Rail":
+                                            break;
+
+                                        case "A4":
+                                            break;
+
+                                        default:
+                                            Debug.WriteLine("Type d'étiquette \""+ typeEtiquette + "\" inconnu !!");
+                                            break;
+                                    }
+                                    
                                     break;
                                 }
                             }
@@ -219,8 +225,6 @@ namespace PriceTicker
 
         }
 
-        
-
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new("[^0-9]+");
@@ -231,7 +235,7 @@ namespace PriceTicker
         {
             if(!IdRecherche.Text.ToString().Equals(""))
             {
-                FindPriceById(IdRecherche.Text);
+                FindPriceById(IdRecherche.Text, null);
             }else
             {
                 Debug.WriteLine("Champ ID vide");
@@ -239,7 +243,7 @@ namespace PriceTicker
             
         }
 
-        private void TicketCrafter(String IdJaja, String Libelle, String Prix)
+        private void WallTicketCrafter(String IdJaja, String Libelle, String Prix)
         {
             Debug.WriteLine("Création de l'étiquette...");
             string PatronEtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_etiquette_murale.bmp";
@@ -306,11 +310,11 @@ namespace PriceTicker
 
 
             }
-            PagesCrafter();
+            WallPagesCrafter();
 
         }
 
-        private void PagesCrafter()
+        private void WallPagesCrafter()
         {
             
             string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
@@ -574,7 +578,21 @@ namespace PriceTicker
                 ValiderRecherche.IsEnabled = true;
             }
         }
+
+        private void Params_Click(object sender, RoutedEventArgs e)
+        {
+            ParamsWindows paramsWindows = new ParamsWindows();
+            paramsWindows.Show();
+        }
+
+        private void Logs_Click(object sender, RoutedEventArgs e)
+        {
+            LogsWindow logsWindow = new LogsWindow();
+            logsWindow.Show();
+        }
     }
+
+
 
 }
 

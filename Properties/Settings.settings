@@ -17,5 +17,11 @@
     <Setting Name="OnPageNumber" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="ClientAdresseIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">null</Value>
+    </Setting>
+    <Setting Name="ClientPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">null</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

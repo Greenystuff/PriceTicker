@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PriceTicker"
         mc:Ignorable="d"
-        Title="PriceTicker" Height="800" Width="630" ResizeMode="NoResize"
+        Title="PriceTicker" Height="820" Width="630" ResizeMode="NoResize"
         FontFamily="Poppins" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <!-- Colors -->
@@ -113,8 +113,19 @@
                 Padding="30"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>
-        <TabControl Width="600" Height="750" Style="{DynamicResource TabControlStyle}">
-            <TabItem Header="Accueil" Style="{DynamicResource TabItemStyle}" FontSize="20">
+        <DockPanel Height="20" VerticalAlignment="Top">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="Options">
+                    <MenuItem Header="Paramètres" Click="Params_Click"/>
+                    <MenuItem Header="Logs" Click="Logs_Click"/>
+                    <Separator />
+                    <MenuItem Header="Quitter" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+        <TabControl Width="600" Height="750" Style="{DynamicResource TabControlStyle}" Margin="0,15,0,0">
+            <TabItem Header="Mural" Style="{DynamicResource TabItemStyle}" FontSize="20">
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -191,65 +202,11 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Paramètres" Style="{DynamicResource TabItemStyle}" FontSize="20" Width="130">
-                <StackPanel Orientation="Vertical" Margin="10,5,10,5">
-                    <TextBlock Text="Paramètres Client :"
-                               Foreground="{DynamicResource PrimaryBlackColor}"
-                               FontSize="20"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Left"
-                               FontWeight="Bold"/>
-                    <Grid Margin="0,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.2*" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20"/>
-                            <RowDefinition Height="20"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Adresse IP : " 
-                                   Grid.Row="0"
-                                   Grid.Column="0"
-                                   Foreground="{DynamicResource PrimaryBlackColor}"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   FontWeight="Bold"/>
-                        <TextBlock x:Name="IpAdressTxt"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
-                                   Foreground="{DynamicResource PrimaryBlackColor}"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="5,0,0,0"/>
-                        <TextBlock Text="Port : "
-                                   Grid.Row="1"
-                                   Grid.Column="0"
-                                   Foreground="{DynamicResource PrimaryBlackColor}"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   FontWeight="Bold"/>
-                        <TextBlock x:Name="PortTxt"
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   Foreground="{DynamicResource PrimaryBlackColor}"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="5,0,0,0"/>
-                    </Grid>
-                </StackPanel>
+            <TabItem Header="Rails" Style="{DynamicResource TabItemStyle}" FontSize="20" Width="130">
+                
             </TabItem>
-            <TabItem Header="Logs" Style="{DynamicResource TabItemStyle}" FontSize="20">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10,5,10,10">
-                    <TextBox x:Name="LogBox" IsReadOnly="true"
-                               Foreground="{DynamicResource PrimaryBlackColor}"
-                               FontSize="16"
-                               FontWeight="Bold"/>
-                </ScrollViewer>
+            <TabItem Header="A4" Style="{DynamicResource TabItemStyle}" FontSize="20">
+                
             </TabItem>
         </TabControl>
     </Grid>
