@@ -161,7 +161,7 @@ namespace PriceTicker
                 nbPagesRail = Properties.Settings.Default.PagenumberRail;
                 pageSelectedRail = nbPagesRail;
                 RailpageNumber.Text = pageSelectedRail.ToString();
-                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + nbPages + ".bmp";
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + nbPagesRail + ".bmp";
                 Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
 
                 BitmapImage _image = new();
@@ -580,7 +580,7 @@ namespace PriceTicker
         {
 
             string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
-            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + nbPages + ".bmp";
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + nbPagesRail + ".bmp";
             Bitmap bitmapFeuille = (Bitmap)System.Drawing.Image.FromFile(FeuilleFilePath);
             Bitmap bitmapEtiquette = (Bitmap)System.Drawing.Image.FromFile(EtiquettePath);
             Rectangle Etiquette = new(nbColonnesRail * 249, nbLignesRail * 73, bitmapEtiquette.Width, bitmapEtiquette.Height);
@@ -649,7 +649,7 @@ namespace PriceTicker
                 Properties.Settings.Default.Save();
             }
 
-            if (OnPageNumberRail == 21)
+            if (OnPageNumberRail == 42)
             {
                 OnPageNumberRail = 0;
                 nbPagesRail++;
@@ -661,7 +661,7 @@ namespace PriceTicker
                 Properties.Settings.Default.nbLignesRail = nbLignesRail;
                 Properties.Settings.Default.Save();
             }
-            if (NbEtiquettes > 21)
+            if (NbEtiquettesRail > 42)
             {
                 RailbtnPrecedent.Visibility = Visibility.Visible;
                 RailbtnSuivant.Visibility = Visibility.Visible;
@@ -680,7 +680,7 @@ namespace PriceTicker
             _image.UriSource = lastPageUri;
             _image.EndInit();
             RailimgEtiquette.Source = _image;
-            btnSuivant.Visibility = Visibility.Hidden;
+            RailbtnSuivant.Visibility = Visibility.Hidden;
             RailpageNumber.Text = pageSelected.ToString();
 
         }
@@ -710,6 +710,31 @@ namespace PriceTicker
 
         }
 
+        private void ShowPreviousRailPage(object sender, RoutedEventArgs e)
+        {
+            pageSelectedRail--;
+            RailpageNumber.Text = pageSelectedRail.ToString();
+            RailbtnSuivant.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + pageSelectedRail + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            RailimgEtiquette.Source = _image;
+            if (pageSelectedRail == 1)
+            {
+                RailbtnPrecedent.Visibility = Visibility.Hidden;
+            }
+
+
+        }
+
         private void ShowNextPage(object sender, RoutedEventArgs e)
         {
 
@@ -731,6 +756,31 @@ namespace PriceTicker
             if (pageSelected == nbPages)
             {
                 btnSuivant.Visibility = Visibility.Hidden;
+            }
+
+        }
+
+        private void ShowRailNextPage(object sender, RoutedEventArgs e)
+        {
+
+            pageSelectedRail++;
+            RailpageNumber.Text = pageSelectedRail.ToString();
+            RailbtnPrecedent.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + pageSelectedRail + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            RailimgEtiquette.Source = _image;
+            if (pageSelectedRail == nbPagesRail)
+            {
+                RailbtnSuivant.Visibility = Visibility.Hidden;
             }
 
         }

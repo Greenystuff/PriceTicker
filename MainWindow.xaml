@@ -242,7 +242,7 @@
                            Height="500" 
                            Width="354"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                        <Button x:Name="RailbtnPrecedent" Content="Page Précédente" Click="ShowPreviousPage"
+                        <Button x:Name="RailbtnPrecedent" Content="Page Précédente" Click="ShowPreviousRailPage"
                                 FontWeight="DemiBold"
                                 Width="160"
                                 Height="30"
@@ -257,7 +257,7 @@
                                    Padding="3"
                                    FontSize="20"
                                    Height="30" Width="20"/>
-                        <Button x:Name="RailbtnSuivant" Content="Page Suivante" Click="ShowNextPage" FontWeight="DemiBold"
+                        <Button x:Name="RailbtnSuivant" Content="Page Suivante" Click="ShowRailNextPage" FontWeight="DemiBold"
                                 Width="160"
                                 Height="30"
                                 HorizontalAlignment="Center"
