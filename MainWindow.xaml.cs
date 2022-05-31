@@ -187,10 +187,12 @@ namespace PriceTicker
 
                                     switch (typeEtiquette)
                                     {
-                                        case "Murale": WallTicketCrafter(IdJaja, Libelle, Prix);
+                                        case "Murale": 
+                                            WallTicketCrafter(IdJaja, Libelle, Prix);
                                             break;
 
                                         case "Rail":
+                                            WallTicketCrafter(IdJaja, Libelle, Prix);
                                             break;
 
                                         case "A4":

@@ -102,7 +102,7 @@ namespace PriceTicker
                 Debug.WriteLine("Libellé envoyé au client : " + ProductSpecList[1]);
                 Debug.WriteLine("Prix envoyé au client : " + ProductSpecList[2]);
 
-                current.Send(Encoding.UTF8.GetBytes(ProductSpecList[0] + ";" + ProductSpecList[1] + ";" + ProductSpecList[2]));
+                current.Send(Encoding.UTF8.GetBytes(datas[0] + ";" + ProductSpecList[0] + ";" + ProductSpecList[1] + ";" + ProductSpecList[2]));
             }
             else
             {
