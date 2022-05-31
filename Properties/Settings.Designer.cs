@@ -106,5 +106,65 @@ namespace PriceTicker.Properties {
                 this["ClientPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PagenumberRail {
+            get {
+                return ((int)(this["PagenumberRail"]));
+            }
+            set {
+                this["PagenumberRail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int nbColonnesRail {
+            get {
+                return ((int)(this["nbColonnesRail"]));
+            }
+            set {
+                this["nbColonnesRail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int nbLignesRail {
+            get {
+                return ((int)(this["nbLignesRail"]));
+            }
+            set {
+                this["nbLignesRail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int nbEtiquettesRail {
+            get {
+                return ((int)(this["nbEtiquettesRail"]));
+            }
+            set {
+                this["nbEtiquettesRail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int OnPageNumberRail {
+            get {
+                return ((int)(this["OnPageNumberRail"]));
+            }
+            set {
+                this["OnPageNumberRail"] = value;
+            }
+        }
     }
 }

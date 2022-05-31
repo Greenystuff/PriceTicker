@@ -151,8 +151,8 @@
                         <Button x:Name="ValiderRecherche" Content="Valider"
                                 HorizontalAlignment="Left"
                                 Grid.Column="2"
-                                 Width="80" Click="ValiderRecherche_Click"/>
-                        <Button x:Name="btnReset" Content="Reset" Click="ResetDatas"
+                                Width="80" Click="ValiderRechercheMurale_Click"/>
+                        <Button x:Name="btnReset" Content="Reset" Click="ResetWallDatas"
                                 Grid.Column="3"
                                 HorizontalAlignment="Right" HorizontalContentAlignment="Center" 
                                 Margin="0,0,10,0" Width="70"/>
@@ -228,8 +228,8 @@
                         <Button x:Name="RailValiderRecherche" Content="Valider"
                                 HorizontalAlignment="Left"
                                 Grid.Column="2"
-                                 Width="80" Click="ValiderRecherche_Click"/>
-                        <Button x:Name="RailbtnReset" Content="Reset" Click="ResetDatas"
+                                 Width="80" Click="ValiderRechercheRail_Click"/>
+                        <Button x:Name="RailbtnReset" Content="Reset" Click="ResetRailDatas"
                                 Grid.Column="3"
                                 HorizontalAlignment="Right" HorizontalContentAlignment="Center" 
                                 Margin="0,0,10,0" Width="70"/>
@@ -305,8 +305,8 @@
                         <Button x:Name="A4ValiderRecherche" Content="Valider"
                                 HorizontalAlignment="Left"
                                 Grid.Column="2"
-                                 Width="80" Click="ValiderRecherche_Click"/>
-                        <Button x:Name="A4btnReset" Content="Reset" Click="ResetDatas"
+                                 Width="80" Click="ValiderRechercheMurale_Click"/>
+                        <Button x:Name="A4btnReset" Content="Reset" Click="ResetWallDatas"
                                 Grid.Column="3"
                                 HorizontalAlignment="Right" HorizontalContentAlignment="Center" 
                                 Margin="0,0,10,0" Width="70"/>
