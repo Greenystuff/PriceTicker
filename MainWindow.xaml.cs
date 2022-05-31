@@ -867,7 +867,7 @@ namespace PriceTicker
 
         }
 
-        private void PrintPages(object sender, RoutedEventArgs e)
+        private void PrintWallPages(object sender, RoutedEventArgs e)
         {
 
             // Selection de l'imprimante et des paramètres
@@ -914,7 +914,60 @@ namespace PriceTicker
             }
 
             // Lancer l'impression
-            pd.PrintDocument(document.DocumentPaginator, "Étiquettes");
+            pd.PrintDocument(document.DocumentPaginator, "Étiquettes Murales");
+
+
+
+        }
+
+        private void PrintRailPages(object sender, RoutedEventArgs e)
+        {
+
+            // Selection de l'imprimante et des paramètres
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+
+            // Creation du Document
+            FixedDocument document = new FixedDocument();
+            document.DocumentPaginator.PageSize = new System.Windows.Size(pd.PrintableAreaWidth, pd.PrintableAreaHeight);
+
+            // Création des pages
+            for (int i = 1; i <= nbPagesRail; i++)
+            {
+                FixedPage page = new FixedPage();
+                page.Width = document.DocumentPaginator.PageSize.Width;
+                page.Height = document.DocumentPaginator.PageSize.Height;
+
+                string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + i + ".bmp";
+                System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+
+                Uri PageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+                MemoryStream ms = new MemoryStream();
+                BitmapImage bImg = new BitmapImage();
+                bImg.BeginInit();
+                bImg.CacheOption = BitmapCacheOption.None;
+                bImg.StreamSource = new MemoryStream(ms.ToArray());
+                bImg.CacheOption = BitmapCacheOption.OnLoad;
+                bImg.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                bImg.UriSource = PageUri;
+                bImg.EndInit();
+                ms.Dispose();
+
+
+                //img is an Image control.
+                img.Source = bImg;
+                page.Children.Add(img);
+
+                // Ajout de la page au document
+                PageContent pageContent = new PageContent();
+                ((IAddChild)pageContent).AddChild(page);
+                document.Pages.Add(pageContent);
+
+            }
+
+            // Lancer l'impression
+            pd.PrintDocument(document.DocumentPaginator, "Étiquettes Rail");
 
 
 

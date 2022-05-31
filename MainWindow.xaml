@@ -196,7 +196,7 @@
                         <Button x:Name="btnImprimer" Content="Imprimer"
                                 Grid.Column="0"
                                 Grid.Row="0"
-                                Click="PrintPages"
+                                Click="PrintWallPages"
                                 Width="100"
                                 Height="30"/>
                     </Grid>
@@ -273,7 +273,7 @@
                         <Button x:Name="RailbtnImprimer" Content="Imprimer"
                                 Grid.Column="0"
                                 Grid.Row="0"
-                                Click="PrintPages"
+                                Click="PrintRailPages"
                                 Width="100"
                                 Height="30"/>
                     </Grid>
@@ -350,7 +350,7 @@
                         <Button x:Name="A4btnImprimer" Content="Imprimer"
                                 Grid.Column="0"
                                 Grid.Row="0"
-                                Click="PrintPages"
+                                Click="PrintWallPages"
                                 Width="100"
                                 Height="30"/>
                     </Grid>
