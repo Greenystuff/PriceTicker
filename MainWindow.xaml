@@ -279,33 +279,18 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="A4" Style="{DynamicResource TabItemStyle}" FontSize="20">
+            <TabItem Header="Affiches" Style="{DynamicResource TabItemStyle}" FontSize="20">
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition Width="0.6*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="A4TxtIdJaja" Text="ID Jaja :"
-                                   Grid.Column="0"
-                               Foreground="{DynamicResource PrimaryBlackColor}"
-                               FontSize="20"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Left"
-                               FontWeight="Bold" Margin="10,0,0,0"/>
-                        <TextBox x:Name="A4IdRecherche" 
-                                 Grid.Column="1"
-                                 PreviewTextInput="NumberValidationTextBox"
-                                 Width="100"
-                                 HorizontalAlignment="Left"
-                                 HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center" TextChanged="InputIdJaja_TextChanged"/>
-                        <Button x:Name="A4ValiderRecherche" Content="Valider"
-                                HorizontalAlignment="Left"
+                        <Button x:Name="creerAfficheBtn" Content="Créer une nouvelle affiche"
+                                HorizontalAlignment="center"
                                 Grid.Column="2"
-                                 Width="80" Click="ValiderRechercheMurale_Click"/>
+                                Width="270" Click="nouvelleAffiche" 
+                                />
                         <Button x:Name="A4btnReset" Content="Reset" Click="ResetWallDatas"
                                 Grid.Column="3"
                                 HorizontalAlignment="Right" HorizontalContentAlignment="Center" 

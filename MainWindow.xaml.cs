@@ -1004,6 +1004,12 @@ namespace PriceTicker
             LogsWindow logsWindow = new LogsWindow();
             logsWindow.Show();
         }
+
+        private void nouvelleAffiche(object sender, RoutedEventArgs e)
+        {
+            AfficheCreator creator = new AfficheCreator();
+            creator.Show();
+        }
     }
 
 
