@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -51,37 +52,68 @@ namespace PriceTicker
 
         private void FindHTMLCode(object sender, RoutedEventArgs e)
         {
-            int nbrElements = 0;
-            var html = @"https://www.cybertek.fr/univers-gamer/pc-assembles";
-            HtmlWeb web = new HtmlWeb();
-            var htmlDoc = web.Load(html);
+            BackgroundWorker worker = new();
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerAsync();
 
-            var listArticlesNodes = htmlDoc.DocumentNode.SelectNodes("//article");
+        }
 
+        private void worker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+        {
+            ProgressBar.Value = e.ProgressPercentage;
+            ProgressTextBlock.Text = (string)e.UserState;
+        }
 
-            foreach (var articleNode in listArticlesNodes)
+        private void worker_DoWork(object? sender, DoWorkEventArgs e)
+        {
+
+            var ProductsWebAdress = @"https://www.cybertek.fr/univers-gamer/pc-assembles";
+            HtmlWeb webPageAllProducts = new HtmlWeb();
+            var ProductsHtmlDoc = webPageAllProducts.Load(ProductsWebAdress);
+
+            var worker = sender as BackgroundWorker;
+            worker.ReportProgress(0, String.Format("Chargement en cours... 1."));
+            var listArticlesNodes = ProductsHtmlDoc.DocumentNode.SelectNodes("//article");
+            int productNbr = listArticlesNodes.Count;
+            for (int i = 0; i < productNbr; i++)
             {
-                var h2Nodes = articleNode.Descendants("h2");
-                var aNode = articleNode.SelectSingleNode("a").Attributes["href"].Value;
+                var h2Nodes = listArticlesNodes[i].Descendants("h2");
+                var productLink = listArticlesNodes[i].SelectSingleNode("a").Attributes["href"].Value;
                 Models.PcGamer Product = new();
 
                 foreach (var h2node in h2Nodes)
                 {
-                    var span = h2node.Element("span").FirstChild;
-                    string pcName = h2node.InnerText.Replace("pc gamer", "").Replace("\n", "").Replace("\r", "").Trim();
-                    pcName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pcName.ToLower());
-                    Debug.WriteLine("Nom du PC : " + pcName);
-                    
-                    Product.setname(pcName);
+                    string productName = h2node.InnerText.Replace("pc gamer", "").Replace("\n", "").Replace("\r", "").Trim();
+                    productName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(productName.ToLower());
+                    Debug.WriteLine("Nom du PC : " + productName);
+
+                    Product.setname(productName);
                 }
-                Debug.WriteLine("Lien Internet : " + aNode);
-                Product.setWebLink(aNode);
+                Debug.WriteLine("Lien Internet : " + productLink);
+                Product.setWebLink(productLink);
                 productList.Add(Product);
+
+                var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
+                HtmlWeb webPageProduct = new HtmlWeb();
+                var ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
+                worker.ReportProgress((i + 1) * (productNbr/15), String.Format("Chargement en cours... {0}.", i+2));
+                
             }
 
             Debug.WriteLine("Nombre d'éléments : " + productList.Count);
+            worker.ReportProgress(100, "Mise à jour terminée !");
 
         }
 
+        private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show("PriceTicker est à jour !");
+            ProgressBar.Value = 0;
+            ProgressBar.Visibility = Visibility.Hidden;
+            ProgressTextBlock.Text = "";
+        }
     }
 }

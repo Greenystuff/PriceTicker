@@ -73,6 +73,15 @@
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
+        <ProgressBar Grid.Row="1"
+                     x:Name="ProgressBar"
+                     Height="20"
+                     Width="200"/>
+        <TextBlock Grid.Row="1"
+                   x:Name="ProgressTextBlock"
+                   Height="20"
+                   Width="200"
+                   Background="Transparent"/>
         <Button x:Name="ValiderAfficheBtn"
                 
                 Grid.Row="2"
