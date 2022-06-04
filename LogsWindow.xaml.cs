@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml;
 
 namespace PriceTicker
 {
@@ -23,6 +25,7 @@ namespace PriceTicker
     {
 
         public static LogsWindow? gui;
+        
         public LogsWindow()
         {
             InitializeComponent();
@@ -33,22 +36,21 @@ namespace PriceTicker
         public void UpdateLogsTxt()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "Logs.txt";
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 using (StreamReader sr = File.OpenText(path))
-                {
-                    string s = "";
+                {   
+                    Dispatcher.Invoke(new Action(() => {
+                        LogBox.Text = "";
+                        string s = "";
                     while ((s = sr.ReadLine()) != null)
-                    {
-                        Dispatcher.Invoke(new Action(() => {
-                            LogBox.Text += s + "\n";
-                        }), DispatcherPriority.SystemIdle);
-                    }
+                        {
+                        LogBox.Text += s + "\n";
+                            
+                        }
+                    }), DispatcherPriority.SystemIdle);
                 }
             }
-            
         }
-
-
     }
 }

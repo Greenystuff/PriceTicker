@@ -262,9 +262,6 @@ namespace PriceTicker
                                             RailTicketCrafter(IdJaja, Libelle, Prix);
                                             break;
 
-                                        case "A4":
-                                            break;
-
                                         default:
                                             Debug.WriteLine("Type d'étiquette \""+ typeEtiquette + "\" inconnu !!");
                                             break;
@@ -1011,8 +1008,6 @@ namespace PriceTicker
             creator.Show();
         }
     }
-
-
 
 }
 

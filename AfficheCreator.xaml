@@ -74,11 +74,13 @@
             </DataGrid>
         </ScrollViewer>
         <Button x:Name="ValiderAfficheBtn"
+                
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 Content="Valider l'affiche"
                 FontSize="18"
                 Width="180"
-                Height="30"/>
+                Height="30" Click="FindHTMLCode" 
+                />
     </Grid>
 </Window>
