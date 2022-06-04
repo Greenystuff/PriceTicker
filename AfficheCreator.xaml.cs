@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -52,6 +53,7 @@ namespace PriceTicker
 
         private void FindHTMLCode(object sender, RoutedEventArgs e)
         {
+            ProgressBar.Visibility = Visibility.Visible;
             BackgroundWorker worker = new();
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.WorkerReportsProgress = true;
@@ -75,7 +77,7 @@ namespace PriceTicker
             var ProductsHtmlDoc = webPageAllProducts.Load(ProductsWebAdress);
 
             var worker = sender as BackgroundWorker;
-            worker.ReportProgress(0, String.Format("Chargement en cours... 1."));
+            worker.ReportProgress(0, String.Format("Chargement en cours... 0 %"));
             var listArticlesNodes = ProductsHtmlDoc.DocumentNode.SelectNodes("//article");
             int productNbr = listArticlesNodes.Count;
             for (int i = 0; i < productNbr; i++)
@@ -98,8 +100,61 @@ namespace PriceTicker
 
                 var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
                 HtmlWeb webPageProduct = new HtmlWeb();
+                webPageProduct.AutoDetectEncoding = true;
                 var ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
-                worker.ReportProgress((i + 1) * (productNbr/15), String.Format("Chargement en cours... {0}.", i+2));
+                var listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
+
+                int caracNbr = listDescNodes.Count;
+
+                for(int i2 = 0; i2 < caracNbr; i2++)
+                {
+                    var ListNodes = listDescNodes[i2].Descendants("a");
+
+                    foreach(var listNode in ListNodes)
+                    {
+
+                        string categorie = listNode.Attributes["href"].Value.Replace("../../", "");
+                        int index = categorie.IndexOf("/");
+                        if (index > 0)
+                        {
+                            categorie = categorie.Substring(0, index); // or index + 1 to keep slash
+                        }
+
+                        string[] tempArray = listNode.OuterHtml.Split("<strong>");
+                        string caracteristiqueDesc = tempArray[1];
+                        int indexCaracDesc = caracteristiqueDesc.IndexOf("</strong>");
+                        if (indexCaracDesc > 0)
+                        {
+                            caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc)); // or index + 1 to keep slash
+                        }
+
+                        string[] tempArray2 = listNode.OuterHtml.Split("</strong>");
+                        string caracteristique = tempArray2[1];
+                        int indexCarac = caracteristique.IndexOf("</a>");
+                        if (indexCarac > 0)
+                        {
+                            caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac)); // or index + 1 to keep slash
+                        }
+
+                        Debug.WriteLine("Catégorie : " + categorie);
+                        Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
+                        
+                    }
+                    
+
+                }
+
+
+
+
+
+
+
+
+                float valeur = 100*i/productNbr;
+                int roundValeur = (int)Math.Round(valeur);
+
+                worker.ReportProgress(roundValeur, String.Format("Chargement en cours... " + valeur + " %", i+2));
                 
             }
 
