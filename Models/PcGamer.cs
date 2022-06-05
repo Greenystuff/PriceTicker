@@ -15,6 +15,8 @@ namespace PriceTicker.Models
 
         private decimal prixBarre = 0;
 
+        private string idJaja = "";
+
         private string webLink = "";
 
         private string boitier = "";
@@ -79,6 +81,16 @@ namespace PriceTicker.Models
         public void setPrixBarre(decimal PrixBarre)
         {
             this.prixBarre = PrixBarre;
+        }
+
+        public string getIdJaja()
+        {
+            return idJaja;
+        }
+
+        public void setIdJaja(string IdJaja)
+        {
+            this.idJaja = IdJaja;
         }
 
         public string getWebLink()
@@ -257,6 +269,7 @@ namespace PriceTicker.Models
                 "Nom du PC : " + name + "\r" +
                 "Prix : " + prix + "\r" +
                 "Prix Barré : " + prixBarre + "\r" +
+                "ID Jaja : " + idJaja + "\r" +
                 "Adresse Web : " + webLink + "\r" +
                 "Boîtier : " + boitier + "\r" +
                 "Accessoire de boîtier : " + accessoireBoitier + "\r" +

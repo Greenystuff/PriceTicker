@@ -37,6 +37,10 @@ namespace PriceTicker
             InitializeComponent();
         }
 
+        
+
+
+
         public static String code(string Url)
         {
 
@@ -96,6 +100,22 @@ namespace PriceTicker
                 }
                 //Debug.WriteLine("Lien Internet : " + productLink);
                 Product.setWebLink(productLink);
+                string Product_Id = productLink;
+
+                int indexProductId = Product_Id.IndexOf(".aspx");
+                if (indexProductId > 0)
+                {
+                    List<long> productIdTemp = new List<long>();
+                    Product_Id = Product_Id.Substring(0, indexProductId);
+                    productIdTemp = FindIdNumbers(Product_Id);
+                    Product_Id = productIdTemp.Last().ToString();
+
+
+
+                }
+
+                
+                Debug.WriteLine("Id Produit : " + Product_Id);
 
 
                 var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
@@ -116,12 +136,8 @@ namespace PriceTicker
                     string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
                     Product.setPrixBarre(Decimal.Parse(prixBarreStr));
                 }
-                    
-
 
                 Product.setPrix(Decimal.Parse(prix));
-                
-
 
 
                 int caracNbr = listDescNodes.Count;
@@ -301,16 +317,52 @@ namespace PriceTicker
             }
 
             Debug.WriteLine("Nombre d'éléments : " + productList.Count);
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ConfigGroupDataGrid.AutoGenerateColumns = false;
+
+                var _bind = productList.Select(a => new
+                {
+                                id = "0",
+                                name = a.getName(),
+                                prix = a.getPrix() + " €",
+                                
+                            });
+                ConfigGroupDataGrid.DataContext = _bind;
+            }), DispatcherPriority.SystemIdle);
             worker.ReportProgress(100, "Mise à jour terminée !");
 
         }
 
         private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show("PriceTicker est à jour !");
+            
             ProgressBar.Value = 0;
             ProgressBar.Visibility = Visibility.Hidden;
             ProgressTextBlock.Text = "";
+            MessageBox.Show("PriceTicker est à jour !");
         }
+
+        public static List<long> FindIdNumbers(string str)
+        {
+            var nums = new List<long>();
+            var start = -1;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (start < 0 && Char.IsDigit(str[i]))
+                {
+                    start = i;
+                }
+                else if (start >= 0 && !Char.IsDigit(str[i]))
+                {
+                    nums.Add(long.Parse(str.Substring(start, i - start)));
+                    start = -1;
+                }
+            }
+            if (start >= 0)
+                nums.Add(long.Parse(str.Substring(start, str.Length - start)));
+            return nums;
+        }
+
     }
 }

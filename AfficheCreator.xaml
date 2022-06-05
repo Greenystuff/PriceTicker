@@ -65,10 +65,11 @@
                HorizontalAlignment="Center"
                VerticalAlignment="Center"/>
         <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="25,0,25,0">
-            <DataGrid TextBlock.TextAlignment="Center" HorizontalAlignment="Center" Height="auto">
+            <DataGrid x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center" Height="auto"
+                      SelectionMode="Single" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="0.2*" Header="ID" Binding="{Binding Id}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                    <DataGridTextColumn Width="0.6*" Header="Libellé" Binding="{Binding libelle}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Width="0.2*" Header="ID" Binding="{Binding id}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Width="0.6*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                     <DataGridTextColumn Width="0.2*" Header="Prix" Binding="{Binding prix}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
