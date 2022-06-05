@@ -78,7 +78,7 @@ namespace PriceTicker
 
             var worker = sender as BackgroundWorker;
             worker.ReportProgress(0, String.Format("Chargement en cours... 0 %"));
-            var listArticlesNodes = ProductsHtmlDoc.DocumentNode.SelectNodes("//article");
+            HtmlNodeCollection listArticlesNodes = ProductsHtmlDoc.DocumentNode.SelectNodes("//article");
             int productNbr = listArticlesNodes.Count;
             for (int i = 0; i < productNbr; i++)
             {
@@ -90,64 +90,206 @@ namespace PriceTicker
                 {
                     string productName = h2node.InnerText.Replace("pc gamer", "").Replace("\n", "").Replace("\r", "").Trim();
                     productName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(productName.ToLower());
-                    Debug.WriteLine("Nom du PC : " + productName);
+                    //Debug.WriteLine("Nom du PC : " + productName);
 
                     Product.setname(productName);
                 }
-                Debug.WriteLine("Lien Internet : " + productLink);
+                //Debug.WriteLine("Lien Internet : " + productLink);
                 Product.setWebLink(productLink);
-                productList.Add(Product);
+
 
                 var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
                 HtmlWeb webPageProduct = new HtmlWeb();
-                webPageProduct.AutoDetectEncoding = true;
-                var ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
-                var listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
+                HtmlDocument ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
+                HtmlNodeCollection listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
+                HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
+                HtmlNodeCollection prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
+                
+                string prix = prixNodes[0].InnerText.Replace("€", ",");
+
+                string htmlCodeStr = prixBarreNodes[0].InnerHtml;
+                bool prixBarre = htmlCodeStr.Contains("prix-config-barre-sans-option");
+
+                if (prixBarre)
+                {
+                    HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
+                    string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
+                    Product.setPrixBarre(Decimal.Parse(prixBarreStr));
+                }
+                    
+
+
+                Product.setPrix(Decimal.Parse(prix));
+                
+
+
 
                 int caracNbr = listDescNodes.Count;
+                
 
-                for(int i2 = 0; i2 < caracNbr; i2++)
+                for (int i2 = 0; i2 < caracNbr; i2++)
                 {
-                    var ListNodes = listDescNodes[i2].Descendants("a");
 
-                    foreach(var listNode in ListNodes)
-                    {
+                    var listNodes = listDescNodes[i2].Descendants("li");
 
-                        string categorie = listNode.Attributes["href"].Value.Replace("../../", "");
-                        int index = categorie.IndexOf("/");
-                        if (index > 0)
+                    foreach (var listNode in listNodes) {
+                        string categorie = "";
+                        string caracteristiqueDesc = "";
+                        string caracteristique = "";
+
+                        if (!listNode.InnerHtml.StartsWith("<a"))
                         {
-                            categorie = categorie.Substring(0, index); // or index + 1 to keep slash
+                            categorie = HttpUtility.HtmlDecode(listNode.Descendants("strong").First().InnerText);
+                            caracteristique = HttpUtility.HtmlDecode(listNode.InnerText).Replace(categorie, "");
+                            
+
+                            if (categorie.StartsWith("Sans sys"))
+                            {
+                                Product.setSystemeExploitation(caracteristique);
+                            }
+                            if (categorie.StartsWith("Disque"))
+                            {
+                                Product.setDisqueSsd(caracteristique);
+                            }
+                            if (categorie.StartsWith("Mémoire PC") || categorie.StartsWith("Memoire PC"))
+                            {
+                                Product.setRam(caracteristique);
+                            }
+                            if (categorie.StartsWith("Carte graphique") || categorie.StartsWith("Carte Graphique") || categorie.StartsWith("Composant"))
+                            {
+                                Product.setCarteGraphique(caracteristique);
+                            }
+                            if(categorie.StartsWith("Processeur"))
+                            {
+                                Product.setProcesseur(categorie + caracteristique);
+                            }
+                            if (categorie.StartsWith("Alimentation"))
+                            {
+                                Product.setAlimentation(caracteristique);
+                            }
+
+
+                            //Debug.WriteLine("Catégorie non Link : " + categorie);
+                            //Debug.WriteLine("Caractéristique non link : " + categorie + caracteristique);
+                        }else
+                        {
+                            categorie = listNode.FirstChild.Attributes["href"].Value.Replace("../../", "");
+                            int index = categorie.IndexOf("/");
+                            if (index > 0)
+                            {
+                                
+                                categorie = categorie.Substring(0, index); // or index + 1 to keep slash
+                            }
+                            
+
+                            string[] tempArray = listNode.FirstChild.OuterHtml.Split("<strong>");
+                            caracteristiqueDesc = tempArray[1];
+                            int indexCaracDesc = caracteristiqueDesc.IndexOf("</strong>");
+                            if (indexCaracDesc > 0)
+                            {
+                                caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc)); // or index + 1 to keep slash
+                            }
+
+                            string[] tempArray2 = listNode.FirstChild.OuterHtml.Split("</strong>");
+                            caracteristique = tempArray2[1];
+                            int indexCarac = caracteristique.IndexOf("</a>");
+                            if (indexCarac > 0)
+                            {
+                                caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac)); // or index + 1 to keep slash
+                            }
+
+                            switch (categorie)
+                            {
+                                case "boitier-pc":
+                                    Product.setBoitier(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "accessoire-boitier":
+                                    Product.setAccessoireBoitier(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "ventilateur-boitier":
+                                    Product.setVentilateurBoitier(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "carte-mere":
+                                    Product.setCarteMere(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "processeur":
+                                    Product.setProcesseur(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "ventilateur-cpu":
+                                    Product.setVentirad(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "disque-ssd":
+                                    Product.setDisqueSsd(caracteristiqueDesc +  caracteristique);
+                                    break;
+
+                                case "disque-dur-interne-3-5":
+                                    Product.setDisqueSupplementaire(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "memoire-pc":
+                                    Product.setRam(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "watercooling":
+                                    Product.setWaterCooling(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "carte-graphique":
+                                    Product.setCarteGraphique(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "accessoire-carte-graphique":
+                                    Product.setAccessoireCarteGraphique(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "carte-reseau":
+                                    Product.setCarteReseau(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "alimentation":
+                                    Product.setAlimentation(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "accessoire-alimentation":
+                                    Product.setAccessoireAlimentation(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "logiciel-systeme-exploitation":
+                                    Product.setSystemeExploitation(caracteristique);
+                                    break;
+
+                                case "integration-logicielle":
+                                    Product.setSystemeExploitation(caracteristique);
+                                    break;
+
+
+                            }
+
+
+                            //Debug.WriteLine("Catégorie : " + categorie);
+                            
+                            //Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
                         }
 
-                        string[] tempArray = listNode.OuterHtml.Split("<strong>");
-                        string caracteristiqueDesc = tempArray[1];
-                        int indexCaracDesc = caracteristiqueDesc.IndexOf("</strong>");
-                        if (indexCaracDesc > 0)
-                        {
-                            caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc)); // or index + 1 to keep slash
-                        }
-
-                        string[] tempArray2 = listNode.OuterHtml.Split("</strong>");
-                        string caracteristique = tempArray2[1];
-                        int indexCarac = caracteristique.IndexOf("</a>");
-                        if (indexCarac > 0)
-                        {
-                            caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac)); // or index + 1 to keep slash
-                        }
-
-                        Debug.WriteLine("Catégorie : " + categorie);
-                        Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
                         
                     }
+                    
                     
 
                 }
 
+                int nbrPc = i + 1;
+                string resultat = "PC N°" + nbrPc + "\r" + Product.getAllCaracteristiques();
+                Debug.WriteLine(resultat);
 
 
-
-
+                productList.Add(Product);
 
 
 
