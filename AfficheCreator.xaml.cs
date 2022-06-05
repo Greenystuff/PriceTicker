@@ -58,6 +58,7 @@ namespace PriceTicker
         private void FindHTMLCode(object sender, RoutedEventArgs e)
         {
             ProgressBar.Visibility = Visibility.Visible;
+            ProgressTextBlock.Visibility = Visibility.Visible;
             BackgroundWorker worker = new();
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.WorkerReportsProgress = true;
@@ -109,14 +110,27 @@ namespace PriceTicker
                     Product_Id = Product_Id.Substring(0, indexProductId);
                     productIdTemp = FindIdNumbers(Product_Id);
                     Product_Id = productIdTemp.Last().ToString();
-
-
-
                 }
 
-                
-                Debug.WriteLine("Id Produit : " + Product_Id);
+                XmlTextReader ProduitsXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
 
+                String? IdJaja = null;
+
+                while (ProduitsXml.Read())
+                {
+
+                    if (ProduitsXml.NodeType == XmlNodeType.Element && ProduitsXml.Name == "produit_id")
+                    {
+                        string temp = ProduitsXml.ReadElementContentAsString();
+                        if (temp == Product_Id)
+                        {
+                            ProduitsXml.ReadToNextSibling("num_produit");
+                            IdJaja = ProduitsXml.ReadElementContentAsString();
+                            Product.setIdJaja(IdJaja);
+                        }
+                        
+                    }
+                }
 
                 var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
                 HtmlWeb webPageProduct = new HtmlWeb();
@@ -321,11 +335,11 @@ namespace PriceTicker
             {
                 ConfigGroupDataGrid.AutoGenerateColumns = false;
 
-                var _bind = productList.Select(a => new
+                var _bind = productList.Select(product => new
                 {
-                                id = "0",
-                                name = a.getName(),
-                                prix = a.getPrix() + " €",
+                                id = product.getIdJaja(),
+                                name = product.getName(),
+                                prix = product.getPrix() + " €",
                                 
                             });
                 ConfigGroupDataGrid.DataContext = _bind;
@@ -340,6 +354,7 @@ namespace PriceTicker
             ProgressBar.Value = 0;
             ProgressBar.Visibility = Visibility.Hidden;
             ProgressTextBlock.Text = "";
+            ProgressTextBlock.Visibility = Visibility.Hidden;
             MessageBox.Show("PriceTicker est à jour !");
         }
 
