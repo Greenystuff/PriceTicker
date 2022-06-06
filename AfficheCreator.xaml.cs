@@ -13,18 +13,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml;
 
@@ -526,6 +517,9 @@ namespace PriceTicker
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\CenturyGothic.ttf");
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\Mass_Effect.ttf");
 
+                Style test = new();
+                test.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.UltraBold));
+
                 Font IntroFont = new(privateFonts.Families[0], 25);
                 Font NameFont = new(privateFonts.Families[1], 47);
                 Font CategorieFont = new(privateFonts.Families[0], 14, System.Drawing.FontStyle.Regular);
@@ -540,31 +534,30 @@ namespace PriceTicker
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                 
-                graphics.DrawString("PC monté", IntroFont, System.Drawing.Brushes.Black, rectIntro, IntroFormat);
-                graphics.DrawString(Libelle, NameFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
-                graphics.DrawString("Boîtier", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
-                graphics.DrawString("Carte mère", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCM, CategorieCMFormat);
-                graphics.DrawString("Processeur", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieProc, CategorieProcFormat);
-                graphics.DrawString("Mémoire vive", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieRam, CategorieRamFormat);
-                graphics.DrawString("Carte graphique", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCG, CategorieCGFormat);
-                graphics.DrawString("Stockage", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
-                graphics.DrawString("Alimentation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
-                graphics.DrawString("Système d'exploitation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieOS, CategorieOSFormat);
+                graphics.DrawString("PC monté", IntroFont, Brushes.Black, rectIntro, IntroFormat);
+                graphics.DrawString(Libelle, NameFont, Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString("Boîtier", CategorieFont, Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
+                graphics.DrawString("Carte mère", CategorieFont, Brushes.Gray, rectCategorieCM, CategorieCMFormat);
+                graphics.DrawString("Processeur", CategorieFont, Brushes.Gray, rectCategorieProc, CategorieProcFormat);
+                graphics.DrawString("Mémoire vive", CategorieFont, Brushes.Gray, rectCategorieRam, CategorieRamFormat);
+                graphics.DrawString("Carte graphique", CategorieFont, Brushes.Gray, rectCategorieCG, CategorieCGFormat);
+                graphics.DrawString("Stockage", CategorieFont, Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
+                graphics.DrawString("Alimentation", CategorieFont, Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
+                graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
 
-                graphics.DrawString("Lian-Li ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
-                graphics.DrawString("MSI B560 ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracCM, CaracCMFormat);
-                graphics.DrawString("i7-7700K de ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracProc, CaracProcFormat);
-                graphics.DrawString("2x128 Go ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracRam, CaracRamFormat);
-                graphics.DrawString("3090Ti de ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracCG, CaracCGFormat);
-                graphics.DrawString("SSD de ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracStockage, CaracStockageFormat);
-                graphics.DrawString("M-RED ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracAlim, CaracAlimFormat);
-                graphics.DrawString("Windows 10 ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracOS, CaracOSFormat);
+                graphics.DrawString("Lian-Li ta mère !!", CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
+                graphics.DrawString("MSI B560 ta mère !!", CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
+                graphics.DrawString("i7-7700K de ta mère !!", CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
+                graphics.DrawString("2x128 Go ta mère !!", CaracFont, Brushes.Black, rectCaracRam, CaracRamFormat);
+                graphics.DrawString("3090Ti de ta mère !!", CaracFont, Brushes.Black, rectCaracCG, CaracCGFormat);
+                graphics.DrawString("SSD de ta mère !!", CaracFont, Brushes.Black, rectCaracStockage, CaracStockageFormat);
+                graphics.DrawString("M-RED ta mère !!", CaracFont, Brushes.Black, rectCaracAlim, CaracAlimFormat);
+                graphics.DrawString("Windows 10 ta mère !!", CaracFont, Brushes.Black, rectCaracOS, CaracOSFormat);
 
-                graphics.DrawString("2699€99", PrixBarreFont, System.Drawing.Brushes.Gray, rectPrixBarre, PrixBarreFormat);
-                graphics.DrawString("2499€99", PrixFont, System.Drawing.Brushes.Red, rectPrix, PrixFormat);
+                graphics.DrawString("2699€99", PrixBarreFont, Brushes.Gray, rectPrixBarre, PrixBarreFormat);
+                graphics.DrawString("2499€99", PrixFont, Brushes.Red, rectPrix, PrixFormat);
 
                 graphics.DrawImage(bitmapLogo, RectLogo);
-
 
                 graphics.Dispose();
             }
