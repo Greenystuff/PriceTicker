@@ -12,6 +12,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Img\ComposantsPC\Alimentation.png" />
+    <None Remove="Img\ComposantsPC\Boitier.png" />
+    <None Remove="Img\ComposantsPC\Carte_Graphique.png" />
+    <None Remove="Img\ComposantsPC\Carte_mere.png" />
+    <None Remove="Img\ComposantsPC\CPU.png" />
+    <None Remove="Img\ComposantsPC\RAM.png" />
+    <None Remove="Img\ComposantsPC\SSD_M2.png" />
+    <None Remove="Img\ComposantsPC\SSD_Sata.png" />
+    <None Remove="Img\ComposantsPC\Ventilateur_Boitier.png" />
+    <None Remove="Img\ComposantsPC\Ventirad.png" />
+    <None Remove="Img\ComposantsPC\Watercooling.png" />
     <None Remove="Img\Logo PriceTicker.png" />
     <None Remove="Img\Patron_etiquette_murale.bmp" />
     <None Remove="Img\Patron_etiquette_rail.bmp" />
@@ -19,6 +30,39 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Img\ComposantsPC\Alimentation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\Boitier.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\Carte_Graphique.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\Carte_mere.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\CPU.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\RAM.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\SSD_M2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\SSD_Sata.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\Ventilateur_Boitier.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\Ventirad.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\ComposantsPC\Watercooling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Img\Logo PriceTicker.ico" />
     <Content Include="Img\Logo PriceTicker.png">
       <Pack>True</Pack>
@@ -51,6 +95,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Img\ComposantsPC\151713914_l.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Update="Img\Nouvelle_Etiquette.bmp">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

@@ -1,7 +1,9 @@
 ﻿using HtmlAgilityPack;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -35,6 +37,7 @@ namespace PriceTicker
         public AfficheCreator()
         {
             InitializeComponent();
+            
         }
 
         
@@ -76,7 +79,7 @@ namespace PriceTicker
 
         private void worker_DoWork(object? sender, DoWorkEventArgs e)
         {
-
+            productList.Clear();
             var ProductsWebAdress = @"https://www.cybertek.fr/univers-gamer/pc-assembles";
             HtmlWeb webPageAllProducts = new HtmlWeb();
             var ProductsHtmlDoc = webPageAllProducts.Load(ProductsWebAdress);
@@ -100,7 +103,7 @@ namespace PriceTicker
                     Product.setname(productName);
                 }
                 //Debug.WriteLine("Lien Internet : " + productLink);
-                Product.setWebLink(productLink);
+                Product.setWebLink(@"https://www.cybertek.fr" + productLink);
                 string Product_Id = productLink;
 
                 int indexProductId = Product_Id.IndexOf(".aspx");
@@ -136,22 +139,23 @@ namespace PriceTicker
                 HtmlWeb webPageProduct = new HtmlWeb();
                 HtmlDocument ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
                 HtmlNodeCollection listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
-                HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
                 HtmlNodeCollection prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
                 
-                string prix = prixNodes[0].InnerText.Replace("€", ",");
+                if (prixBarreNodes[0].InnerHtml.Contains("prix_total_sans_remise"))
+                {
+                    HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
+                    string prix = prixNodes[0].InnerText.Replace("€", ",");
+                    Product.setPrix(Decimal.Parse(prix));
+                }
 
-                string htmlCodeStr = prixBarreNodes[0].InnerHtml;
-                bool prixBarre = htmlCodeStr.Contains("prix-config-barre-sans-option");
-
-                if (prixBarre)
+                if (prixBarreNodes[0].InnerHtml.Contains("prix-config-barre-sans-option"))
                 {
                     HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
                     string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
                     Product.setPrixBarre(Decimal.Parse(prixBarreStr));
                 }
 
-                Product.setPrix(Decimal.Parse(prix));
+                
 
 
                 int caracNbr = listDescNodes.Count;
@@ -309,19 +313,14 @@ namespace PriceTicker
 
                         
                     }
-                    
-                    
 
                 }
 
                 int nbrPc = i + 1;
                 string resultat = "PC N°" + nbrPc + "\r" + Product.getAllCaracteristiques();
                 Debug.WriteLine(resultat);
-
-
+                
                 productList.Add(Product);
-
-
 
                 float valeur = 100*i/productNbr;
                 int roundValeur = (int)Math.Round(valeur);
@@ -334,28 +333,37 @@ namespace PriceTicker
             Dispatcher.Invoke(new Action(() =>
             {
                 ConfigGroupDataGrid.AutoGenerateColumns = false;
+                
 
-                var _bind = productList.Select(product => new
+                IEnumerable _bind = productList.Select(product => new
                 {
-                                id = product.getIdJaja(),
-                                name = product.getName(),
-                                prix = product.getPrix() + " €",
-                                
-                            });
-                ConfigGroupDataGrid.DataContext = _bind;
+                    
+                    id = product.getIdJaja(),
+                    name = product.getName(),
+                    prix = product.getPrix() + " €",
+                    boitier = product.getBoitier(),
+                    imgCarteMere = "/PriceTicker;component/Img/ComposantsPC/Carte_mere.png",
+                    carteMere = product.getCarteMere(),
+                    processeur = product.getProcesseur(),
+                    carteGraphique = product.getCarteGraphique(),
+                    ram = product.getRam(),
+
+                });
+
+
+                ConfigGroupDataGrid.ItemsSource = _bind;
             }), DispatcherPriority.SystemIdle);
+            
             worker.ReportProgress(100, "Mise à jour terminée !");
 
         }
 
         private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-            
             ProgressBar.Value = 0;
             ProgressBar.Visibility = Visibility.Hidden;
             ProgressTextBlock.Text = "";
             ProgressTextBlock.Visibility = Visibility.Hidden;
-            MessageBox.Show("PriceTicker est à jour !");
         }
 
         public static List<long> FindIdNumbers(string str)
@@ -379,5 +387,29 @@ namespace PriceTicker
             return nums;
         }
 
+        private void OpenURLinNav(object sender, RoutedEventArgs e)
+        {
+            string IdJajaSelected = ConfigGroupDataGrid.SelectedItem.ToString();
+            List<long> IdJajaSelectedList = new List<long>();
+            IdJajaSelectedList = FindIdNumbers(IdJajaSelected);
+            IdJajaSelected = IdJajaSelectedList.First().ToString();
+
+            for (int i = 0; i < productList.Count; i++)
+            {
+                string idJajaRecherche = productList[i].getIdJaja();
+                if (idJajaRecherche.Contains(IdJajaSelected))
+                {
+                    string url = productList[i].getWebLink();
+                    var sInfo = new ProcessStartInfo(url)
+                    {
+                        UseShellExecute = true,
+                    };
+                    Process.Start(sInfo);
+                    break;
+                }
+            }
+
+            
+        }
     }
 }
