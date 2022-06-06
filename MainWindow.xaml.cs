@@ -362,7 +362,7 @@ namespace PriceTicker
                 graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
                 graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
                 graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
@@ -440,7 +440,7 @@ namespace PriceTicker
                 graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
                 graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
                 graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);

@@ -466,6 +466,46 @@ namespace PriceTicker
             CategorieOSFormat.LineAlignment = StringAlignment.Center;
             System.Drawing.Rectangle rectCategorieOS = new(-110, 715, bitmap.Width / 2, 40);
 
+            StringFormat CaracBoitierFormat = new();
+            CaracBoitierFormat.Alignment = StringAlignment.Near;
+            CaracBoitierFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracBoitier = new(320, 225, bitmap.Width / 2, 40);
+
+            StringFormat CaracCMFormat = new();
+            CaracCMFormat.Alignment = StringAlignment.Near;
+            CaracCMFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracCM = new(320, 295, bitmap.Width / 2, 40);
+
+            StringFormat CaracProcFormat = new();
+            CaracProcFormat.Alignment = StringAlignment.Near;
+            CaracProcFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracProc = new(320, 365, bitmap.Width / 2, 40);
+
+            StringFormat CaracRamFormat = new();
+            CaracRamFormat.Alignment = StringAlignment.Near;
+            CaracRamFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracRam = new(320, 435, bitmap.Width / 2, 40);
+
+            StringFormat CaracCGFormat = new();
+            CaracCGFormat.Alignment = StringAlignment.Near;
+            CaracCGFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracCG = new(320, 505, bitmap.Width / 2, 40);
+
+            StringFormat CaracStockageFormat = new();
+            CaracStockageFormat.Alignment = StringAlignment.Near;
+            CaracStockageFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracStockage = new(320, 575, bitmap.Width / 2, 40);
+
+            StringFormat CaracAlimFormat = new();
+            CaracAlimFormat.Alignment = StringAlignment.Near;
+            CaracAlimFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracAlim = new(320, 645, bitmap.Width / 2, 40);
+
+            StringFormat CaracOSFormat = new();
+            CaracOSFormat.Alignment = StringAlignment.Near;
+            CaracOSFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCaracOS = new(320, 715, bitmap.Width / 2, 40);
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection(); 
@@ -475,6 +515,7 @@ namespace PriceTicker
                 Font IntroFont = new(privateFonts.Families[0], 25, GraphicsUnit.Point);
                 Font NameFont = new(privateFonts.Families[1], 47, GraphicsUnit.Point);
                 Font CategorieFont = new(privateFonts.Families[0], 14, System.Drawing.FontStyle.Regular);
+                Font CaracFont = new(privateFonts.Families[0], 20, System.Drawing.FontStyle.Bold);
 
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -493,6 +534,15 @@ namespace PriceTicker
                 graphics.DrawString("Stockage", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
                 graphics.DrawString("Alimentation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
                 graphics.DrawString("Système d'exploitation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieOS, CategorieOSFormat);
+
+                graphics.DrawString("Lian-Li ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
+                graphics.DrawString("MSI B560 ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracCM, CaracCMFormat);
+                graphics.DrawString("i7-7700K de ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracProc, CaracProcFormat);
+                graphics.DrawString("2x128 Go ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracRam, CaracRamFormat);
+                graphics.DrawString("3090Ti de ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracCG, CaracCGFormat);
+                graphics.DrawString("SSD de ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracStockage, CaracStockageFormat);
+                graphics.DrawString("M-RED ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracAlim, CaracAlimFormat);
+                graphics.DrawString("Windows 10 ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracOS, CaracOSFormat);
 
 
 
@@ -523,6 +573,7 @@ namespace PriceTicker
 
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
+            
             CraftPoster("CRONOS");
         }
     }
