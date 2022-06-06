@@ -414,7 +414,9 @@ namespace PriceTicker
             Debug.WriteLine("Création de l'affiche...");
             string PatronAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
             string AffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp";
+            string LogoPath = AppDomain.CurrentDomain.BaseDirectory + "Img\\LogoCybertek.bmp";
             Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(PatronAffichePath);
+            Bitmap bitmapLogo = (Bitmap)System.Drawing.Image.FromFile(LogoPath);
 
             StringFormat IntroFormat = new();
             IntroFormat.Alignment = StringAlignment.Center;
@@ -506,16 +508,30 @@ namespace PriceTicker
             CaracOSFormat.LineAlignment = StringAlignment.Center;
             System.Drawing.Rectangle rectCaracOS = new(320, 715, bitmap.Width / 2, 40);
 
+            StringFormat PrixBarreFormat = new();
+            PrixBarreFormat.Alignment = StringAlignment.Center;
+            PrixBarreFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectPrixBarre = new(0, 785, bitmap.Width, 60);
+
+            StringFormat PrixFormat = new();
+            PrixFormat.Alignment = StringAlignment.Center;
+            PrixFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectPrix = new(0, 870, bitmap.Width, 100);
+
+            System.Drawing.Rectangle RectLogo = new(bitmap.Width / 2 - (bitmapLogo.Width*9/10) / 2, 1020, bitmapLogo.Width*9/10, bitmapLogo.Height*9/10);
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection(); 
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\CenturyGothic.ttf");
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\Mass_Effect.ttf");
 
-                Font IntroFont = new(privateFonts.Families[0], 25, GraphicsUnit.Point);
-                Font NameFont = new(privateFonts.Families[1], 47, GraphicsUnit.Point);
+                Font IntroFont = new(privateFonts.Families[0], 25);
+                Font NameFont = new(privateFonts.Families[1], 47);
                 Font CategorieFont = new(privateFonts.Families[0], 14, System.Drawing.FontStyle.Regular);
                 Font CaracFont = new(privateFonts.Families[0], 20, System.Drawing.FontStyle.Bold);
+                Font PrixBarreFont = new(privateFonts.Families[0], 30, System.Drawing.FontStyle.Strikeout);
+                Font PrixFont = new(privateFonts.Families[0], 65, System.Drawing.FontStyle.Bold);
 
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -544,6 +560,10 @@ namespace PriceTicker
                 graphics.DrawString("M-RED ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracAlim, CaracAlimFormat);
                 graphics.DrawString("Windows 10 ta mère !!", CaracFont, System.Drawing.Brushes.Black, rectCaracOS, CaracOSFormat);
 
+                graphics.DrawString("2699€99", PrixBarreFont, System.Drawing.Brushes.Gray, rectPrixBarre, PrixBarreFormat);
+                graphics.DrawString("2499€99", PrixFont, System.Drawing.Brushes.Red, rectPrix, PrixFormat);
+
+                graphics.DrawImage(bitmapLogo, RectLogo);
 
 
                 graphics.Dispose();
@@ -573,7 +593,6 @@ namespace PriceTicker
 
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
-            
             CraftPoster("CRONOS");
         }
     }

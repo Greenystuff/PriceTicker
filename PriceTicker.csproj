@@ -25,6 +25,8 @@
     <None Remove="Img\ComposantsPC\Ventirad.png" />
     <None Remove="Img\ComposantsPC\Watercooling.png" />
     <None Remove="Img\Logo PriceTicker.png" />
+    <None Remove="Img\LogoCybertek.bmp" />
+    <None Remove="Img\LogoCybertek.png" />
     <None Remove="Img\Patron_etiquette_murale.bmp" />
     <None Remove="Img\Patron_etiquette_rail.bmp" />
     <None Remove="Img\Patron_feuille_finale.bmp" />
@@ -74,6 +76,9 @@
     <Content Include="Img\Logo PriceTicker.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Img\LogoCybertek.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Img\Patron_etiquette_rail.bmp">
