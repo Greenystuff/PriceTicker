@@ -426,6 +426,11 @@ namespace PriceTicker
             LibelleFormat.LineAlignment = StringAlignment.Near;
             System.Drawing.Rectangle rectLibelle = new(0, 94, bitmap.Width, 100);
 
+            StringFormat CategorieFormat = new();
+            CategorieFormat.Alignment = StringAlignment.Far;
+            CategorieFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorie = new(-110, 225, bitmap.Width/2, 40);
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection(); 
@@ -433,21 +438,21 @@ namespace PriceTicker
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\Mass_Effect.ttf");
 
                 Font IntroFont = new(privateFonts.Families[0], 25, GraphicsUnit.Point);
-                Font LibelleFont = new(privateFonts.Families[1], 47, GraphicsUnit.Point);
+                Font NameFont = new(privateFonts.Families[1], 47, GraphicsUnit.Point);
+                Font CategorieFont = new(privateFonts.Families[0], 14, System.Drawing.FontStyle.Regular);
 
-                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-
-                
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.CompositingMode = CompositingMode.SourceOver;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 
                 graphics.DrawString("PC monté", IntroFont, System.Drawing.Brushes.Black, rectIntro, IntroFormat);
-                graphics.DrawString(Libelle, LibelleFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString(Libelle, NameFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString("Boîtier", CategorieFont, System.Drawing.Brushes.Gray, rectCategorie, CategorieFormat);
 
-                
+
 
                 graphics.Dispose();
             }
