@@ -426,10 +426,45 @@ namespace PriceTicker
             LibelleFormat.LineAlignment = StringAlignment.Near;
             System.Drawing.Rectangle rectLibelle = new(0, 94, bitmap.Width, 100);
 
-            StringFormat CategorieFormat = new();
-            CategorieFormat.Alignment = StringAlignment.Far;
-            CategorieFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorie = new(-110, 225, bitmap.Width/2, 40);
+            StringFormat CategorieBoitierFormat = new();
+            CategorieBoitierFormat.Alignment = StringAlignment.Far;
+            CategorieBoitierFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieBoitier = new(-110, 225, bitmap.Width/2, 40);
+
+            StringFormat CategorieCMFormat = new();
+            CategorieCMFormat.Alignment = StringAlignment.Far;
+            CategorieCMFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieCM = new(-110, 295, bitmap.Width / 2, 40);
+
+            StringFormat CategorieProcFormat = new();
+            CategorieProcFormat.Alignment = StringAlignment.Far;
+            CategorieProcFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieProc = new(-110, 365, bitmap.Width / 2, 40);
+
+            StringFormat CategorieRamFormat = new();
+            CategorieRamFormat.Alignment = StringAlignment.Far;
+            CategorieRamFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieRam = new(-110, 435, bitmap.Width / 2, 40);
+
+            StringFormat CategorieCGFormat = new();
+            CategorieCGFormat.Alignment = StringAlignment.Far;
+            CategorieCGFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieCG = new(-110, 505, bitmap.Width / 2, 40);
+
+            StringFormat CategorieStockageFormat = new();
+            CategorieStockageFormat.Alignment = StringAlignment.Far;
+            CategorieStockageFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieStockage = new(-110, 575, bitmap.Width / 2, 40);
+
+            StringFormat CategorieAlimFormat = new();
+            CategorieAlimFormat.Alignment = StringAlignment.Far;
+            CategorieAlimFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieAlim = new(-110, 645, bitmap.Width / 2, 40);
+
+            StringFormat CategorieOSFormat = new();
+            CategorieOSFormat.Alignment = StringAlignment.Far;
+            CategorieOSFormat.LineAlignment = StringAlignment.Center;
+            System.Drawing.Rectangle rectCategorieOS = new(-110, 715, bitmap.Width / 2, 40);
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
@@ -446,11 +481,18 @@ namespace PriceTicker
                 graphics.CompositingMode = CompositingMode.SourceOver;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                 
                 graphics.DrawString("PC monté", IntroFont, System.Drawing.Brushes.Black, rectIntro, IntroFormat);
                 graphics.DrawString(Libelle, NameFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
-                graphics.DrawString("Boîtier", CategorieFont, System.Drawing.Brushes.Gray, rectCategorie, CategorieFormat);
+                graphics.DrawString("Boîtier", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
+                graphics.DrawString("Carte mère", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCM, CategorieCMFormat);
+                graphics.DrawString("Processeur", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieProc, CategorieProcFormat);
+                graphics.DrawString("Mémoire vive", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieRam, CategorieRamFormat);
+                graphics.DrawString("Carte graphique", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCG, CategorieCGFormat);
+                graphics.DrawString("Stockage", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
+                graphics.DrawString("Alimentation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
+                graphics.DrawString("Système d'exploitation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieOS, CategorieOSFormat);
 
 
 
