@@ -331,7 +331,7 @@ namespace PriceTicker
             StringFormat LibelleFormat = new();
             LibelleFormat.Alignment = StringAlignment.Center;
             LibelleFormat.LineAlignment = StringAlignment.Near;
-            Rectangle rectLibelle = new(0, 5, bitmap.Width, 30);
+            Rectangle rectLibelle = new(0, 5, bitmap.Width, 35);
 
             StringFormat PrixFormat = new();
             PrixFormat.Alignment = StringAlignment.Center;
@@ -356,6 +356,13 @@ namespace PriceTicker
                 using Font PrixFont = new("Arial", 24);
                 using Font IdFont = new("Arial", 12);
                 using Font GarantieFont = new("Arial", 10);
+
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
+                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 
                 graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
                 graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
@@ -427,6 +434,13 @@ namespace PriceTicker
                 using Font PrixFont = new("Arial", 20);
                 using Font IdFont = new("Arial", 12);
                 using Font GarantieFont = new("Arial", 10);
+
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
+                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 
                 graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
                 graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
@@ -993,18 +1007,21 @@ namespace PriceTicker
         private void Params_Click(object sender, RoutedEventArgs e)
         {
             ParamsWindows paramsWindows = new ParamsWindows();
+            paramsWindows.Owner = this;
             paramsWindows.Show();
         }
 
         private void Logs_Click(object sender, RoutedEventArgs e)
         {
             LogsWindow logsWindow = new LogsWindow();
+            logsWindow.Owner = this;
             logsWindow.Show();
         }
 
         private void nouvelleAffiche(object sender, RoutedEventArgs e)
         {
             AfficheCreator creator = new AfficheCreator();
+            creator.Owner = this;
             creator.Show();
         }
     }

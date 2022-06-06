@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,9 +30,7 @@ using System.Xml;
 
 namespace PriceTicker
 {
-    /// <summary>
-    /// Logique d'interaction pour AfficheCreator.xaml
-    /// </summary>
+   
     public partial class AfficheCreator : Window
     {
 
@@ -37,12 +39,8 @@ namespace PriceTicker
         public AfficheCreator()
         {
             InitializeComponent();
-            
+            ScrapWebsite();
         }
-
-        
-
-
 
         public static String code(string Url)
         {
@@ -58,7 +56,7 @@ namespace PriceTicker
             return result;
         }
 
-        private void FindHTMLCode(object sender, RoutedEventArgs e)
+        private void ScrapWebsite()
         {
             ProgressBar.Visibility = Visibility.Visible;
             ProgressTextBlock.Visibility = Visibility.Visible;
@@ -342,7 +340,6 @@ namespace PriceTicker
                     name = product.getName(),
                     prix = product.getPrix() + " €",
                     boitier = product.getBoitier(),
-                    imgCarteMere = "/PriceTicker;component/Img/ComposantsPC/Carte_mere.png",
                     carteMere = product.getCarteMere(),
                     processeur = product.getProcesseur(),
                     carteGraphique = product.getCarteGraphique(),
@@ -411,5 +408,77 @@ namespace PriceTicker
 
             
         }
+
+        private void CraftPoster(string Libelle)
+        {
+            Debug.WriteLine("Création de l'affiche...");
+            string PatronAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+            string AffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp";
+            Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(PatronAffichePath);
+
+            StringFormat IntroFormat = new();
+            IntroFormat.Alignment = StringAlignment.Center;
+            IntroFormat.LineAlignment = StringAlignment.Near;
+            System.Drawing.Rectangle rectIntro = new(0, 55, bitmap.Width, 40);
+
+            StringFormat LibelleFormat = new();
+            LibelleFormat.Alignment = StringAlignment.Center;
+            LibelleFormat.LineAlignment = StringAlignment.Near;
+            System.Drawing.Rectangle rectLibelle = new(0, 94, bitmap.Width, 100);
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                PrivateFontCollection privateFonts = new PrivateFontCollection(); 
+                privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\CenturyGothic.ttf");
+                privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\Mass_Effect.ttf");
+
+                Font IntroFont = new(privateFonts.Families[0], 25, GraphicsUnit.Point);
+                Font LibelleFont = new(privateFonts.Families[1], 47, GraphicsUnit.Point);
+
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
+                graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+
+                
+                
+                graphics.DrawString("PC monté", IntroFont, System.Drawing.Brushes.Black, rectIntro, IntroFormat);
+                graphics.DrawString(Libelle, LibelleFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
+
+                
+
+                graphics.Dispose();
+            }
+
+                using (MemoryStream memory = new())
+                {
+                    Bitmap bm = new(bitmap);
+                    bitmap.Dispose();
+                    using (FileStream fs = new(AffichePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    {
+                        bm.Save(memory, ImageFormat.Bmp);
+                        byte[] bytes = memory.ToArray();
+                        fs.Write(bytes, 0, bytes.Length);
+                        fs.Close();
+                        fs.Dispose();
+
+                    }
+                    bm.Dispose();
+                    memory.Close();
+                    memory.Dispose();
+                    bitmap.Dispose();
+                    Debug.WriteLine("Affiche crée avec succès !");
+                }
+                
+        }
+
+        private void ValiderAffiche(object sender, RoutedEventArgs e)
+        {
+            CraftPoster("CRONOS");
+        }
     }
-}
+
+        
+    }

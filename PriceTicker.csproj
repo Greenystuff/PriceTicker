@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\CenturyGothic.ttf" />
     <None Remove="Img\ComposantsPC\Alimentation.png" />
     <None Remove="Img\ComposantsPC\Boitier.png" />
     <None Remove="Img\ComposantsPC\Carte_Graphique.png" />
@@ -30,6 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Fonts\Mass_Effect.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fonts\CenturyGothic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Img\ComposantsPC\Alimentation.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
