@@ -13,9 +13,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Cache;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 
@@ -348,6 +350,21 @@ namespace PriceTicker
 
         private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
+            CraftPoster(productList[0].getName(), productList[0].getBoitier(), productList[0].getCarteMere(), productList[0].getProcesseur(), productList[0].getRam(), productList[0].getCarteGraphique(), productList[0].getDisqueSsd(), productList[0].getAlimentation(), productList[0].getSystemeExploitation());
+
+            Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = AfficheUri;
+            _image.EndInit();
+            imgAffiche.Source = _image;
+
+
             ProgressBar.Value = 0;
             ProgressBar.Visibility = Visibility.Hidden;
             ProgressTextBlock.Text = "";
@@ -400,7 +417,7 @@ namespace PriceTicker
             
         }
 
-        private void CraftPoster(string Libelle)
+        private void CraftPoster(string Libelle, string Boitier, string carteMere, string Processeur, string RAM, string CG, string Stockage, string Alim, string OS)
         {
             Debug.WriteLine("Création de l'affiche...");
             string PatronAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
@@ -547,14 +564,14 @@ namespace PriceTicker
                 graphics.DrawString("Alimentation", CategorieFont, Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
                 graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
 
-                graphics.DrawString("Lian-Li ta mère !!", CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
-                graphics.DrawString("MSI B560 ta mère !!", CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
-                graphics.DrawString("i7-7700K de ta mère !!", CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
-                graphics.DrawString("2x128 Go ta mère !!", CaracFont, Brushes.Black, rectCaracRam, CaracRamFormat);
-                graphics.DrawString("3090Ti de ta mère !!", CaracFont, Brushes.Black, rectCaracCG, CaracCGFormat);
-                graphics.DrawString("SSD de ta mère !!", CaracFont, Brushes.Black, rectCaracStockage, CaracStockageFormat);
-                graphics.DrawString("M-RED ta mère !!", CaracFont, Brushes.Black, rectCaracAlim, CaracAlimFormat);
-                graphics.DrawString("Windows 10 ta mère !!", CaracFont, Brushes.Black, rectCaracOS, CaracOSFormat);
+                graphics.DrawString(Boitier, CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
+                graphics.DrawString(carteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
+                graphics.DrawString(Processeur, CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
+                graphics.DrawString(RAM, CaracFont, Brushes.Black, rectCaracRam, CaracRamFormat);
+                graphics.DrawString(CG, CaracFont, Brushes.Black, rectCaracCG, CaracCGFormat);
+                graphics.DrawString(Stockage, CaracFont, Brushes.Black, rectCaracStockage, CaracStockageFormat);
+                graphics.DrawString(Alim, CaracFont, Brushes.Black, rectCaracAlim, CaracAlimFormat);
+                graphics.DrawString(OS, CaracFont, Brushes.Black, rectCaracOS, CaracOSFormat);
 
                 graphics.DrawString("2699€99", PrixBarreFont, Brushes.Gray, rectPrixBarre, PrixBarreFormat);
                 graphics.DrawString("2499€99", PrixFont, Brushes.Red, rectPrix, PrixFormat);
@@ -588,7 +605,7 @@ namespace PriceTicker
 
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
-            CraftPoster("CRONOS");
+            
         }
     }
 
