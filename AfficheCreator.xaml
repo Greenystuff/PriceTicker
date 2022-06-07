@@ -101,7 +101,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                     <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
-                                    <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                    <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
