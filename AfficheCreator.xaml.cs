@@ -528,6 +528,15 @@ namespace PriceTicker
 
             Rectangle RectLogo = new(bitmap.Width / 2 - (bitmapLogo.Width*9/10) / 2, 1020, bitmapLogo.Width*9/10, bitmapLogo.Height*9/10);
 
+            if(OS == "")
+            {
+                OS = "149 € l'installation";
+            }
+            if(Boitier.Contains("Boîtier PC"))
+            {
+
+            }
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection(); 

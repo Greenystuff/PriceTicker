@@ -105,6 +105,11 @@ namespace PriceTicker.Models
 
         public string getBoitier()
         {
+            if (boitier.Contains("Boîtier PC"))
+            {
+                string[] boitierSplit = boitier.Split("Boîtier PC ");
+                boitier = boitierSplit[1];
+            }
             return boitier;
         }
 
@@ -135,6 +140,12 @@ namespace PriceTicker.Models
 
         public string getProcesseur()
         {
+            if (processeur.Contains("Processeur"))
+            {
+                string[] processeurSplit = processeur.Split("Processeur ");
+                processeur = processeurSplit.Last();
+            }
+
             return processeur;
         }
 
@@ -165,6 +176,11 @@ namespace PriceTicker.Models
 
         public string getCarteMere()
         {
+            if (carteMere.Contains("Carte mère"))
+            {
+                string[] cmSplit = carteMere.Split("Carte mère ");
+                carteMere = cmSplit.Last();
+            }
             return carteMere;
         }
 
@@ -175,6 +191,11 @@ namespace PriceTicker.Models
 
         public string getCarteGraphique()
         {
+            if (carteGraphique.Contains("Carte graphique"))
+            {
+                string[] cgSplit = carteGraphique.Split("Carte graphique ");
+                carteGraphique = cgSplit.Last();
+            }
             return carteGraphique;
         }
 
@@ -195,6 +216,11 @@ namespace PriceTicker.Models
 
         public string getRam()
         {
+            if (ram.Contains("Mémoire PC"))
+            {
+                string[] ramSplit = ram.Split("Mémoire PC ");
+                ram = ramSplit.Last();
+            }
             return ram;
         }
 
@@ -235,6 +261,11 @@ namespace PriceTicker.Models
 
         public string getAlimentation()
         {
+            if (alimentation.Contains("Alimentation"))
+            {
+                string[] alimSplit = alimentation.Split("Alimentation ");
+                alimentation = alimSplit.Last();
+            }
             return alimentation;
         }
 
