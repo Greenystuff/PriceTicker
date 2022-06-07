@@ -412,120 +412,121 @@ namespace PriceTicker
             StringFormat IntroFormat = new();
             IntroFormat.Alignment = StringAlignment.Center;
             IntroFormat.LineAlignment = StringAlignment.Near;
-            System.Drawing.Rectangle rectIntro = new(0, 55, bitmap.Width, 40);
+            Rectangle rectIntro = new(0, 55, bitmap.Width, 40);
 
             StringFormat LibelleFormat = new();
             LibelleFormat.Alignment = StringAlignment.Center;
             LibelleFormat.LineAlignment = StringAlignment.Near;
-            System.Drawing.Rectangle rectLibelle = new(0, 94, bitmap.Width, 100);
+            Rectangle rectLibelle = new(0, 94, bitmap.Width, 100);
 
             StringFormat CategorieBoitierFormat = new();
             CategorieBoitierFormat.Alignment = StringAlignment.Far;
             CategorieBoitierFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieBoitier = new(-110, 225, bitmap.Width/2, 40);
+            Rectangle rectCategorieBoitier = new(-110, 225, bitmap.Width/2, 40);
 
             StringFormat CategorieCMFormat = new();
             CategorieCMFormat.Alignment = StringAlignment.Far;
             CategorieCMFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieCM = new(-110, 295, bitmap.Width / 2, 40);
+            Rectangle rectCategorieCM = new(-110, 295, bitmap.Width / 2, 40);
 
             StringFormat CategorieProcFormat = new();
             CategorieProcFormat.Alignment = StringAlignment.Far;
             CategorieProcFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieProc = new(-110, 365, bitmap.Width / 2, 40);
+            Rectangle rectCategorieProc = new(-110, 365, bitmap.Width / 2, 40);
 
             StringFormat CategorieRamFormat = new();
             CategorieRamFormat.Alignment = StringAlignment.Far;
             CategorieRamFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieRam = new(-110, 435, bitmap.Width / 2, 40);
+            Rectangle rectCategorieRam = new(-110, 435, bitmap.Width / 2, 40);
 
             StringFormat CategorieCGFormat = new();
             CategorieCGFormat.Alignment = StringAlignment.Far;
             CategorieCGFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieCG = new(-110, 505, bitmap.Width / 2, 40);
+            Rectangle rectCategorieCG = new(-110, 505, bitmap.Width / 2, 40);
 
             StringFormat CategorieStockageFormat = new();
             CategorieStockageFormat.Alignment = StringAlignment.Far;
             CategorieStockageFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieStockage = new(-110, 575, bitmap.Width / 2, 40);
+            Rectangle rectCategorieStockage = new(-110, 575, bitmap.Width / 2, 40);
 
             StringFormat CategorieAlimFormat = new();
             CategorieAlimFormat.Alignment = StringAlignment.Far;
             CategorieAlimFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieAlim = new(-110, 645, bitmap.Width / 2, 40);
+            Rectangle rectCategorieAlim = new(-110, 645, bitmap.Width / 2, 40);
 
             StringFormat CategorieOSFormat = new();
             CategorieOSFormat.Alignment = StringAlignment.Far;
             CategorieOSFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCategorieOS = new(-110, 715, bitmap.Width / 2, 40);
+            Rectangle rectCategorieOS = new(-110, 715, bitmap.Width / 2, 40);
 
             StringFormat CaracBoitierFormat = new();
             CaracBoitierFormat.Alignment = StringAlignment.Near;
             CaracBoitierFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracBoitier = new(320, 225, bitmap.Width / 2, 40);
+            Rectangle rectCaracBoitier = new(320, 225, bitmap.Width / 2, 40);
 
             StringFormat CaracCMFormat = new();
             CaracCMFormat.Alignment = StringAlignment.Near;
             CaracCMFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracCM = new(320, 295, bitmap.Width / 2, 40);
+            Rectangle rectCaracCM = new(320, 295, bitmap.Width / 2, 40);
 
             StringFormat CaracProcFormat = new();
             CaracProcFormat.Alignment = StringAlignment.Near;
             CaracProcFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracProc = new(320, 365, bitmap.Width / 2, 40);
+            Rectangle rectCaracProc = new(320, 365, bitmap.Width / 2, 40);
 
             StringFormat CaracRamFormat = new();
             CaracRamFormat.Alignment = StringAlignment.Near;
             CaracRamFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracRam = new(320, 435, bitmap.Width / 2, 40);
+            Rectangle rectCaracRam = new(320, 435, bitmap.Width / 2, 40);
 
             StringFormat CaracCGFormat = new();
             CaracCGFormat.Alignment = StringAlignment.Near;
             CaracCGFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracCG = new(320, 505, bitmap.Width / 2, 40);
+            Rectangle rectCaracCG = new(320, 505, bitmap.Width / 2, 40);
 
             StringFormat CaracStockageFormat = new();
             CaracStockageFormat.Alignment = StringAlignment.Near;
             CaracStockageFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracStockage = new(320, 575, bitmap.Width / 2, 40);
+            Rectangle rectCaracStockage = new(320, 575, bitmap.Width / 2, 40);
 
             StringFormat CaracAlimFormat = new();
             CaracAlimFormat.Alignment = StringAlignment.Near;
             CaracAlimFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracAlim = new(320, 645, bitmap.Width / 2, 40);
+            Rectangle rectCaracAlim = new(320, 645, bitmap.Width / 2, 40);
 
             StringFormat CaracOSFormat = new();
             CaracOSFormat.Alignment = StringAlignment.Near;
             CaracOSFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectCaracOS = new(320, 715, bitmap.Width / 2, 40);
+            Rectangle rectCaracOS = new(320, 715, bitmap.Width / 2, 40);
 
             StringFormat PrixBarreFormat = new();
             PrixBarreFormat.Alignment = StringAlignment.Center;
             PrixBarreFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectPrixBarre = new(0, 785, bitmap.Width, 60);
+            Rectangle rectPrixBarre = new(0, 785, bitmap.Width, 60);
 
             StringFormat PrixFormat = new();
             PrixFormat.Alignment = StringAlignment.Center;
             PrixFormat.LineAlignment = StringAlignment.Center;
-            System.Drawing.Rectangle rectPrix = new(0, 870, bitmap.Width, 100);
+            Rectangle rectPrix = new(0, 870, bitmap.Width, 100);
 
-            System.Drawing.Rectangle RectLogo = new(bitmap.Width / 2 - (bitmapLogo.Width*9/10) / 2, 1020, bitmapLogo.Width*9/10, bitmapLogo.Height*9/10);
+            Rectangle RectLogo = new(bitmap.Width / 2 - (bitmapLogo.Width*9/10) / 2, 1020, bitmapLogo.Width*9/10, bitmapLogo.Height*9/10);
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection(); 
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\CenturyGothic.ttf");
                 privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\Mass_Effect.ttf");
+                privateFonts.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Fonts\\Boombox.ttf");
 
                 Style test = new();
                 test.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.UltraBold));
 
-                Font IntroFont = new(privateFonts.Families[0], 25);
-                Font NameFont = new(privateFonts.Families[1], 47);
-                Font CategorieFont = new(privateFonts.Families[0], 14, System.Drawing.FontStyle.Regular);
-                Font CaracFont = new(privateFonts.Families[0], 20, System.Drawing.FontStyle.Bold);
-                Font PrixBarreFont = new(privateFonts.Families[0], 30, System.Drawing.FontStyle.Strikeout);
-                Font PrixFont = new(privateFonts.Families[0], 65, System.Drawing.FontStyle.Bold);
+                Font IntroFont = new(privateFonts.Families[1], 25);
+                Font NameFont = new(privateFonts.Families[0], 47);
+                Font CategorieFont = new(privateFonts.Families[1], 14, System.Drawing.FontStyle.Regular);
+                Font CaracFont = new(privateFonts.Families[1], 20, System.Drawing.FontStyle.Bold);
+                Font PrixBarreFont = new(privateFonts.Families[1], 30, System.Drawing.FontStyle.Strikeout);
+                Font PrixFont = new(privateFonts.Families[1], 65, System.Drawing.FontStyle.Bold);
 
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -536,6 +537,7 @@ namespace PriceTicker
                 
                 graphics.DrawString("PC monté", IntroFont, Brushes.Black, rectIntro, IntroFormat);
                 graphics.DrawString(Libelle, NameFont, Brushes.Black, rectLibelle, LibelleFormat);
+
                 graphics.DrawString("Boîtier", CategorieFont, Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
                 graphics.DrawString("Carte mère", CategorieFont, Brushes.Gray, rectCategorieCM, CategorieCMFormat);
                 graphics.DrawString("Processeur", CategorieFont, Brushes.Gray, rectCategorieProc, CategorieProcFormat);
