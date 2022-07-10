@@ -408,7 +408,16 @@ namespace PriceTicker
             return PcGamer;
         }
 
-        public void UpdateByID()
+        public void UpdatePcGamerByID(int idConfig, string type, string value)
+        {
+            string insertQuery = "UPDATE PcGamer SET '" + type + "' = '" + value + "' WHERE IdPcGamer = " + idConfig + ";";
+            CreateDbFile();
+            CreateDbConnection();
+            ExecuteQuery(insertQuery);
+            CloseDbConnection();
+        }
+
+        public void UpdateCompoosantByID(int idConfig, string type, string value)
         {
 
         }

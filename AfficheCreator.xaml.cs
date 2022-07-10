@@ -411,9 +411,16 @@ namespace PriceTicker
                         //Une caractéristique a changé, il faudra archiver la config.
                         if(PcGamerSaved.getName() != PcWeb.getName())
                         {
-
+                            databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Name", PcWeb.getName());
                         }
-
+                        if (PcGamerSaved.getPrix() != PcWeb.getPrix())
+                        {
+                            databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Prix", PcWeb.getPrix().ToString());
+                        }
+                        if (PcGamerSaved.getPrixBarre() != PcWeb.getPrixBarre())
+                        {
+                            databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "PrixBarre", PcWeb.getPrixBarre().ToString());
+                        }
 
                     }
                 }
