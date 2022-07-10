@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PriceTicker", "PriceTicker.csproj", "{72B934DA-02AA-414C-862A-12E9704C9C88}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PriceTickerInstaller", "..\PriceTickerInstaller\PriceTickerInstaller.vdproj", "{D63397F3-CC43-405E-839F-F25EA3C54725}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{72B934DA-02AA-414C-862A-12E9704C9C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B934DA-02AA-414C-862A-12E9704C9C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B934DA-02AA-414C-862A-12E9704C9C88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63397F3-CC43-405E-839F-F25EA3C54725}.Debug|Any CPU.ActiveCfg = Debug
+		{D63397F3-CC43-405E-839F-F25EA3C54725}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
