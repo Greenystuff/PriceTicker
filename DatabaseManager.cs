@@ -223,7 +223,7 @@ namespace PriceTicker
                 sqlCommand = "CREATE TABLE ArchivesComposantsPcGamer("
                              + "Id INTEGER PRIMARY KEY AUTOINCREMENT,"
                              + "IdPcGamer INTEGER,"
-                             + "IdComposant INTEGER,"
+                             + "IdComposant INTEGER"
                              + ");";
                 ExecuteQuery(sqlCommand);
             }*/
@@ -232,10 +232,8 @@ namespace PriceTicker
         public bool CheckIfExist(string tableName)
         {
             
-            //CreateDbConnection();
             command.CommandText = "SELECT name FROM sqlite_master WHERE name='" + tableName + "'";
             object result = command.ExecuteScalar();
-            //CloseDbConnection();
 
             return result != null && result.ToString() == tableName;
         }
@@ -297,6 +295,117 @@ namespace PriceTicker
 
             CloseDbConnection();
             return IdPcGamer;
+        }
+
+        public Models.PcGamer SelectPcGamerByID(int IdConfig)
+        {
+            Models.PcGamer PcGamer = new();
+            PcGamer.setIdConfig(IdConfig);
+            string selectPcGamer = "SELECT Name,Prix,PrixBarre,WebLink FROM PcGamer WHERE IdPcGamer=" + IdConfig;
+            CreateDbConnection();
+            SQLiteDataReader readerPcGamer = ExecuteQueryWithReturn(selectPcGamer);
+
+            while (readerPcGamer.Read())
+            {
+                PcGamer.setName(readerPcGamer["Name"].ToString());
+                PcGamer.setPrix(decimal.Parse(readerPcGamer["Prix"].ToString()));
+                PcGamer.setPrixBarre(decimal.Parse(readerPcGamer["PrixBarre"].ToString()));
+                PcGamer.setWebLink(readerPcGamer["WebLink"].ToString());
+            }
+            readerPcGamer.Close();
+            CloseDbConnection();
+
+
+
+            string selectIdComposant = "SELECT IdComposant FROM ComposantsPcGamer WHERE IdPcGamer=" + IdConfig;
+            CreateDbConnection();
+            SQLiteDataReader reader = ExecuteQueryWithReturn(selectIdComposant);
+            List<int> idComposants = new();
+            
+            while (reader.Read())
+            {
+                idComposants.Add(int.Parse(reader["IdComposant"].ToString()));
+            }
+            reader.Close();
+            CloseDbConnection();
+            
+            
+            for (int i = 0; i < idComposants.Count; i++)
+            {                
+                string selectComposants = "SELECT TypeComposant,NomComposant FROM Composants WHERE IdComposant=" + idComposants[i];
+                CreateDbConnection();
+                SQLiteDataReader ComposantReader = ExecuteQueryWithReturn(selectComposants);
+                while (ComposantReader.Read())
+                {
+                    if(ComposantReader["TypeComposant"].ToString() == "Boîtier")
+                    {
+                        PcGamer.setBoitier(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Accessoire de boîtier")
+                    {
+                        PcGamer.setAccessoireBoitier(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Ventilateurs")
+                    {
+                        PcGamer.setVentilateurBoitier(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Processeur")
+                    {
+                        PcGamer.setProcesseur(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Ventirad")
+                    {
+                        PcGamer.setVentirad(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Watercooling")
+                    {
+                        PcGamer.setWaterCooling(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Carte mère")
+                    {
+                        PcGamer.setCarteMere(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Carte Graphique")
+                    {
+                        PcGamer.setCarteGraphique(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Accessoire de Carte Graphique")
+                    {
+                        PcGamer.setAccessoireCarteGraphique(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Mémoire vive")
+                    {
+                        PcGamer.setRam(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "SSD")
+                    {
+                        PcGamer.setDisqueSsd(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "HDD")
+                    {
+                        PcGamer.setDisqueSupplementaire(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Carte réseau")
+                    {
+                        PcGamer.setCarteReseau(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Alimentation")
+                    {
+                        PcGamer.setAlimentation(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Accessoire alimentation")
+                    {
+                        PcGamer.setAccessoireAlimentation(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Système exploitation")
+                    {
+                        PcGamer.setSystemeExploitation(ComposantReader["NomComposant"].ToString());
+                    }
+                }
+                reader.Close();
+                CloseDbConnection();
+            }
+            return PcGamer;
         }
 
         public void DeleteByID(int rowID)

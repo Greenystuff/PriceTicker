@@ -126,7 +126,7 @@ namespace PriceTicker
                     productName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(productName.ToLower());
                     //Debug.WriteLine("Nom du PC : " + productName);
 
-                    Product.setname(productName);
+                    Product.setName(productName);
                 }
                 //Debug.WriteLine("Lien Internet : " + productLink);
                 Product.setWebLink(@"https://www.cybertek.fr" + productLink);
@@ -391,7 +391,19 @@ namespace PriceTicker
                 }
 
                 // Vérifie si un composant a changé
+                for (int i = 0; i < IdsPCWeb.Count; i++)
+                {
+                   
+                    if (IdsPCSaved.Contains(IdsPCWeb[i]))
+                    {
+                        Models.PcGamer PcGamerSaved = new();
+                        PcGamerSaved = databaseManager.SelectPcGamerByID(IdsPCWeb[i]);
 
+
+
+                    }
+                }
+                
                 
             }
 

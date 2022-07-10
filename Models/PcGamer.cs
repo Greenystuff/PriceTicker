@@ -69,7 +69,7 @@ namespace PriceTicker.Models
             return name;
         }
 
-        public void setname(string Name)
+        public void setName(string Name)
         {
             this.name = Name;
         }
