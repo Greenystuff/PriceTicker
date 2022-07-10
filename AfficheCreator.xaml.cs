@@ -1,7 +1,10 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.VisualBasic;
+using PriceTicker.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -28,10 +31,15 @@ namespace PriceTicker
     {
 
         List<Models.PcGamer> productList = new List<Models.PcGamer>();
+        DatabaseManager databaseManager = new DatabaseManager();
 
         public AfficheCreator()
         {
             InitializeComponent();
+            databaseManager.CreateDbFile();
+            databaseManager.CreateDbConnection();
+            databaseManager.CreateTables();
+            databaseManager.CloseDbConnection();
             ScrapWebsite();
         }
 
@@ -51,14 +59,34 @@ namespace PriceTicker
 
         private void ScrapWebsite()
         {
-            ProgressBar.Visibility = Visibility.Visible;
-            ProgressTextBlock.Visibility = Visibility.Visible;
-            BackgroundWorker worker = new();
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += worker_DoWork;
-            worker.ProgressChanged += worker_ProgressChanged;
-            worker.RunWorkerAsync();
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
+            {
+                Debug.WriteLine("Dossier JajaCD non trouvé");
+                MessageBox.Show("Veuillez Installer JajaCD ! (Ou alors le développer a enfin décidé de sécuriser son système et d'arrêter avec les XML...)");
+                this.Close();
+                return;
+            }else
+            {
+                if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml"))
+                {
+                    Debug.WriteLine("XML non trouvés");
+                    MessageBox.Show("Veuillez lancer JajaCD pour mettre à jour les informations produit");
+                    this.Close();
+                    return;
+                }
+                else
+                {
+                    ProgressBar.Visibility = Visibility.Visible;
+                    ProgressTextBlock.Visibility = Visibility.Visible;
+                    BackgroundWorker worker = new();
+                    worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+                    worker.WorkerReportsProgress = true;
+                    worker.DoWork += worker_DoWork;
+                    worker.ProgressChanged += worker_ProgressChanged;
+                    worker.RunWorkerAsync();
+                }
+
+            }
 
         }
 
@@ -83,7 +111,14 @@ namespace PriceTicker
             {
                 var h2Nodes = listArticlesNodes[i].Descendants("h2");
                 var productLink = listArticlesNodes[i].SelectSingleNode("a").Attributes["href"].Value;
+
+                int configID = int.Parse(listArticlesNodes[i].Attributes["data-id"].Value);
+                //Debug.WriteLine("ID unique du PC : " + configID);
+
+
                 Models.PcGamer Product = new();
+
+                Product.setIdConfig(configID);
 
                 foreach (var h2node in h2Nodes)
                 {
@@ -122,7 +157,7 @@ namespace PriceTicker
                             IdJaja = ProduitsXml.ReadElementContentAsString();
                             Product.setIdJaja(IdJaja);
                         }
-                        
+
                     }
                 }
 
@@ -131,33 +166,32 @@ namespace PriceTicker
                 HtmlDocument ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
                 HtmlNodeCollection listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
                 HtmlNodeCollection prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
-                
-                if (prixBarreNodes[0].InnerHtml.Contains("prix_total_sans_remise"))
+
+                if (prixBarreNodes != null)
                 {
-                    HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
-                    string prix = prixNodes[0].InnerText.Replace("€", ",");
-                    Product.setPrix(Decimal.Parse(prix));
-                }
+                    if (prixBarreNodes.Last().InnerHtml.Contains("prix_total_sans_remise"))
+                    {
+                        HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
+                        string prix = prixNodes[0].InnerText.Replace("€", ",");
+                        Product.setPrix(Decimal.Parse(prix));
+                    }
 
-                if (prixBarreNodes[0].InnerHtml.Contains("prix-config-barre-sans-option"))
-                {
-                    HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
-                    string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
-                    Product.setPrixBarre(Decimal.Parse(prixBarreStr));
-                }
-
+                    if (prixBarreNodes.Last().InnerHtml.Contains("prix-config-barre-sans-option"))
+                    {
+                        HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
+                        string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
+                        Product.setPrixBarre(Decimal.Parse(prixBarreStr));
+                    }
                 
-
-
                 int caracNbr = listDescNodes.Count;
-                
 
                 for (int i2 = 0; i2 < caracNbr; i2++)
                 {
 
                     var listNodes = listDescNodes[i2].Descendants("li");
 
-                    foreach (var listNode in listNodes) {
+                    foreach (var listNode in listNodes)
+                    {
                         string categorie = "";
                         string caracteristiqueDesc = "";
                         string caracteristique = "";
@@ -166,7 +200,7 @@ namespace PriceTicker
                         {
                             categorie = HttpUtility.HtmlDecode(listNode.Descendants("strong").First().InnerText);
                             caracteristique = HttpUtility.HtmlDecode(listNode.InnerText).Replace(categorie, "");
-                            
+
 
                             if (categorie.StartsWith("Sans sys"))
                             {
@@ -184,7 +218,7 @@ namespace PriceTicker
                             {
                                 Product.setCarteGraphique(caracteristique);
                             }
-                            if(categorie.StartsWith("Processeur"))
+                            if (categorie.StartsWith("Processeur"))
                             {
                                 Product.setProcesseur(categorie + caracteristique);
                             }
@@ -196,16 +230,16 @@ namespace PriceTicker
 
                             //Debug.WriteLine("Catégorie non Link : " + categorie);
                             //Debug.WriteLine("Caractéristique non link : " + categorie + caracteristique);
-                        }else
+                        }
+                        else
                         {
                             categorie = listNode.FirstChild.Attributes["href"].Value.Replace("../../", "");
                             int index = categorie.IndexOf("/");
                             if (index > 0)
                             {
-                                
+
                                 categorie = categorie.Substring(0, index); // or index + 1 to keep slash
                             }
-                            
 
                             string[] tempArray = listNode.FirstChild.OuterHtml.Split("<strong>");
                             caracteristiqueDesc = tempArray[1];
@@ -250,7 +284,7 @@ namespace PriceTicker
                                     break;
 
                                 case "disque-ssd":
-                                    Product.setDisqueSsd(caracteristiqueDesc +  caracteristique);
+                                    Product.setDisqueSsd(caracteristiqueDesc + caracteristique);
                                     break;
 
                                 case "disque-dur-interne-3-5":
@@ -296,13 +330,12 @@ namespace PriceTicker
 
                             }
 
-
                             //Debug.WriteLine("Catégorie : " + categorie);
-                            
+
                             //Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
                         }
 
-                        
+
                     }
 
                 }
@@ -310,8 +343,12 @@ namespace PriceTicker
                 int nbrPc = i + 1;
                 string resultat = "PC N°" + nbrPc + "\r" + Product.getAllCaracteristiques();
                 Debug.WriteLine(resultat);
-                
+
                 productList.Add(Product);
+
+            }
+
+                Settings.Default.Save();
 
                 float valeur = 100*i/productNbr;
                 int roundValeur = (int)Math.Round(valeur);
@@ -319,6 +356,45 @@ namespace PriceTicker
                 worker.ReportProgress(roundValeur, String.Format("Chargement en cours... " + valeur + " %", i+2));
                 
             }
+
+            productList = Enumerable.Reverse(productList).ToList();
+
+            
+            // La base de données ne contient pas de données donc on INSERT toutes les configs.
+            if (!databaseManager.CheckIfTableContainsData("PcGamer"))
+            {
+                insertPcAndComposantsInDb(productList);
+            }
+            else
+            {
+                // Cas où la base de données contient déjà des données.
+                List<int> IdsPCSaved = new();
+                List<int> IdsPCWeb = new();
+                IdsPCSaved = databaseManager.SelectAllIdPcGamer();
+
+                for (int i = 0; i < productList.Count; i++)
+                {
+                    IdsPCWeb.Add(productList[i].getIdConfig());
+                }
+
+                // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
+                CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
+
+                // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
+                for (int i = 0; i < IdsPCSaved.Count; i++) 
+                {
+                    if (!IdsPCWeb.Contains(IdsPCSaved[i]))
+                    {
+                        databaseManager.DeleteByID(IdsPCSaved[i]);
+                        //Faire le code pour achiver la config parce qu'elle a disparut d'internet.
+                    }
+                }
+
+                // Vérifie si un composant a changé
+
+                
+            }
+
 
             Debug.WriteLine("Nombre d'éléments : " + productList.Count);
             Dispatcher.Invoke(new Action(() =>
@@ -350,7 +426,7 @@ namespace PriceTicker
 
         private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-            CraftPoster(productList[0].getName(), productList[0].getBoitier(), productList[0].getCarteMere(), productList[0].getProcesseur(), productList[0].getRam(), productList[0].getCarteGraphique(), productList[0].getDisqueSsd(), productList[0].getAlimentation(), productList[0].getSystemeExploitation());
+            CraftPoster(productList[0].getName(), productList[0].getBoitier(), productList[0].getCarteMere(), productList[0].getProcesseur(), productList[0].getRam(), productList[0].getCarteGraphique(), productList[0].getDisqueSsd(), productList[0].getAlimentation(), productList[0].getSystemeExploitation(), productList[0].getPrixBarre().ToString(), productList[0].getPrix().ToString());
 
             Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
 
@@ -371,6 +447,391 @@ namespace PriceTicker
             ProgressTextBlock.Visibility = Visibility.Hidden;
         }
 
+        public void insertPcAndComposantsInDb(List<Models.PcGamer> productsList)
+        {
+            for (int i = 0; i < productList.Count; i++)
+            {
+                databaseManager.InsertPCGamer(
+                    productList[i].getIdConfig(),
+                    productList[i].getName(),
+                    productList[i].getPrix().ToString(),
+                    productList[i].getPrixBarre().ToString(),
+                    productList[i].getWebLink(),
+                    DateTime.Now.Date);
+
+                // Insertion des Composants
+                if (productList[i].getBoitier() != "")
+                {
+                    databaseManager.InsertComposants("Boîtier", productList[i].getBoitier());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Boîtier", productList[i].getBoitier()),
+                            "Boîtier",
+                            productList[i].getBoitier()
+                        );
+                }
+
+                if (productList[i].getAccessoireBoitier() != "")
+                {
+                    databaseManager.InsertComposants("Accessoire de boîtier", productList[i].getAccessoireBoitier());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Accessoire de boîtier", productList[i].getAccessoireBoitier()),
+                            "Accessoire de boîtier",
+                            productList[i].getAccessoireBoitier()
+                        );
+
+                }
+                if (productList[i].getVentilateurBoitier() != "")
+                {
+                    databaseManager.InsertComposants("Ventilateurs", productList[i].getVentilateurBoitier());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Ventilateurs", productList[i].getVentilateurBoitier()),
+                            "Ventilateurs",
+                            productList[i].getVentilateurBoitier()
+                        );
+
+                }
+                if (productList[i].getProcesseur() != "")
+                {
+                    databaseManager.InsertComposants("Processeur", productList[i].getProcesseur());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Processeur", productList[i].getProcesseur()),
+                            "Processeur",
+                            productList[i].getProcesseur()
+                        );
+
+                }
+                if (productList[i].getVentirad() != "")
+                {
+                    databaseManager.InsertComposants("Ventirad", productList[i].getVentirad());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Ventirad", productList[i].getVentirad()),
+                            "Ventirad",
+                            productList[i].getVentirad()
+                        );
+
+                }
+                if (productList[i].getWaterCooling() != "")
+                {
+                    databaseManager.InsertComposants("Watercooling", productList[i].getWaterCooling());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Watercooling", productList[i].getWaterCooling()),
+                            "Watercooling",
+                            productList[i].getWaterCooling()
+                        );
+
+                }
+                if (productList[i].getCarteMere() != "")
+                {
+                    databaseManager.InsertComposants("Carte mère", productList[i].getCarteMere());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Carte mère", productList[i].getCarteMere()),
+                            "Carte mère",
+                            productList[i].getCarteMere()
+                        );
+
+                }
+                if (productList[i].getCarteGraphique() != "")
+                {
+                    databaseManager.InsertComposants("Carte Graphique", productList[i].getCarteGraphique());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Carte Graphique", productList[i].getCarteGraphique()),
+                            "Carte Graphique",
+                            productList[i].getCarteGraphique()
+                        );
+
+                }
+                if (productList[i].getAccessoireCarteGraphique() != "")
+                {
+                    databaseManager.InsertComposants("Accessoire de Carte Graphique", productList[i].getAccessoireCarteGraphique());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Accessoire de Carte Graphique", productList[i].getAccessoireCarteGraphique()),
+                            "Accessoire de Carte Graphique",
+                            productList[i].getAccessoireCarteGraphique()
+                        );
+
+                }
+                if (productList[i].getRam() != "")
+                {
+                    databaseManager.InsertComposants("Mémoire vive", productList[i].getRam());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Mémoire vive", productList[i].getRam()),
+                            "Mémoire vive",
+                            productList[i].getRam()
+                        );
+
+                }
+                if (productList[i].getDisqueSsd() != "")
+                {
+                    databaseManager.InsertComposants("SSD", productList[i].getDisqueSsd());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("SSD", productList[i].getDisqueSsd()),
+                            "SSD",
+                            productList[i].getDisqueSsd()
+                        );
+
+                }
+                if (productList[i].getDisqueSupplementaire() != "")
+                {
+                    databaseManager.InsertComposants("HDD", productList[i].getDisqueSupplementaire());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("HDD", productList[i].getDisqueSupplementaire()),
+                            "HDD",
+                            productList[i].getDisqueSupplementaire()
+                        );
+
+                }
+                if (productList[i].getCarteReseau() != "")
+                {
+                    databaseManager.InsertComposants("Carte réseau", productList[i].getCarteReseau());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Carte réseau", productList[i].getCarteReseau()),
+                            "Carte réseau",
+                            productList[i].getCarteReseau()
+                        );
+
+                }
+                if (productList[i].getAlimentation() != "")
+                {
+                    databaseManager.InsertComposants("Alimentation", productList[i].getAlimentation());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Alimentation", productList[i].getAlimentation()),
+                            "Alimentation",
+                            productList[i].getAlimentation()
+                        );
+
+                }
+                if (productList[i].getAccessoireAlimentation() != "")
+                {
+                    databaseManager.InsertComposants("Accessoire alimentation", productList[i].getAccessoireAlimentation());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Accessoire alimentation", productList[i].getAccessoireAlimentation()),
+                            "Accessoire alimentation",
+                            productList[i].getAccessoireAlimentation()
+                        );
+
+                }
+                if (productList[i].getSystemeExploitation() != "")
+                {
+                    databaseManager.InsertComposants("Système exploitation", productList[i].getSystemeExploitation());
+                    databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            databaseManager.GetLastIDPcGamerComposants("Système exploitation", productList[i].getSystemeExploitation()),
+                            "Système exploitation",
+                            productList[i].getSystemeExploitation()
+                        );
+
+                }
+
+            }
+        }
+
+        public void CompareWebwithDbAndInsertNews(List<Models.PcGamer> productsList, List<int> IdsPCSaved)
+        {
+            for (int i = 0; i < productList.Count; i++)
+            {
+                if (!IdsPCSaved.Contains(productList[i].getIdConfig()))
+                {
+                    databaseManager.InsertPCGamer(
+                            productList[i].getIdConfig(),
+                            productList[i].getName(),
+                            productList[i].getPrix().ToString(),
+                            productList[i].getPrixBarre().ToString(),
+                            productList[i].getWebLink(),
+                            DateTime.Now.Date);
+                    if (productList[i].getBoitier() != "")
+                    {
+                        databaseManager.InsertComposants("Boîtier", productList[i].getBoitier());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Boîtier", productList[i].getBoitier()),
+                                "Boîtier",
+                                productList[i].getBoitier()
+                            );
+                    }
+
+                    if (productList[i].getAccessoireBoitier() != "")
+                    {
+                        databaseManager.InsertComposants("Accessoire de boîtier", productList[i].getAccessoireBoitier());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Accessoire de boîtier", productList[i].getAccessoireBoitier()),
+                                "Accessoire de boîtier",
+                                productList[i].getAccessoireBoitier()
+                            );
+
+                    }
+                    if (productList[i].getVentilateurBoitier() != "")
+                    {
+                        databaseManager.InsertComposants("Ventilateurs", productList[i].getVentilateurBoitier());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Ventilateurs", productList[i].getVentilateurBoitier()),
+                                "Ventilateurs",
+                                productList[i].getVentilateurBoitier()
+                            );
+
+                    }
+                    if (productList[i].getProcesseur() != "")
+                    {
+                        databaseManager.InsertComposants("Processeur", productList[i].getProcesseur());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Processeur", productList[i].getProcesseur()),
+                                "Processeur",
+                                productList[i].getProcesseur()
+                            );
+
+                    }
+                    if (productList[i].getVentirad() != "")
+                    {
+                        databaseManager.InsertComposants("Ventirad", productList[i].getVentirad());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Ventirad", productList[i].getVentirad()),
+                                "Ventirad",
+                                productList[i].getVentirad()
+                            );
+
+                    }
+                    if (productList[i].getWaterCooling() != "")
+                    {
+                        databaseManager.InsertComposants("Watercooling", productList[i].getWaterCooling());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Watercooling", productList[i].getWaterCooling()),
+                                "Watercooling",
+                                productList[i].getWaterCooling()
+                            );
+
+                    }
+                    if (productList[i].getCarteMere() != "")
+                    {
+                        databaseManager.InsertComposants("Carte mère", productList[i].getCarteMere());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Carte mère", productList[i].getCarteMere()),
+                                "Carte mère",
+                                productList[i].getCarteMere()
+                            );
+
+                    }
+                    if (productList[i].getCarteGraphique() != "")
+                    {
+                        databaseManager.InsertComposants("Carte Graphique", productList[i].getCarteGraphique());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Carte Graphique", productList[i].getCarteGraphique()),
+                                "Carte Graphique",
+                                productList[i].getCarteGraphique()
+                            );
+
+                    }
+                    if (productList[i].getAccessoireCarteGraphique() != "")
+                    {
+                        databaseManager.InsertComposants("Accessoire de Carte Graphique", productList[i].getAccessoireCarteGraphique());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Accessoire de Carte Graphique", productList[i].getAccessoireCarteGraphique()),
+                                "Accessoire de Carte Graphique",
+                                productList[i].getAccessoireCarteGraphique()
+                            );
+
+                    }
+                    if (productList[i].getRam() != "")
+                    {
+                        databaseManager.InsertComposants("Mémoire vive", productList[i].getRam());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Mémoire vive", productList[i].getRam()),
+                                "Mémoire vive",
+                                productList[i].getRam()
+                            );
+
+                    }
+                    if (productList[i].getDisqueSsd() != "")
+                    {
+                        databaseManager.InsertComposants("SSD", productList[i].getDisqueSsd());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("SSD", productList[i].getDisqueSsd()),
+                                "SSD",
+                                productList[i].getDisqueSsd()
+                            );
+
+                    }
+                    if (productList[i].getDisqueSupplementaire() != "")
+                    {
+                        databaseManager.InsertComposants("HDD", productList[i].getDisqueSupplementaire());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("HDD", productList[i].getDisqueSupplementaire()),
+                                "HDD",
+                                productList[i].getDisqueSupplementaire()
+                            );
+
+                    }
+                    if (productList[i].getCarteReseau() != "")
+                    {
+                        databaseManager.InsertComposants("Carte réseau", productList[i].getCarteReseau());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Carte réseau", productList[i].getCarteReseau()),
+                                "Carte réseau",
+                                productList[i].getCarteReseau()
+                            );
+
+                    }
+                    if (productList[i].getAlimentation() != "")
+                    {
+                        databaseManager.InsertComposants("Alimentation", productList[i].getAlimentation());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Alimentation", productList[i].getAlimentation()),
+                                "Alimentation",
+                                productList[i].getAlimentation()
+                            );
+
+                    }
+                    if (productList[i].getAccessoireAlimentation() != "")
+                    {
+                        databaseManager.InsertComposants("Accessoire alimentation", productList[i].getAccessoireAlimentation());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Accessoire alimentation", productList[i].getAccessoireAlimentation()),
+                                "Accessoire alimentation",
+                                productList[i].getAccessoireAlimentation()
+                            );
+
+                    }
+                    if (productList[i].getSystemeExploitation() != "")
+                    {
+                        databaseManager.InsertComposants("Système exploitation", productList[i].getSystemeExploitation());
+                        databaseManager.InsertPcGamerComposants(productList[i].getIdConfig(),
+                                productList[i].getName(),
+                                databaseManager.GetLastIDPcGamerComposants("Système exploitation", productList[i].getSystemeExploitation()),
+                                "Système exploitation",
+                                productList[i].getSystemeExploitation()
+                            );
+
+                    }
+                }
+            }
+        }
         public static List<long> FindIdNumbers(string str)
         {
             var nums = new List<long>();
@@ -417,7 +878,7 @@ namespace PriceTicker
             
         }
 
-        private void CraftPoster(string Libelle, string Boitier, string carteMere, string Processeur, string RAM, string CG, string Stockage, string Alim, string OS)
+        private void CraftPoster(string Libelle, string Boitier, string CarteMere, string Processeur, string RAM, string CG, string Stockage, string Alim, string OS, string PrixBarre, string Prix)
         {
             Debug.WriteLine("Création de l'affiche...");
             string PatronAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
@@ -532,9 +993,9 @@ namespace PriceTicker
             {
                 OS = "149 € l'installation";
             }
-            if(Boitier.Contains("Boîtier PC"))
+            if (CG == "")
             {
-
+                CG = "Chipset Graphique";
             }
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
@@ -574,7 +1035,7 @@ namespace PriceTicker
                 graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
 
                 graphics.DrawString(Boitier, CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
-                graphics.DrawString(carteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
+                graphics.DrawString(CarteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
                 graphics.DrawString(Processeur, CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
                 graphics.DrawString(RAM, CaracFont, Brushes.Black, rectCaracRam, CaracRamFormat);
                 graphics.DrawString(CG, CaracFont, Brushes.Black, rectCaracCG, CaracCGFormat);
@@ -582,8 +1043,17 @@ namespace PriceTicker
                 graphics.DrawString(Alim, CaracFont, Brushes.Black, rectCaracAlim, CaracAlimFormat);
                 graphics.DrawString(OS, CaracFont, Brushes.Black, rectCaracOS, CaracOSFormat);
 
-                graphics.DrawString("2699€99", PrixBarreFont, Brushes.Gray, rectPrixBarre, PrixBarreFormat);
-                graphics.DrawString("2499€99", PrixFont, Brushes.Red, rectPrix, PrixFormat);
+                if(PrixBarre != "0")
+                {
+                    graphics.DrawString(PrixBarre + " €", PrixBarreFont, Brushes.Gray, rectPrixBarre, PrixBarreFormat);
+                }else
+                {
+                    PrixFormat.Alignment = StringAlignment.Center;
+                    PrixFormat.LineAlignment = StringAlignment.Center;
+                    rectPrix = new(0, 840, bitmap.Width, 100);
+                }
+                
+                graphics.DrawString(Prix + " €", PrixFont, Brushes.Red, rectPrix, PrixFormat);
 
                 graphics.DrawImage(bitmapLogo, RectLogo);
 
@@ -615,6 +1085,22 @@ namespace PriceTicker
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void LineClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataGrid dg = sender as DataGrid;
+            if (dg == null)
+                return;
+            if (dg.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.VisibleWhenSelected)
+            {
+                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
+
+            }
+            else
+            {
+                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
+            }
         }
     }
 

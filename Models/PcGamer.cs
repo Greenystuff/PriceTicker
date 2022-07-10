@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace PriceTicker.Models
 {
-    internal class PcGamer
+    //[Serializable()]
+    public class PcGamer
     {
+        private int idConfig = 0;
 
         private string name = "";
 
@@ -51,6 +53,15 @@ namespace PriceTicker.Models
 
         private string systemeExploitation = "";
 
+        public int getIdConfig()
+        { 
+            return idConfig; 
+        }
+
+        public void setIdConfig(int IdConfig)
+        {
+            this.idConfig = IdConfig;
+        }
 
 
         public string getName()
@@ -110,7 +121,7 @@ namespace PriceTicker.Models
                 string[] boitierSplit = boitier.Split("Boîtier PC ");
                 boitier = boitierSplit[1];
             }
-            return boitier;
+            return boitier.Trim();
         }
 
         public void setBoitier(string Boitier)
@@ -120,7 +131,7 @@ namespace PriceTicker.Models
 
         public string getAccessoireBoitier()
         {
-            return accessoireBoitier;
+            return accessoireBoitier.Trim();
         }
 
         public void setAccessoireBoitier(string AccessoireBoitier)
@@ -130,7 +141,7 @@ namespace PriceTicker.Models
 
         public string getVentilateurBoitier()
         {
-            return ventilateurBoitier;
+            return ventilateurBoitier.Trim();
         }
 
         public void setVentilateurBoitier(string VentilateurBoitier)
@@ -146,7 +157,7 @@ namespace PriceTicker.Models
                 processeur = processeurSplit.Last();
             }
 
-            return processeur;
+            return processeur.Trim();
         }
 
         public void setProcesseur(string Processeur)
@@ -156,7 +167,7 @@ namespace PriceTicker.Models
 
         public string getVentirad()
         {
-            return ventirad;
+            return ventirad.Trim();
         }
 
         public void setVentirad(string Ventirad)
@@ -166,7 +177,7 @@ namespace PriceTicker.Models
 
         public string getWaterCooling()
         {
-            return waterCooling;
+            return waterCooling.Trim();
         }
 
         public void setWaterCooling(string WaterCooling)
@@ -181,7 +192,7 @@ namespace PriceTicker.Models
                 string[] cmSplit = carteMere.Split("Carte mère ");
                 carteMere = cmSplit.Last();
             }
-            return carteMere;
+            return carteMere.Trim();
         }
 
         public void setCarteMere(string CarteMere)
@@ -196,7 +207,7 @@ namespace PriceTicker.Models
                 string[] cgSplit = carteGraphique.Split("Carte graphique ");
                 carteGraphique = cgSplit.Last();
             }
-            return carteGraphique;
+            return carteGraphique.Trim();
         }
 
         public void setCarteGraphique(string CarteGraphique)
@@ -206,7 +217,7 @@ namespace PriceTicker.Models
 
         public string getAccessoireCarteGraphique()
         {
-            return accessoireCarteGraphique;
+            return accessoireCarteGraphique.Trim();
         }
 
         public void setAccessoireCarteGraphique(string AccessoireCarteGraphique)
@@ -221,7 +232,7 @@ namespace PriceTicker.Models
                 string[] ramSplit = ram.Split("Mémoire PC ");
                 ram = ramSplit.Last();
             }
-            return ram;
+            return ram.Trim();
         }
 
         public void setRam(string Ram)
@@ -231,7 +242,7 @@ namespace PriceTicker.Models
 
         public string getDisqueSsd()
         {
-            return disqueSsd;
+            return disqueSsd.Trim();
         }
 
         public void setDisqueSsd(string DisqueSsd)
@@ -241,7 +252,7 @@ namespace PriceTicker.Models
 
         public string getDisqueSupplementaire()
         {
-            return disqueSupplementaire;
+            return disqueSupplementaire.Trim();
         }
 
         public void setDisqueSupplementaire(string DisqueSupplementaire)
@@ -251,7 +262,7 @@ namespace PriceTicker.Models
 
         public string getCarteReseau()
         {
-            return carteReseau;
+            return carteReseau.Trim();
         }
 
         public void setCarteReseau(string CarteReseau)
@@ -266,7 +277,7 @@ namespace PriceTicker.Models
                 string[] alimSplit = alimentation.Split("Alimentation ");
                 alimentation = alimSplit.Last();
             }
-            return alimentation;
+            return alimentation.Trim();
         }
 
         public void setAlimentation(string Alimentation)
@@ -276,7 +287,7 @@ namespace PriceTicker.Models
 
         public string getAccessoireAlimentation()
         {
-            return accessoireAlimentation;
+            return accessoireAlimentation.Trim();
         }
 
         public void setAccessoireAlimentation(string AccessoireAlimentation)
@@ -286,7 +297,7 @@ namespace PriceTicker.Models
 
         public string getSystemeExploitation()
         {
-            return systemeExploitation;
+            return systemeExploitation.Trim();
         }
 
         public void setSystemeExploitation(string SystemeExploitation)
@@ -294,9 +305,11 @@ namespace PriceTicker.Models
             this.systemeExploitation = SystemeExploitation;
         }
 
+        //Debug
         public string getAllCaracteristiques()
         {
             string allCaracteristiques =
+                "Id unique de la config : " + idConfig + "\r" +
                 "Nom du PC : " + name + "\r" +
                 "Prix : " + prix + "\r" +
                 "Prix Barré : " + prixBarre + "\r" +
