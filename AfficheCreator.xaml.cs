@@ -390,15 +390,29 @@ namespace PriceTicker
                     }
                 }
 
-                // Vérifie si un composant a changé
+                // Vérifie si un composant a changé.
                 for (int i = 0; i < IdsPCWeb.Count; i++)
                 {
                    
                     if (IdsPCSaved.Contains(IdsPCWeb[i]))
                     {
                         Models.PcGamer PcGamerSaved = new();
+                        Models.PcGamer PcWeb = new();
                         PcGamerSaved = databaseManager.SelectPcGamerByID(IdsPCWeb[i]);
+                        
+                        for(int j = 0; j < productList.Count; j++)
+                        {
+                            if (productList[j].getIdConfig() == IdsPCWeb[i])
+                            {
+                                PcWeb = productList[j];
+                            }
+                        }
 
+                        //Une caractéristique a changé, il faudra archiver la config.
+                        if(PcGamerSaved.getName() != PcWeb.getName())
+                        {
+
+                        }
 
 
                     }

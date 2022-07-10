@@ -303,30 +303,30 @@ namespace PriceTicker
             PcGamer.setIdConfig(IdConfig);
             string selectPcGamer = "SELECT Name,Prix,PrixBarre,WebLink FROM PcGamer WHERE IdPcGamer=" + IdConfig;
             CreateDbConnection();
-            SQLiteDataReader readerPcGamer = ExecuteQueryWithReturn(selectPcGamer);
+            SQLiteDataReader PcGamerReader = ExecuteQueryWithReturn(selectPcGamer);
 
-            while (readerPcGamer.Read())
+            while (PcGamerReader.Read())
             {
-                PcGamer.setName(readerPcGamer["Name"].ToString());
-                PcGamer.setPrix(decimal.Parse(readerPcGamer["Prix"].ToString()));
-                PcGamer.setPrixBarre(decimal.Parse(readerPcGamer["PrixBarre"].ToString()));
-                PcGamer.setWebLink(readerPcGamer["WebLink"].ToString());
+                PcGamer.setName(PcGamerReader["Name"].ToString());
+                PcGamer.setPrix(decimal.Parse(PcGamerReader["Prix"].ToString()));
+                PcGamer.setPrixBarre(decimal.Parse(PcGamerReader["PrixBarre"].ToString()));
+                PcGamer.setWebLink(PcGamerReader["WebLink"].ToString());
             }
-            readerPcGamer.Close();
+            PcGamerReader.Close();
             CloseDbConnection();
 
 
 
             string selectIdComposant = "SELECT IdComposant FROM ComposantsPcGamer WHERE IdPcGamer=" + IdConfig;
             CreateDbConnection();
-            SQLiteDataReader reader = ExecuteQueryWithReturn(selectIdComposant);
+            SQLiteDataReader ComposantPcGamerReader = ExecuteQueryWithReturn(selectIdComposant);
             List<int> idComposants = new();
             
-            while (reader.Read())
+            while (ComposantPcGamerReader.Read())
             {
-                idComposants.Add(int.Parse(reader["IdComposant"].ToString()));
+                idComposants.Add(int.Parse(ComposantPcGamerReader["IdComposant"].ToString()));
             }
-            reader.Close();
+            ComposantPcGamerReader.Close();
             CloseDbConnection();
             
             
@@ -402,10 +402,15 @@ namespace PriceTicker
                         PcGamer.setSystemeExploitation(ComposantReader["NomComposant"].ToString());
                     }
                 }
-                reader.Close();
+                ComposantReader.Close();
                 CloseDbConnection();
             }
             return PcGamer;
+        }
+
+        public void UpdateByID()
+        {
+
         }
 
         public void DeleteByID(int rowID)
