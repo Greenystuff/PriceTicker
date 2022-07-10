@@ -419,7 +419,26 @@ namespace PriceTicker
 
         public void UpdateCompoosantByID(int idConfig, string type, string value)
         {
+            string insertQuery = "UPDATE PcGamer SET '" + type + "' = '" + value + "' WHERE IdPcGamer = " + idConfig + ";";
+            CreateDbFile();
+            CreateDbConnection();
+            ExecuteQuery(insertQuery);
+            CloseDbConnection();
+        }
 
+        public void FindByName(string name)
+        {
+            string selectIdComposant = "SELECT IdComposant FROM Composants WHERE IdPcGamer=" + name;
+            CreateDbConnection();
+            SQLiteDataReader ComposantPcGamerReader = ExecuteQueryWithReturn(selectIdComposant);
+            List<int> idComposants = new();
+
+            while (ComposantPcGamerReader.Read())
+            {
+                idComposants.Add(int.Parse(ComposantPcGamerReader["IdComposant"].ToString()));
+            }
+            ComposantPcGamerReader.Close();
+            CloseDbConnection();
         }
 
         public void DeleteByID(int rowID)

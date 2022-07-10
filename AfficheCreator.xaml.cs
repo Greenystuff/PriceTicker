@@ -421,6 +421,10 @@ namespace PriceTicker
                         {
                             databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "PrixBarre", PcWeb.getPrixBarre().ToString());
                         }
+                        if (PcGamerSaved.getBoitier() != PcWeb.getBoitier())
+                        {
+
+                        }
 
                     }
                 }
