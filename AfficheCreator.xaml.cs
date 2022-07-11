@@ -76,14 +76,53 @@ namespace PriceTicker
                 }
                 else
                 {
-                    ProgressBar.Visibility = Visibility.Visible;
-                    ProgressTextBlock.Visibility = Visibility.Visible;
-                    BackgroundWorker worker = new();
-                    worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-                    worker.WorkerReportsProgress = true;
-                    worker.DoWork += worker_DoWork;
-                    worker.ProgressChanged += worker_ProgressChanged;
-                    worker.RunWorkerAsync();
+                    if (!databaseManager.CheckIfTableContainsData("PcGamer"))
+                    {
+                        ProgressBar.Visibility = Visibility.Visible;
+                        ProgressTextBlock.Visibility = Visibility.Visible;
+                        BackgroundWorker worker = new();
+                        worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+                        worker.WorkerReportsProgress = true;
+                        worker.DoWork += worker_DoWork;
+                        worker.ProgressChanged += worker_ProgressChanged;
+                        worker.RunWorkerAsync();
+                    }else
+                    {
+                        List<Models.PcGamer> ProductsInDb = new();
+                        List<int> newIdsPCSaved = new();
+                        newIdsPCSaved = databaseManager.SelectAllIdPcGamer();
+
+                        for (int i = 0; i < newIdsPCSaved.Count; i++)
+                        {
+                            ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
+                        }
+
+
+
+                        Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            ConfigGroupDataGrid.AutoGenerateColumns = false;
+
+
+                            IEnumerable _bind = ProductsInDb.Select(product => new
+                            {
+
+                                name = product.getName(),
+                                prix = product.getPrix() + " €",
+                                prixBarre = product.getPrixBarre(),
+                                boitier = product.getBoitier(),
+                                carteMere = product.getCarteMere(),
+                                processeur = product.getProcesseur(),
+                                carteGraphique = product.getCarteGraphique(),
+                                ram = product.getRam(),
+
+                            });
+
+
+                            ConfigGroupDataGrid.ItemsSource = _bind;
+                        }), DispatcherPriority.SystemIdle);
+                    }
                 }
 
             }
@@ -415,9 +454,9 @@ namespace PriceTicker
                 IEnumerable _bind = ProductsInDb.Select(product => new
                 {
                     
-                    id = product.getIdJaja(),
                     name = product.getName(),
                     prix = product.getPrix() + " €",
+                    prixBarre = product.getPrixBarre(),
                     boitier = product.getBoitier(),
                     carteMere = product.getCarteMere(),
                     processeur = product.getProcesseur(),
@@ -1441,6 +1480,18 @@ namespace PriceTicker
             {
                 dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
             }
+        }
+
+        private void UpdateDataGrid(object sender, RoutedEventArgs e)
+        {
+            ProgressBar.Visibility = Visibility.Visible;
+            ProgressTextBlock.Visibility = Visibility.Visible;
+            BackgroundWorker worker = new();
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerAsync();
         }
     }
 

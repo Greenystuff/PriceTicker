@@ -41,13 +41,13 @@
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="SearchByProductNameTb" Grid.Column="0"
-                     Text="Nom du Produit"
+            <Button x:Name="UpdateDataGridFromWeb" Grid.Column="0"
+                     Content="Mettre à jour"
                      Height="30"
                      Width="180"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
-                     FontSize="18"/>
+                     FontSize="18" Click="UpdateDataGrid"/>
             <ComboBox Visibility="Hidden" Height="30"  Width="180" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
                 <ComboBoxItem IsSelected="True" Content="Toutes les catégories"/>
                 <ComboBoxItem Content="PC Fixes"/>
@@ -76,8 +76,8 @@
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="0.15*" Header="ID" Binding="{Binding id}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                    <DataGridTextColumn Width="0.65*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Width="0.60*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Width="0.20*" Header="Prix Barré" Binding="{Binding prixBarre}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                     <DataGridTextColumn Width="0.20*" Header="Prix" Binding="{Binding prix}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
