@@ -97,7 +97,7 @@ namespace PriceTicker
                             ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
                         }
 
-
+                        var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
 
                         Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
                         Dispatcher.Invoke(new Action(() =>
@@ -105,7 +105,7 @@ namespace PriceTicker
                             ConfigGroupDataGrid.AutoGenerateColumns = false;
 
 
-                            IEnumerable _bind = ProductsInDb.Select(product => new
+                            IEnumerable _bind = sortedProducts.Select(product => new
                             {
 
                                 name = product.getName(),
@@ -396,7 +396,6 @@ namespace PriceTicker
                 
             }
 
-            productList = Enumerable.Reverse(productList).ToList();
 
             
             // La base de données ne contient pas de données donc on INSERT toutes les configs.
@@ -443,6 +442,8 @@ namespace PriceTicker
                 ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
             }
 
+            var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
+
 
 
             Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
@@ -451,7 +452,7 @@ namespace PriceTicker
                 ConfigGroupDataGrid.AutoGenerateColumns = false;
                 
 
-                IEnumerable _bind = ProductsInDb.Select(product => new
+                IEnumerable _bind = sortedProducts.Select(product => new
                 {
                     
                     name = product.getName(),
