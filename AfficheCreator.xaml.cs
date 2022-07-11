@@ -670,7 +670,7 @@ namespace PriceTicker
                         }
                         else
                         {
-                            Debug.WriteLine("Le composant " + PcGamerSaved.getBoitier() + " a changé. Le nouveau est : " + PcWeb.getBoitier() + "\r"
+                            Debug.WriteLine("Le boîtier " + PcGamerSaved.getBoitier() + " a changé. Le nouveau est : " + PcWeb.getBoitier() + "\r"
                                 + "Ce boîtier n'existe pas dans la base de données (ID : " + composantId + ").");
                             databaseManager.InsertComposants("Boîtier", PcWeb.getBoitier());
                             composantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
@@ -682,7 +682,7 @@ namespace PriceTicker
                         int composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireBoitier());
                         if (composantId != -1)
                         {
-                            Debug.WriteLine("L'Accessoire de boîtier \"" + PcGamerSaved.getAccessoireBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getAccessoireBoitier() + "\"\r"
+                            Debug.WriteLine("L'accessoire de boîtier \"" + PcGamerSaved.getAccessoireBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getAccessoireBoitier() + "\"\r"
                                 + "Cet accessoire de boîtier existe déjà dans la base de données sous l'ID : " + composantId);
                             databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Accessoire de boîtier", PcWeb.getAccessoireBoitier());
                         }
@@ -700,14 +700,14 @@ namespace PriceTicker
                         int composantId = databaseManager.FindComposantIdByName(PcWeb.getVentilateurBoitier());
                         if (composantId != -1)
                         {
-                            Debug.WriteLine("Les Ventilateurs de boîtier \"" + PcGamerSaved.getVentilateurBoitier() + "\" ont changé dans la config \"" + PcGamerSaved.getName() + "\". Les nouveaux sont : \"" + PcWeb.getVentilateurBoitier() + "\"\r"
-                                + "Ces Ventilateurs de boîtier existent déjà dans la base de données sous l'ID : " + composantId);
+                            Debug.WriteLine("Les ventilateurs de boîtier \"" + PcGamerSaved.getVentilateurBoitier() + "\" ont changé dans la config \"" + PcGamerSaved.getName() + "\". Les nouveaux sont : \"" + PcWeb.getVentilateurBoitier() + "\"\r"
+                                + "Ces ventilateurs de boîtier existent déjà dans la base de données sous l'ID : " + composantId);
                             databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Ventilateurs", PcWeb.getVentilateurBoitier());
                         }
                         else
                         {
-                            Debug.WriteLine("Les Ventilateurs de boîtier " + PcGamerSaved.getVentilateurBoitier() + " ont changé. Les nouveaux sont : " + PcWeb.getVentilateurBoitier() + "\r"
-                                + "Ces Ventilateurs de boîtier n'existent pas dans la base de données (ID : " + composantId + ").");
+                            Debug.WriteLine("Les ventilateurs de boîtier " + PcGamerSaved.getVentilateurBoitier() + " ont changé. Les nouveaux sont : " + PcWeb.getVentilateurBoitier() + "\r"
+                                + "Ces ventilateurs de boîtier n'existent pas dans la base de données (ID : " + composantId + ").");
                             databaseManager.InsertComposants("Ventilateurs", PcWeb.getVentilateurBoitier());
                             composantId = databaseManager.FindComposantIdByName(PcWeb.getVentilateurBoitier());
                             databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Ventilateurs", PcWeb.getVentilateurBoitier());

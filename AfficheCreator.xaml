@@ -41,18 +41,7 @@
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="UpdateDataGridFromWeb" Grid.Column="0"
-                     Content="Mettre à jour"
-                     Height="30"
-                     Width="180"
-                     HorizontalContentAlignment="Center"
-                     VerticalContentAlignment="Center"
-                     FontSize="18" Click="UpdateDataGrid"/>
-            <ComboBox Visibility="Hidden" Height="30"  Width="180" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
-                <ComboBoxItem IsSelected="True" Content="Toutes les catégories"/>
-                <ComboBoxItem Content="PC Fixes"/>
-                <ComboBoxItem Content="PC Pro"/>
-            </ComboBox>
+            
         </Grid>
         <TextBlock Text="Aperçu"
                    Grid.Column="1"
@@ -131,8 +120,18 @@
                    Width="200"
                    Background="Transparent"
                    Visibility="Hidden"/>
+        <Button x:Name="UpdateDataGridFromWeb" 
+                Grid.Column="0"
+                Grid.Row="2"
+                Content="Mettre à jour"
+                Height="30"
+                Width="180"
+                Margin="25,0,0,0"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSize="18" Click="UpdateDataGrid" />
         <Button x:Name="ValiderAfficheBtn"
-                
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 Content="Valider l'affiche"
