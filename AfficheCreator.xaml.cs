@@ -109,7 +109,7 @@ namespace PriceTicker
                             {
 
                                 name = product.getName(),
-                                prix = product.getPrix() + " €",
+                                prix = product.getPrix(),
                                 prixBarre = product.getPrixBarre(),
                                 boitier = product.getBoitier(),
                                 carteMere = product.getCarteMere(),
@@ -455,7 +455,7 @@ namespace PriceTicker
                 {
                     
                     name = product.getName(),
-                    prix = product.getPrix() + " €",
+                    prix = product.getPrix(),
                     prixBarre = product.getPrixBarre(),
                     boitier = product.getBoitier(),
                     carteMere = product.getCarteMere(),
