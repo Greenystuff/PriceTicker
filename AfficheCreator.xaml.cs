@@ -180,7 +180,7 @@ namespace PriceTicker
                     Product_Id = productIdTemp.Last().ToString();
                 }
 
-                XmlTextReader ProduitsXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
+                /*XmlTextReader ProduitsXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
 
                 String? IdJaja = null;
 
@@ -198,7 +198,7 @@ namespace PriceTicker
                         }
 
                     }
-                }
+                }*/
 
                 var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
                 HtmlWeb webPageProduct = new HtmlWeb();
@@ -370,11 +370,8 @@ namespace PriceTicker
                             }
 
                             //Debug.WriteLine("Catégorie : " + categorie);
-
                             //Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
                         }
-
-
                     }
 
                 }
