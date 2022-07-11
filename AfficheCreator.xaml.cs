@@ -393,18 +393,26 @@ namespace PriceTicker
                 // Vérifie si un composant a changé.
                 CompareComposantsWithWeb(IdsPCSaved, IdsPCWeb, productList);
 
+            }
 
+            List<Models.PcGamer> ProductsInDb = new();
+            List<int> newIdsPCSaved = new();
+            newIdsPCSaved = databaseManager.SelectAllIdPcGamer();
 
+            for(int i = 0; i < newIdsPCSaved.Count; i++)
+            {
+                ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
             }
 
 
-            Debug.WriteLine("Nombre d'éléments : " + productList.Count);
+
+            Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
             Dispatcher.Invoke(new Action(() =>
             {
                 ConfigGroupDataGrid.AutoGenerateColumns = false;
                 
 
-                IEnumerable _bind = productList.Select(product => new
+                IEnumerable _bind = ProductsInDb.Select(product => new
                 {
                     
                     id = product.getIdJaja(),
@@ -1163,6 +1171,7 @@ namespace PriceTicker
                 }
             }
         }
+
         public static List<long> FindIdNumbers(string str)
         {
             var nums = new List<long>();
