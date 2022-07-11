@@ -391,67 +391,10 @@ namespace PriceTicker
                 }
 
                 // Vérifie si un composant a changé.
-                for (int i = 0; i < IdsPCWeb.Count; i++)
-                {
-                    
+                CompareComposantsWithWeb(IdsPCSaved, IdsPCWeb, productList);
 
-                    if (IdsPCSaved.Contains(IdsPCWeb[i]))
-                    {
-                        Models.PcGamer PcGamerSaved = new();
-                        Models.PcGamer PcWeb = new();
-                        PcGamerSaved = databaseManager.SelectPcGamerByID(IdsPCWeb[i]);
 
-                        for (int j = 0; j < productList.Count; j++)
-                        {
-                            if (productList[j].getIdConfig() == IdsPCWeb[i])
-                            {
-                                PcWeb = productList[j];
-                            }
-                        }
 
-                        //Si une caractéristique a changé, il faut archiver la config et mettre à jour la config actuelle.
-                        if(PcGamerSaved.getName() != PcWeb.getName())
-                        {
-                            databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Name", PcWeb.getName());
-                        }
-                        if (PcGamerSaved.getPrix() != PcWeb.getPrix())
-                        {
-                            databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Prix", PcWeb.getPrix().ToString());
-                        }
-                        if (PcGamerSaved.getPrixBarre() != PcWeb.getPrixBarre())
-                        {
-                            databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "PrixBarre", PcWeb.getPrixBarre().ToString());
-                        }
-                        //Test
-                        //PcWeb.setBoitier("Caca");
-                        if (PcGamerSaved.getBoitier() != PcWeb.getBoitier())
-                        {
-                            int composantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
-                            if(composantId != -1)
-                            {
-                                // Le nouveau composant présent dans la config existe déjà dans la Table "Composants"
-                                // Mettre à jour la table "PcGamerComposant" pour attribuer le nouveau composant à la config et désattribuer l'ancien.
-
-                                Debug.WriteLine("Le boîtier \"" + PcGamerSaved.getBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getBoitier() + "\"\r"
-                                    + "Le nouveau composant existe déjà dans la base de données sous l'ID : " + composantId);
-                                databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Boîtier", PcWeb.getBoitier());
-                            }
-                            else
-                            {
-                                // Insert le nouveau composant dans la table "Composants" parce qu'il n'existe pas encore dans la table.
-                                // Mettre à jour la table "PcGamerComposant" pour attribuer le nouveau composant à la config et désattribuer l'ancien.
-                                Debug.WriteLine("Le composant " + PcGamerSaved.getBoitier() + " a changé. Le nouveau est : " + PcWeb.getBoitier() + "\r"
-                                    + "Ce nouveau composant n'existe pas dans la base de données (ID : "+ composantId + ").");
-                                databaseManager.InsertComposants("Boîtier", PcWeb.getBoitier());
-                                int newComposantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
-                                databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), newComposantId, "Boîtier", PcWeb.getBoitier());
-                            }
-                        }
-
-                    }
-                }
-                
-                
             }
 
 
@@ -696,6 +639,335 @@ namespace PriceTicker
 
                 }
 
+            }
+        }
+
+        public void CompareComposantsWithWeb(List<int> IdsPCSaved, List<int> IdsPCWeb, List<Models.PcGamer> productList)
+        {
+            for (int i = 0; i < IdsPCWeb.Count; i++)
+            {
+
+                if (IdsPCSaved.Contains(IdsPCWeb[i]))
+                {
+                    Models.PcGamer PcGamerSaved = new();
+                    Models.PcGamer PcWeb = new();
+                    PcGamerSaved = databaseManager.SelectPcGamerByID(IdsPCWeb[i]);
+
+                    for (int j = 0; j < productList.Count; j++)
+                    {
+                        if (productList[j].getIdConfig() == IdsPCWeb[i])
+                        {
+                            PcWeb = productList[j];
+                        }
+                    }
+
+                    //Si une caractéristique a changé, il faut archiver la config et mettre à jour la config actuelle.
+                    if (PcGamerSaved.getName() != PcWeb.getName())
+                    {
+                        databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Name", PcWeb.getName());
+                    }
+                    if (PcGamerSaved.getPrix() != PcWeb.getPrix())
+                    {
+                        databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Prix", PcWeb.getPrix().ToString());
+                    }
+                    if (PcGamerSaved.getPrixBarre() != PcWeb.getPrixBarre())
+                    {
+                        databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "PrixBarre", PcWeb.getPrixBarre().ToString());
+                    }
+                    //Test
+                    //PcWeb.setBoitier("Caca");
+                    if (PcGamerSaved.getBoitier() != PcWeb.getBoitier())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le boîtier \"" + PcGamerSaved.getBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getBoitier() + "\"\r"
+                                + "Ce boîtier existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Boîtier", PcWeb.getBoitier());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le composant " + PcGamerSaved.getBoitier() + " a changé. Le nouveau est : " + PcWeb.getBoitier() + "\r"
+                                + "Ce boîtier n'existe pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Boîtier", PcWeb.getBoitier());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Boîtier", PcWeb.getBoitier());
+                        }
+                    }
+                    if (PcGamerSaved.getAccessoireBoitier() != PcWeb.getAccessoireBoitier())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireBoitier());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("L'Accessoire de boîtier \"" + PcGamerSaved.getAccessoireBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getAccessoireBoitier() + "\"\r"
+                                + "Cet accessoire de boîtier existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Accessoire de boîtier", PcWeb.getAccessoireBoitier());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("L'Accessoire de boîtier " + PcGamerSaved.getAccessoireBoitier() + " a changé. Le nouveau est : " + PcWeb.getAccessoireBoitier() + "\r"
+                                + "Cet accessoire de boîtier n'existe pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Accessoire de boîtier", PcWeb.getAccessoireBoitier());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireBoitier());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Accessoire de boîtier", PcWeb.getAccessoireBoitier());
+                        }
+                    }
+                    if (PcGamerSaved.getVentilateurBoitier() != PcWeb.getVentilateurBoitier())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getVentilateurBoitier());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Les Ventilateurs de boîtier \"" + PcGamerSaved.getVentilateurBoitier() + "\" ont changé dans la config \"" + PcGamerSaved.getName() + "\". Les nouveaux sont : \"" + PcWeb.getVentilateurBoitier() + "\"\r"
+                                + "Ces Ventilateurs de boîtier existent déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Ventilateurs", PcWeb.getVentilateurBoitier());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Les Ventilateurs de boîtier " + PcGamerSaved.getVentilateurBoitier() + " ont changé. Les nouveaux sont : " + PcWeb.getVentilateurBoitier() + "\r"
+                                + "Ces Ventilateurs de boîtier n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Ventilateurs", PcWeb.getVentilateurBoitier());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getVentilateurBoitier());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Ventilateurs", PcWeb.getVentilateurBoitier());
+                        }
+                    }
+                    if (PcGamerSaved.getProcesseur() != PcWeb.getProcesseur())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getProcesseur());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le Processeur \"" + PcGamerSaved.getProcesseur() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getProcesseur() + "\"\r"
+                                + "Ce Processeur existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Processeur", PcWeb.getProcesseur());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le Processeur " + PcGamerSaved.getProcesseur() + " a changé. Le nouveau est : " + PcWeb.getProcesseur() + "\r"
+                                + "Ce Processeur n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Processeur", PcWeb.getProcesseur());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getProcesseur());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Processeur", PcWeb.getProcesseur());
+                        }
+                    }
+                    if (PcGamerSaved.getVentirad() != PcWeb.getVentirad())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getVentirad());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le Ventirad \"" + PcGamerSaved.getVentirad() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getVentirad() + "\"\r"
+                                + "Ce Ventirad existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Ventirad", PcWeb.getVentirad());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le Ventirad " + PcGamerSaved.getVentirad() + " a changé. Le nouveau est : " + PcWeb.getVentirad() + "\r"
+                                + "Ce Ventirad n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Ventirad", PcWeb.getVentirad());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getVentirad());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Ventirad", PcWeb.getVentirad());
+                        }
+                    }
+                    if (PcGamerSaved.getWaterCooling() != PcWeb.getWaterCooling())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getWaterCooling());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le Watercooling \"" + PcGamerSaved.getWaterCooling() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getWaterCooling() + "\"\r"
+                                + "Ce Watercooling existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Watercooling", PcWeb.getWaterCooling());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le Watercooling " + PcGamerSaved.getWaterCooling() + " a changé. Le nouveau est : " + PcWeb.getWaterCooling() + "\r"
+                                + "Ce Watercooling n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Watercooling", PcWeb.getWaterCooling());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getWaterCooling());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Watercooling", PcWeb.getWaterCooling());
+                        }
+                    }
+                    if (PcGamerSaved.getCarteMere() != PcWeb.getCarteMere())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getCarteMere());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("La Carte mère \"" + PcGamerSaved.getCarteMere() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". La nouvelle est : \"" + PcWeb.getCarteMere() + "\"\r"
+                                + "Cette Carte mère existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Carte mère", PcWeb.getCarteMere());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("La Carte mère " + PcGamerSaved.getCarteMere() + " a changé. La nouvelle est : " + PcWeb.getCarteMere() + "\r"
+                                + "Cette Carte mère n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Carte mère", PcWeb.getCarteMere());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getCarteMere());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Carte mère", PcWeb.getCarteMere());
+                        }
+                    }
+                    if (PcGamerSaved.getCarteGraphique() != PcWeb.getCarteGraphique())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getCarteGraphique());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("La Carte Graphique \"" + PcGamerSaved.getCarteGraphique() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". La nouvelle est : \"" + PcWeb.getCarteGraphique() + "\"\r"
+                                + "Cette Carte Graphique existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Carte Graphique", PcWeb.getCarteGraphique());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("La Carte Graphique " + PcGamerSaved.getCarteGraphique() + " a changé. La nouvelle est : " + PcWeb.getCarteGraphique() + "\r"
+                                + "Cette Carte Graphique n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Carte Graphique", PcWeb.getCarteGraphique());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getCarteGraphique());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Carte Graphique", PcWeb.getCarteGraphique());
+                        }
+                    }
+                    if (PcGamerSaved.getAccessoireCarteGraphique() != PcWeb.getAccessoireCarteGraphique())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireCarteGraphique());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("L'accessoire de Carte Graphique \"" + PcGamerSaved.getAccessoireCarteGraphique() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getAccessoireCarteGraphique() + "\"\r"
+                                + "Cet accessoire de Carte Graphique existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Accessoire de Carte Graphique", PcWeb.getAccessoireCarteGraphique());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("L'accessoire de Carte Graphique " + PcGamerSaved.getAccessoireCarteGraphique() + " a changé. Le nouveau est : " + PcWeb.getAccessoireCarteGraphique() + "\r"
+                                + "Cet accessoire de Carte Graphique n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Accessoire de Carte Graphique", PcWeb.getAccessoireCarteGraphique());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireCarteGraphique());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Accessoire de Carte Graphique", PcWeb.getAccessoireCarteGraphique());
+                        }
+                    }
+                    if (PcGamerSaved.getRam() != PcWeb.getRam())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getRam());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("La mémoire vive \"" + PcGamerSaved.getRam() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". La nouvelle est : \"" + PcWeb.getRam() + "\"\r"
+                                + "Cette mémoire vive existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Mémoire vive", PcWeb.getRam());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("La mémoire vive " + PcGamerSaved.getRam() + " a changé. La nouvelle est : " + PcWeb.getRam() + "\r"
+                                + "Cette mémoire vive n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Mémoire vive", PcWeb.getRam());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getRam());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Mémoire vive", PcWeb.getRam());
+                        }
+                    }
+                    if (PcGamerSaved.getDisqueSsd() != PcWeb.getDisqueSsd())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getDisqueSsd());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le SSD \"" + PcGamerSaved.getDisqueSsd() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getDisqueSsd() + "\"\r"
+                                + "Ce SSD existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "SSD", PcWeb.getDisqueSsd());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le SSD " + PcGamerSaved.getDisqueSsd() + " a changé. Le nouveau est : " + PcWeb.getDisqueSsd() + "\r"
+                                + "Ce SSD n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("SSD", PcWeb.getDisqueSsd());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getDisqueSsd());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getDisqueSsd(), composantId, "SSD", PcWeb.getDisqueSsd());
+                        }
+                    }
+                    if (PcGamerSaved.getDisqueSupplementaire() != PcWeb.getDisqueSupplementaire())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getDisqueSupplementaire());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le HDD \"" + PcGamerSaved.getDisqueSupplementaire() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getDisqueSupplementaire() + "\"\r"
+                                + "Ce HDD existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "HDD", PcWeb.getDisqueSupplementaire());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le HDD " + PcGamerSaved.getDisqueSupplementaire() + " a changé. Le nouveau est : " + PcWeb.getDisqueSupplementaire() + "\r"
+                                + "Ce HDD n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("HDD", PcWeb.getDisqueSupplementaire());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getDisqueSupplementaire());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getDisqueSupplementaire(), composantId, "HDD", PcWeb.getDisqueSupplementaire());
+                        }
+                    }
+                    if (PcGamerSaved.getCarteReseau() != PcWeb.getCarteReseau())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getCarteReseau());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("La carte réseau \"" + PcGamerSaved.getCarteReseau() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". La nouvelle est : \"" + PcWeb.getCarteReseau() + "\"\r"
+                                + "Cette carte réseau existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Carte réseau", PcWeb.getCarteReseau());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("La carte réseau " + PcGamerSaved.getCarteReseau() + " a changé. La nouvelle est : " + PcWeb.getCarteReseau() + "\r"
+                                + "Cette carte réseau n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Carte réseau", PcWeb.getCarteReseau());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getCarteReseau());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getCarteReseau(), composantId, "Carte réseau", PcWeb.getCarteReseau());
+                        }
+                    }
+                    if (PcGamerSaved.getAlimentation() != PcWeb.getAlimentation())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getAlimentation());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("L'alimentation \"" + PcGamerSaved.getAlimentation() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". La nouvelle est : \"" + PcWeb.getAlimentation() + "\"\r"
+                                + "Cette alimentation existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Alimentation", PcWeb.getAlimentation());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("L'alimentation " + PcGamerSaved.getAlimentation() + " a changé. La nouvelle est : " + PcWeb.getAlimentation() + "\r"
+                                + "Cette alimentation n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Alimentation", PcWeb.getAlimentation());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getAlimentation());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getAlimentation(), composantId, "Alimentation", PcWeb.getAlimentation());
+                        }
+                    }
+                    if (PcGamerSaved.getAccessoireAlimentation() != PcWeb.getAccessoireAlimentation())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireAlimentation());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("L'accessoire d'alimentation \"" + PcGamerSaved.getAccessoireAlimentation() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getAccessoireAlimentation() + "\"\r"
+                                + "Cet accessoire d'alimentation existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Accessoire alimentation", PcWeb.getAccessoireAlimentation());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("L'accessoire d'alimentation " + PcGamerSaved.getAccessoireAlimentation() + " a changé. Le nouveau est : " + PcWeb.getAccessoireAlimentation() + "\r"
+                                + "Cet Accessoire d'alimentation n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Accessoire alimentation", PcWeb.getAccessoireAlimentation());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getAccessoireAlimentation());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getAccessoireAlimentation(), composantId, "Accessoire alimentation", PcWeb.getAccessoireAlimentation());
+                        }
+                    }
+                    if (PcGamerSaved.getSystemeExploitation() != PcWeb.getSystemeExploitation())
+                    {
+                        int composantId = databaseManager.FindComposantIdByName(PcWeb.getSystemeExploitation());
+                        if (composantId != -1)
+                        {
+                            Debug.WriteLine("Le Système d'Exploitation \"" + PcGamerSaved.getSystemeExploitation() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getSystemeExploitation() + "\"\r"
+                                + "Ce Système d'Exploitation existe déjà dans la base de données sous l'ID : " + composantId);
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Système Exploitation", PcWeb.getSystemeExploitation());
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Le Système d'Exploitation " + PcGamerSaved.getSystemeExploitation() + " a changé. Le nouveau est : " + PcWeb.getSystemeExploitation() + "\r"
+                                + "Ce Système d'Exploitation n'existent pas dans la base de données (ID : " + composantId + ").");
+                            databaseManager.InsertComposants("Système Exploitation", PcWeb.getSystemeExploitation());
+                            composantId = databaseManager.FindComposantIdByName(PcWeb.getSystemeExploitation());
+                            databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getSystemeExploitation(), composantId, "Système Exploitation", PcWeb.getSystemeExploitation());
+                        }
+                    }
+
+                    
+
+                }
             }
         }
 
