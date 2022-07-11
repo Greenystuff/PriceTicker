@@ -42,71 +42,52 @@ namespace PriceTicker
 
         private void ScrapWebsite()
         {
-            /*if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
+            
+            if (!databaseManager.CheckIfTableContainsData("PcGamer"))
             {
-                Debug.WriteLine("Dossier JajaCD non trouvé");
-                MessageBox.Show("Veuillez Installer JajaCD ! (Ou alors le développer a enfin décidé de sécuriser son système et d'arrêter avec les XML...)");
-                this.Close();
-                return;
+                ProgressBar.Visibility = Visibility.Visible;
+                ProgressTextBlock.Visibility = Visibility.Visible;
+                BackgroundWorker worker = new();
+                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+                worker.WorkerReportsProgress = true;
+                worker.DoWork += worker_DoWork;
+                worker.ProgressChanged += worker_ProgressChanged;
+                worker.RunWorkerAsync();
             }else
             {
-                if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml"))
+                List<Models.PcGamer> ProductsInDb = new();
+                List<int> newIdsPCSaved = new();
+                newIdsPCSaved = databaseManager.SelectAllIdPcGamer();
+
+                for (int i = 0; i < newIdsPCSaved.Count; i++)
                 {
-                    Debug.WriteLine("XML non trouvés");
-                    MessageBox.Show("Veuillez lancer JajaCD pour mettre à jour les informations produit");
-                    this.Close();
-                    return;
+                    ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
                 }
-                else
-                {*/
-                    if (!databaseManager.CheckIfTableContainsData("PcGamer"))
+
+                var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
+
+                Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    ConfigGroupDataGrid.AutoGenerateColumns = false;
+
+
+                    IEnumerable _bind = sortedProducts.Select(product => new
                     {
-                        ProgressBar.Visibility = Visibility.Visible;
-                        ProgressTextBlock.Visibility = Visibility.Visible;
-                        BackgroundWorker worker = new();
-                        worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-                        worker.WorkerReportsProgress = true;
-                        worker.DoWork += worker_DoWork;
-                        worker.ProgressChanged += worker_ProgressChanged;
-                        worker.RunWorkerAsync();
-                    }else
-                    {
-                        List<Models.PcGamer> ProductsInDb = new();
-                        List<int> newIdsPCSaved = new();
-                        newIdsPCSaved = databaseManager.SelectAllIdPcGamer();
+                        id = product.getIdConfig(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        prixBarre = product.getPrixBarre(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
 
-                        for (int i = 0; i < newIdsPCSaved.Count; i++)
-                        {
-                            ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
-                        }
+                    });
 
-                        var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
-
-                        Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            ConfigGroupDataGrid.AutoGenerateColumns = false;
-
-
-                            IEnumerable _bind = sortedProducts.Select(product => new
-                            {
-                                id = product.getIdConfig(),
-                                name = product.getName(),
-                                prix = product.getPrix(),
-                                prixBarre = product.getPrixBarre(),
-                                boitier = product.getBoitier(),
-                                carteMere = product.getCarteMere(),
-                                processeur = product.getProcesseur(),
-                                carteGraphique = product.getCarteGraphique(),
-                                ram = product.getRam(),
-
-                            }); ;
-
-
-                            ConfigGroupDataGrid.ItemsSource = _bind;
-                        }), DispatcherPriority.SystemIdle);
-                /*}
-            }*/
+                    ConfigGroupDataGrid.ItemsSource = _bind;
+                }), DispatcherPriority.SystemIdle);
 
             }
 
@@ -162,26 +143,6 @@ namespace PriceTicker
                     productIdTemp = FindIdNumbers(Product_Id);
                     Product_Id = productIdTemp.Last().ToString();
                 }
-
-                /*XmlTextReader ProduitsXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
-
-                String? IdJaja = null;
-
-                while (ProduitsXml.Read())
-                {
-
-                    if (ProduitsXml.NodeType == XmlNodeType.Element && ProduitsXml.Name == "produit_id")
-                    {
-                        string temp = ProduitsXml.ReadElementContentAsString();
-                        if (temp == Product_Id)
-                        {
-                            ProduitsXml.ReadToNextSibling("num_produit");
-                            IdJaja = ProduitsXml.ReadElementContentAsString();
-                            Product.setIdJaja(IdJaja);
-                        }
-
-                    }
-                }*/
 
                 var ProductWebAdress = @"https://www.cybertek.fr" + productLink;
                 HtmlWeb webPageProduct = new HtmlWeb();
