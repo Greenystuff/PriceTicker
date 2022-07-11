@@ -271,11 +271,11 @@
                 FontSize="18" Click="UpdateDataGrid" />
         <Button x:Name="ValiderAfficheBtn"
                 Grid.Row="2"
-                Grid.ColumnSpan="2"
+                HorizontalAlignment="Right"
                 Content="Valider l'affiche"
                 FontSize="18"
                 Width="180"
-                Height="30" Click="ValiderAffiche" 
+                Height="30" Click="ValiderAffiche" Margin="0,0,25,0" 
                 />
     </Grid>
 </Window>
