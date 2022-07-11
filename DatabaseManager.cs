@@ -417,28 +417,29 @@ namespace PriceTicker
             CloseDbConnection();
         }
 
-        public void UpdateCompoosantByID(int idConfig, string type, string value)
+        public void UpdatePcGamerComposantByID(int idConfig, string type, string value)
         {
-            string insertQuery = "UPDATE PcGamer SET '" + type + "' = '" + value + "' WHERE IdPcGamer = " + idConfig + ";";
+            string insertQuery = "UPDATE ComposantsPcGamer SET '" + type + "' = '" + value + "' WHERE IdPcGamer = " + idConfig + ";";
             CreateDbFile();
             CreateDbConnection();
             ExecuteQuery(insertQuery);
             CloseDbConnection();
         }
 
-        public void FindByName(string name)
+        public int FindComposantIdByName(string name)
         {
-            string selectIdComposant = "SELECT IdComposant FROM Composants WHERE IdPcGamer=" + name;
+            string selectIdComposant = "SELECT IdComposant FROM Composants WHERE NomComposant='" + name+"';";
             CreateDbConnection();
-            SQLiteDataReader ComposantPcGamerReader = ExecuteQueryWithReturn(selectIdComposant);
-            List<int> idComposants = new();
+            SQLiteDataReader ComposantReader = ExecuteQueryWithReturn(selectIdComposant);
+            int idComposant = -1;
 
-            while (ComposantPcGamerReader.Read())
+            while (ComposantReader.Read())
             {
-                idComposants.Add(int.Parse(ComposantPcGamerReader["IdComposant"].ToString()));
+                idComposant = int.Parse(ComposantReader["IdComposant"].ToString());
             }
-            ComposantPcGamerReader.Close();
+            ComposantReader.Close();
             CloseDbConnection();
+            return idComposant;
         }
 
         public void DeleteByID(int rowID)

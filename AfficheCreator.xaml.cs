@@ -393,14 +393,15 @@ namespace PriceTicker
                 // Vérifie si un composant a changé.
                 for (int i = 0; i < IdsPCWeb.Count; i++)
                 {
-                   
+                    
+
                     if (IdsPCSaved.Contains(IdsPCWeb[i]))
                     {
                         Models.PcGamer PcGamerSaved = new();
                         Models.PcGamer PcWeb = new();
                         PcGamerSaved = databaseManager.SelectPcGamerByID(IdsPCWeb[i]);
-                        
-                        for(int j = 0; j < productList.Count; j++)
+
+                        for (int j = 0; j < productList.Count; j++)
                         {
                             if (productList[j].getIdConfig() == IdsPCWeb[i])
                             {
@@ -408,7 +409,7 @@ namespace PriceTicker
                             }
                         }
 
-                        //Une caractéristique a changé, il faudra archiver la config.
+                        //Si une caractéristique a changé, il faut archiver la config et mettre à jour la config actuelle.
                         if(PcGamerSaved.getName() != PcWeb.getName())
                         {
                             databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "Name", PcWeb.getName());
@@ -421,9 +422,27 @@ namespace PriceTicker
                         {
                             databaseManager.UpdatePcGamerByID(IdsPCWeb[i], "PrixBarre", PcWeb.getPrixBarre().ToString());
                         }
+                        //Test
+                        //PcWeb.setBoitier("Caca");
                         if (PcGamerSaved.getBoitier() != PcWeb.getBoitier())
                         {
+                            int composantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
+                            if(composantId != -1)
+                            {
+                                // Le nouveau composant présent dans la config existe déjà dans la Table "Composants"
+                                // Mettre à jour la table "PcGamerComposant" pour attribuer le nouveau composant à la config et désattribuer l'ancien.
 
+                                Debug.WriteLine("Le boîtier \"" + PcGamerSaved.getBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getBoitier() + "\"\r"
+                                    + "Le nouveau composant existe déjà dans la base de données sous l'ID : " + composantId);
+
+                            }
+                            else
+                            {
+                                // Insert le nouveau composant dans la table "Composants" parce qu'il n'existe pas encore dans la table.
+                                // Mettre à jour la table "PcGamerComposant" pour attribuer le nouveau composant à la config et désattribuer l'ancien.
+                                Debug.WriteLine("Le composant " + PcGamerSaved.getBoitier() + " a changé. Le nouveau est : " + PcWeb.getBoitier() + "\r"
+                                    + "Ce nouveau composant n'existe pas dans la base de données (ID : "+ composantId + ").");
+                            }
                         }
 
                     }
