@@ -140,10 +140,10 @@
                Height="auto"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"/>
-        <DockPanel Grid.Column="0"  Margin="25,0,25,78" Grid.RowSpan="3">
+        <DockPanel Grid.Column="0"  Margin="25,0,25,0" Grid.RowSpan="2">
             <TabControl Style="{DynamicResource TabControlStyle}" Margin="0,15,0,0" Width="800" Height="652">
                 <TabItem Header="Config du site" Style="{DynamicResource TabItemStyle}" FontSize="20">
-                    <DataGrid FontSize="16" x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}"  ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                    <DataGrid FontSize="16" FontWeight="Regular" x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}"  ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                       RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" MouseLeftButtonDown="LineClicked">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -193,11 +193,11 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Archives" Style="{DynamicResource TabItemStyle}" FontSize="20">
-                    <DataGrid  x:Name="ArchiveDataGrid" ItemsSource="{Binding}"  ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                    <DataGrid x:Name="ArchiveDataGrid" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}"  ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                       RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" MouseLeftButtonDown="LineClicked">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"  />
+                                <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>
