@@ -42,7 +42,7 @@ namespace PriceTicker
 
         private void ScrapWebsite()
         {
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
+            /*if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD"))
             {
                 Debug.WriteLine("Dossier JajaCD non trouvé");
                 MessageBox.Show("Veuillez Installer JajaCD ! (Ou alors le développer a enfin décidé de sécuriser son système et d'arrêter avec les XML...)");
@@ -58,7 +58,7 @@ namespace PriceTicker
                     return;
                 }
                 else
-                {
+                {*/
                     if (!databaseManager.CheckIfTableContainsData("PcGamer"))
                     {
                         ProgressBar.Visibility = Visibility.Visible;
@@ -105,8 +105,8 @@ namespace PriceTicker
 
                             ConfigGroupDataGrid.ItemsSource = _bind;
                         }), DispatcherPriority.SystemIdle);
-                    }
-                }
+                /*}
+            }*/
 
             }
 
