@@ -230,7 +230,8 @@ namespace PriceTicker
                         }
                     }
                 }
-                if (IdJaja != null)
+                ProduitsXml.Close();
+                if (IdJaja != "N/A")
                 {
                     while (PrixXml.Read())
                     {
@@ -272,6 +273,7 @@ namespace PriceTicker
                             }
                         }
                     }
+                    PrixXml.Close();
                 }
                 else
                 {

@@ -1,10 +1,8 @@
 ﻿using HtmlAgilityPack;
-using Microsoft.VisualBasic;
 using PriceTicker.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -22,7 +20,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Xml;
 
 namespace PriceTicker
 {
@@ -223,7 +220,6 @@ namespace PriceTicker
                     }
                 
                 int caracNbr = listDescNodes.Count;
-
                 for (int i2 = 0; i2 < caracNbr; i2++)
                 {
 
@@ -392,8 +388,6 @@ namespace PriceTicker
                 worker.ReportProgress(roundValeur, String.Format("Chargement en cours... " + valeur + " %", i+2));
                 
             }
-
-
             
             // La base de données ne contient pas de données donc on INSERT toutes les configs.
             if (!databaseManager.CheckIfTableContainsData("PcGamer"))
@@ -413,7 +407,6 @@ namespace PriceTicker
                 }
 
                 // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
-                
                 CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
 
                 // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
@@ -429,7 +422,6 @@ namespace PriceTicker
 
                 // Vérifie si un composant a changé.
                 CompareComposantsWithWeb(IdsPCSaved, IdsPCWeb, productList);
-
             }
 
             List<Models.PcGamer> ProductsInDb = new();
