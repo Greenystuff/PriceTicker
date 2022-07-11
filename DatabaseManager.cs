@@ -419,11 +419,13 @@ namespace PriceTicker
 
         public void UpdatePcGamerComposantByID(int idPcGamer, string nomPcGamer, int idComposant, string typeComposant, string nomComposant)
         {
-            string insertQuery = "UPDATE ComposantsPcGamer SET NomPcGamer ='" + nomPcGamer + "',IdComposant=" + idComposant + ",NomComposant='" + nomComposant + "' WHERE IdPcGamer = " + idPcGamer + " AND TypeComposant ='" + typeComposant + "';";
-            CreateDbFile();
-            CreateDbConnection();
-            ExecuteQuery(insertQuery);
-            CloseDbConnection();
+            
+                string insertQuery = "UPDATE ComposantsPcGamer SET NomPcGamer ='" + nomPcGamer + "',IdComposant=" + idComposant + ",NomComposant='" + nomComposant + "' WHERE IdPcGamer = " + idPcGamer + " AND TypeComposant ='" + typeComposant + "';";
+                CreateDbFile();
+                CreateDbConnection();
+                ExecuteQuery(insertQuery);
+                CloseDbConnection();
+            
         }
 
         public int FindComposantIdByName(string name)

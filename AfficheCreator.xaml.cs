@@ -442,6 +442,9 @@ namespace PriceTicker
                                 // Mettre à jour la table "PcGamerComposant" pour attribuer le nouveau composant à la config et désattribuer l'ancien.
                                 Debug.WriteLine("Le composant " + PcGamerSaved.getBoitier() + " a changé. Le nouveau est : " + PcWeb.getBoitier() + "\r"
                                     + "Ce nouveau composant n'existe pas dans la base de données (ID : "+ composantId + ").");
+                                databaseManager.InsertComposants("Boîtier", PcWeb.getBoitier());
+                                int newComposantId = databaseManager.FindComposantIdByName(PcWeb.getBoitier());
+                                databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), newComposantId, "Boîtier", PcWeb.getBoitier());
                             }
                         }
 
