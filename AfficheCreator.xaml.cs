@@ -434,7 +434,7 @@ namespace PriceTicker
 
                                 Debug.WriteLine("Le boîtier \"" + PcGamerSaved.getBoitier() + "\" a changé dans la config \"" + PcGamerSaved.getName() + "\". Le nouveau est : \"" + PcWeb.getBoitier() + "\"\r"
                                     + "Le nouveau composant existe déjà dans la base de données sous l'ID : " + composantId);
-
+                                databaseManager.UpdatePcGamerComposantByID(IdsPCWeb[i], PcWeb.getName(), composantId, "Boîtier", PcWeb.getBoitier());
                             }
                             else
                             {
