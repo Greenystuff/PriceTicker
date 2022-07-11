@@ -43,7 +43,7 @@ namespace PriceTicker
             ScrapWebsite();
         }
 
-        public static String code(string Url)
+        public static String CatchHtmlCode(string Url)
         {
 
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(Url);
@@ -107,7 +107,7 @@ namespace PriceTicker
 
                             IEnumerable _bind = sortedProducts.Select(product => new
                             {
-
+                                id = product.getIdConfig(),
                                 name = product.getName(),
                                 prix = product.getPrix(),
                                 prixBarre = product.getPrixBarre(),
@@ -117,7 +117,7 @@ namespace PriceTicker
                                 carteGraphique = product.getCarteGraphique(),
                                 ram = product.getRam(),
 
-                            });
+                            }); ;
 
 
                             ConfigGroupDataGrid.ItemsSource = _bind;
@@ -1239,23 +1239,15 @@ namespace PriceTicker
             List<long> IdJajaSelectedList = new List<long>();
             IdJajaSelectedList = FindIdNumbers(IdJajaSelected);
             IdJajaSelected = IdJajaSelectedList.First().ToString();
-
-            for (int i = 0; i < productList.Count; i++)
-            {
-                string idJajaRecherche = productList[i].getIdJaja();
-                if (idJajaRecherche.Contains(IdJajaSelected))
-                {
-                    string url = productList[i].getWebLink();
-                    var sInfo = new ProcessStartInfo(url)
-                    {
-                        UseShellExecute = true,
-                    };
-                    Process.Start(sInfo);
-                    break;
-                }
-            }
-
+            Models.PcGamer product = new();
+            product = databaseManager.SelectPcGamerByID(int.Parse(IdJajaSelected));
             
+            string url = product.getWebLink();
+            var sInfo = new ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+            };
+            Process.Start(sInfo);
         }
 
         private void CraftPoster(string Libelle, string Boitier, string CarteMere, string Processeur, string RAM, string CG, string Stockage, string Alim, string OS, string PrixBarre, string Prix)
