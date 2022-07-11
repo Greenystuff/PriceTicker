@@ -9,6 +9,7 @@
     <ApplicationIcon>Img\Logo PriceTicker.ico</ApplicationIcon>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>Logo PriceTicker.png</PackageIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
