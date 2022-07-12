@@ -362,7 +362,7 @@ namespace PriceTicker
                 {
                     if (!IdsPCWeb.Contains(IdsPCSaved[i]))
                     {
-                        Debug.WriteLine("Le PC \"" + databaseManager.SelectPcGamerByID(IdsPCSaved[i]).getName() + "\" n'existe plus sur internet mais es tprésent dans la base de données. Archivage de la config... \r");
+                        Debug.WriteLine("Le PC \"" + databaseManager.SelectPcGamerByID(IdsPCSaved[i]).getName() + "\" n'existe plus sur internet mais est présent dans la base de données. Archivage de la config... \r");
                         databaseManager.DeleteByID(IdsPCSaved[i]);
                         //Faire le code pour achiver la config parce qu'elle a disparut d'internet.
                     }
@@ -1179,7 +1179,7 @@ namespace PriceTicker
             product = databaseManager.SelectPcGamerByID(int.Parse(IdJajaSelected));
             
             string url = product.getWebLink();
-            var sInfo = new ProcessStartInfo(url)
+            ProcessStartInfo sInfo = new ProcessStartInfo(url)
             {
                 UseShellExecute = true,
             };

@@ -106,9 +106,6 @@
             </Setter>
         </Style>
         <!--End: TabControl Style-->
-
-
-
     </Window.Resources>
     <Grid Background="{DynamicResource SecondaryTextColor}">
         <Grid.RowDefinitions>
