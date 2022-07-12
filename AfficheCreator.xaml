@@ -144,7 +144,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <DataGrid Panel.ZIndex="0" FontSize="16" FontWeight="Regular" x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                        <DataGrid FontSize="16" FontWeight="Regular" x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                       RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" MouseLeftButtonDown="LineClicked">
                             <DataGrid.ContextMenu>
                                 <ContextMenu>
@@ -198,15 +198,15 @@
                                    TextAlignment="Center"
                                    x:Name="ProductCountTxt" Margin="0,0,10,0"/>
                         <Button x:Name="UpdateDataGridFromWeb" 
-                Grid.Column="0"
-                Grid.Row="1"
-                Content="Mettre à jour"
-                Height="30"
-                Width="180"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                FontSize="18" Click="UpdateDataGrid" Margin="0,10,0,0"/>
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Content="Mettre à jour"
+                                Height="30"
+                                Width="180"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                FontSize="18" Click="UpdateDataGrid" Margin="0,10,0,0"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Archives" Style="{DynamicResource TabItemStyle}" FontSize="20">
