@@ -67,10 +67,11 @@ namespace PriceTicker
                 var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
 
                 Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+                
                 Dispatcher.Invoke(new Action(() =>
                 {
                     ConfigGroupDataGrid.AutoGenerateColumns = false;
-
+                    ProductCountTxt.Text = "Nombre de produits : " + ProductsInDb.Count.ToString();
 
                     IEnumerable _bind = sortedProducts.Select(product => new
                     {
@@ -383,10 +384,11 @@ namespace PriceTicker
             var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
 
             Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+            
             Dispatcher.Invoke(new Action(() =>
             {
                 ConfigGroupDataGrid.AutoGenerateColumns = false;
-                
+                ProductCountTxt.Text = "Nombre de produits : " + ProductsInDb.Count.ToString();
 
                 IEnumerable _bind = sortedProducts.Select(product => new
                 {
@@ -432,7 +434,7 @@ namespace PriceTicker
             ProgressTextBlock.Visibility = Visibility.Hidden;
         }
 
-        public void insertPcAndComposantsInDb(List<Models.PcGamer> productsList)
+        public void insertPcAndComposantsInDb(List<Models.PcGamer> productList)
         {
             for (int i = 0; i < productList.Count; i++)
             {
@@ -948,8 +950,6 @@ namespace PriceTicker
                         }
                     }
 
-                    
-
                 }
             }
         }
@@ -1422,6 +1422,7 @@ namespace PriceTicker
             worker.ProgressChanged += worker_ProgressChanged;
             worker.RunWorkerAsync();
         }
+
     }
 
         
