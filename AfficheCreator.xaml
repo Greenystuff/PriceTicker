@@ -192,7 +192,6 @@
                         </DataGrid>
                         <TextBlock Grid.Row="1"
                                    HorizontalAlignment="Right"
-                                   Text="ta mère !!"
                                    Height="30"
                                    Foreground="Black"
                                    VerticalAlignment="Bottom"
