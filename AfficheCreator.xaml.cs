@@ -50,19 +50,19 @@ namespace PriceTicker
             TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
             if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
             }
             if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
             }
             if (Interval.Days == 0 && Interval.Hours != 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Hours + " heures et " + Interval.Minutes + ")";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Hours + " heures et " + Interval.Minutes + ")";
             }
             if (Interval.Days != 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
             }
         }
 
@@ -117,19 +117,19 @@ namespace PriceTicker
                     TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
                     if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
                     {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
                     }
                     if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
                     {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() +"/"+ LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
                     }
                     if (Interval.Days == 0 && Interval.Hours != 0)
                     {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Hours + " heures et "+ Interval.Minutes + " minutes)";
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Hours + " heures et "+ Interval.Minutes + " minutes)";
                     }
                     if (Interval.Days != 0)
                     {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
                     }
                     
                     
@@ -457,7 +457,7 @@ namespace PriceTicker
                 DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
                 int timeDifference = (int)Math.Round(DateTime.Now.Subtract(LastUpdate).TotalSeconds);
 
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + timeDifference + " secondes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + timeDifference + " secondes)";
             }), DispatcherPriority.SystemIdle);
 
             
