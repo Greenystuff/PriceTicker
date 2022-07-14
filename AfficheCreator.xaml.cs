@@ -1264,11 +1264,11 @@ namespace PriceTicker
 
         private void OpenURLinNav(object sender, RoutedEventArgs e)
         {
-            string IdJajaSelected = ConfigGroupDataGrid.SelectedItem.ToString();
-            List<long> IdJajaSelectedList = FindIdNumbers(IdJajaSelected);
-            IdJajaSelected = IdJajaSelectedList.First().ToString();
+            string LineSelected = ConfigGroupDataGrid.SelectedItem.ToString();
+            List<long> IdConfigSelectedList = FindIdNumbers(LineSelected);
+            LineSelected = IdConfigSelectedList.First().ToString();
             Models.PcGamer product = new();
-            product = databaseManager.SelectPcGamerByID(int.Parse(IdJajaSelected));
+            product = databaseManager.SelectPcGamerByID(int.Parse(LineSelected));
             
             string url = product.getWebLink();
             ProcessStartInfo sInfo = new ProcessStartInfo(url)
@@ -1487,16 +1487,37 @@ namespace PriceTicker
             
         }
 
-        private void LineClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            
-        }
-
         private void LineSelected(object sender, SelectionChangedEventArgs e)
         {
-            string IdSelected = ConfigGroupDataGrid.SelectedItem.ToString();
-            Debug.WriteLine("Id sélectionné : " + IdSelected);
-            
+            string LineSelected = ConfigGroupDataGrid.SelectedItem.ToString();
+            List<long> IdConfigSelectedList = FindIdNumbers(LineSelected);
+            Models.PcGamer product = new();
+            product = databaseManager.SelectPcGamerByID(int.Parse(IdConfigSelectedList.First().ToString()));
+
+            CraftPoster(product.getName(),
+                product.getBoitier(),
+                product.getCarteMere(),
+                product.getProcesseur(),
+                product.getRam(),
+                product.getCarteGraphique(),
+                product.getDisqueSsd(),
+                product.getAlimentation(),
+                product.getSystemeExploitation(),
+                product.getPrixBarre().ToString(),
+                product.getPrix().ToString());
+
+            Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = AfficheUri;
+            _image.EndInit();
+            imgAffiche.Source = _image;
+
         }
 
         private void UpdateDataGrid(object sender, RoutedEventArgs e)
@@ -1512,19 +1533,16 @@ namespace PriceTicker
             worker.RunWorkerAsync();
         }
 
-        private void LineclickedUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void LineClickedUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            DataGrid dg = sender as DataGrid;
-            if (dg == null)
-                return;
-            if (dg.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.VisibleWhenSelected)
+            if (sender is DataGrid dataGrid &&
+       e.OriginalSource is FrameworkElement frameworkElement &&
+       frameworkElement.DataContext == dataGrid.SelectedItem)
             {
-                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
-
-            }
-            else
-            {
-                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
+                if (dataGrid.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.VisibleWhenSelected)
+                    dataGrid.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
+                else
+                    dataGrid.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
             }
         }
     }
