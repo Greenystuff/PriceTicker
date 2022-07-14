@@ -50,11 +50,10 @@ namespace PriceTicker
             if (worker != null)
             {
                 worker.CancelAsync();
-
             }
         }
 
-        void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e)
         {
             DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
 
@@ -528,7 +527,7 @@ namespace PriceTicker
             }
         }
 
-        public void insertPcAndComposantsInDb(List<Models.PcGamer> productList)
+        private void insertPcAndComposantsInDb(List<Models.PcGamer> productList)
         {
             for (int i = 0; i < productList.Count; i++)
             {
@@ -721,7 +720,7 @@ namespace PriceTicker
             }
         }
 
-        public void CompareComposantsWithWeb(List<int> IdsPCSaved, List<int> IdsPCWeb, List<Models.PcGamer> productList)
+        private void CompareComposantsWithWeb(List<int> IdsPCSaved, List<int> IdsPCWeb, List<Models.PcGamer> productList)
         {
             for (int i = 0; i < IdsPCWeb.Count; i++)
             {
@@ -1048,7 +1047,7 @@ namespace PriceTicker
             }
         }
 
-        public void CompareWebwithDbAndInsertNews(List<Models.PcGamer> productsList, List<int> IdsPCSaved)
+        private void CompareWebwithDbAndInsertNews(List<Models.PcGamer> productsList, List<int> IdsPCSaved)
         {
             for (int i = 0; i < productList.Count; i++)
             {
@@ -1266,8 +1265,7 @@ namespace PriceTicker
         private void OpenURLinNav(object sender, RoutedEventArgs e)
         {
             string IdJajaSelected = ConfigGroupDataGrid.SelectedItem.ToString();
-            List<long> IdJajaSelectedList = new List<long>();
-            IdJajaSelectedList = FindIdNumbers(IdJajaSelected);
+            List<long> IdJajaSelectedList = FindIdNumbers(IdJajaSelected);
             IdJajaSelected = IdJajaSelectedList.First().ToString();
             Models.PcGamer product = new();
             product = databaseManager.SelectPcGamerByID(int.Parse(IdJajaSelected));
@@ -1491,18 +1489,14 @@ namespace PriceTicker
 
         private void LineClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            DataGrid dg = sender as DataGrid;
-            if (dg == null)
-                return;
-            if (dg.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.VisibleWhenSelected)
-            {
-                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
+            
+        }
 
-            }
-            else
-            {
-                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
-            }
+        private void LineSelected(object sender, SelectionChangedEventArgs e)
+        {
+            string IdSelected = ConfigGroupDataGrid.SelectedItem.ToString();
+            Debug.WriteLine("Id sélectionné : " + IdSelected);
+            
         }
 
         private void UpdateDataGrid(object sender, RoutedEventArgs e)
@@ -1518,6 +1512,21 @@ namespace PriceTicker
             worker.RunWorkerAsync();
         }
 
+        private void LineclickedUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataGrid dg = sender as DataGrid;
+            if (dg == null)
+                return;
+            if (dg.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.VisibleWhenSelected)
+            {
+                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
+
+            }
+            else
+            {
+                dg.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
+            }
+        }
     }
 
         
