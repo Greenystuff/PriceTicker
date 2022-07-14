@@ -264,6 +264,14 @@
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
+            <TextBlock x:Name="LastUpdateDate"
+                       Grid.Column="0"
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Center"
+                       Margin="10,0,0,0"
+                       >
+                
+            </TextBlock>
             <TextBlock
                    Panel.ZIndex="90"
                    Grid.Column="1"

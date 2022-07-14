@@ -37,6 +37,33 @@ namespace PriceTicker
             databaseManager.CreateTables();
             databaseManager.CloseDbConnection();
             ScrapWebsite();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+
+            TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
+            if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
+            {
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
+            }
+            if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
+            {
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
+            }
+            if (Interval.Days == 0 && Interval.Hours != 0)
+            {
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Hours + " heures et " + Interval.Minutes + ")";
+            }
+            if (Interval.Days != 0)
+            {
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+            }
         }
 
         private void ScrapWebsite()
@@ -85,6 +112,27 @@ namespace PriceTicker
                         ram = product.getRam(),
 
                     });
+
+                    DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+                    TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
+                    if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
+                    {
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
+                    }
+                    if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
+                    {
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
+                    }
+                    if (Interval.Days == 0 && Interval.Hours != 0)
+                    {
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Hours + " heures et "+ Interval.Minutes + " minutes)";
+                    }
+                    if (Interval.Days != 0)
+                    {
+                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                    }
+                    
+                    
 
                     ConfigGroupDataGrid.ItemsSource = _bind;
                 }), DispatcherPriority.SystemIdle);
@@ -404,8 +452,17 @@ namespace PriceTicker
                 });
 
                 ConfigGroupDataGrid.ItemsSource = _bind;
+                Settings.Default.LastUpdateDate = DateTime.Now;
+                Properties.Settings.Default.Save();
+                DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+                int timeDifference = (int)Math.Round(DateTime.Now.Subtract(LastUpdate).TotalSeconds);
+
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToString() + " (Il y a " + timeDifference + " secondes)";
             }), DispatcherPriority.SystemIdle);
+
             
+
+
             worker.ReportProgress(100, "Mise à jour terminée !");
 
         }
