@@ -28,6 +28,8 @@ namespace PriceTicker
 
         List<Models.PcGamer> productList = new List<Models.PcGamer>();
         DatabaseManager databaseManager = new DatabaseManager();
+        DispatcherTimer timer = new DispatcherTimer();
+        private BackgroundWorker? worker = null;
 
         public AfficheCreator()
         {
@@ -37,10 +39,19 @@ namespace PriceTicker
             databaseManager.CreateTables();
             databaseManager.CloseDbConnection();
             ScrapWebsite();
-            DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            timer.Stop();
+            if (worker != null)
+            {
+                worker.CancelAsync();
+
+            }
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -50,19 +61,19 @@ namespace PriceTicker
             TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
             if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Seconds + " secondes)";
             }
             if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Minutes + " minutes)";
             }
             if (Interval.Days == 0 && Interval.Hours != 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Hours + " heures et " + Interval.Minutes + ")";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
             }
             if (Interval.Days != 0)
             {
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
             }
         }
 
@@ -76,6 +87,7 @@ namespace PriceTicker
                 BackgroundWorker worker = new();
                 worker.RunWorkerCompleted += worker_RunWorkerCompleted;
                 worker.WorkerReportsProgress = true;
+                worker.WorkerSupportsCancellation = true;
                 worker.DoWork += worker_DoWork;
                 worker.ProgressChanged += worker_ProgressChanged;
                 worker.RunWorkerAsync();
@@ -114,22 +126,25 @@ namespace PriceTicker
                     });
 
                     DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
-                    TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
-                    if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
+                    if (LastUpdate.Date.ToShortDateString() != "01/01/0001")
                     {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Seconds + " secondes)";
-                    }
-                    if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
-                    {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() +"/"+ LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Minutes + " minutes)";
-                    }
-                    if (Interval.Days == 0 && Interval.Hours != 0)
-                    {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Hours + " heures et "+ Interval.Minutes + " minutes)";
-                    }
-                    if (Interval.Days != 0)
-                    {
-                        LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                        TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
+                        if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
+                        {
+                            LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Seconds + " secondes)";
+                        }
+                        if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes != 0)
+                        {
+                            LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Minutes + " minutes)";
+                        }
+                        if (Interval.Days == 0 && Interval.Hours != 0)
+                        {
+                            LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                        }
+                        if (Interval.Days != 0)
+                        {
+                            LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
+                        }
                     }
                     
                     
@@ -154,12 +169,19 @@ namespace PriceTicker
             HtmlWeb webPageAllProducts = new HtmlWeb();
             var ProductsHtmlDoc = webPageAllProducts.Load(ProductsWebAdress);
 
-            var worker = sender as BackgroundWorker;
+            worker = sender as BackgroundWorker;
             worker.ReportProgress(0, String.Format("Chargement en cours... 0 %"));
             HtmlNodeCollection listArticlesNodes = ProductsHtmlDoc.DocumentNode.SelectNodes("//article");
             int productNbr = listArticlesNodes.Count;
             for (int i = 0; i < productNbr; i++)
             {
+
+                if (worker.CancellationPending)
+                {
+                    // Cancel operation gracefully e.g., do some cleanup, free resources etc.
+                    break;
+                }
+
                 var h2Nodes = listArticlesNodes[i].Descendants("h2");
                 var productLink = listArticlesNodes[i].SelectSingleNode("a").Attributes["href"].Value;
 
@@ -381,113 +403,129 @@ namespace PriceTicker
                 int roundValeur = (int)Math.Round(valeur);
 
                 worker.ReportProgress(roundValeur, String.Format("Chargement en cours... " + valeur + " %", i+2));
-                
+
+
             }
-            
-            // La base de données ne contient pas de données donc on INSERT toutes les configs.
-            if (!databaseManager.CheckIfTableContainsData("PcGamer"))
+
+            if (!worker.CancellationPending)
             {
-                insertPcAndComposantsInDb(productList);
+
+                // La base de données ne contient pas de données donc on INSERT toutes les configs.
+                if (!databaseManager.CheckIfTableContainsData("PcGamer"))
+                {
+                    insertPcAndComposantsInDb(productList);
+                }
+                else
+                {
+                    // Cas où la base de données contient déjà des données.
+                    List<int> IdsPCSaved = new();
+                    List<int> IdsPCWeb = new();
+                    IdsPCSaved = databaseManager.SelectAllIdPcGamer();
+
+                    for (int i = 0; i < productList.Count; i++)
+                    {
+                        IdsPCWeb.Add(productList[i].getIdConfig());
+                    }
+
+                    // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
+                    CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
+
+                    // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
+                    for (int i = 0; i < IdsPCSaved.Count; i++)
+                    {
+                        if (!IdsPCWeb.Contains(IdsPCSaved[i]))
+                        {
+                            Debug.WriteLine("Le PC \"" + databaseManager.SelectPcGamerByID(IdsPCSaved[i]).getName() + "\" n'existe plus sur internet mais est présent dans la base de données. Archivage de la config... \r");
+                            databaseManager.DeleteByID(IdsPCSaved[i]);
+                            //Faire le code pour achiver la config parce qu'elle a disparut d'internet.
+                        }
+                    }
+
+                    // Vérifie si un composant a changé.
+                    CompareComposantsWithWeb(IdsPCSaved, IdsPCWeb, productList);
+                }
+
+                List<Models.PcGamer> ProductsInDb = new();
+                List<int> newIdsPCSaved = new();
+                newIdsPCSaved = databaseManager.SelectAllIdPcGamer();
+
+                for (int i = 0; i < newIdsPCSaved.Count; i++)
+                {
+                    ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
+                }
+
+                var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
+
+                Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    ConfigGroupDataGrid.AutoGenerateColumns = false;
+                    ProductCountTxt.Text = "Nombre de produits : " + ProductsInDb.Count.ToString();
+
+                    IEnumerable _bind = sortedProducts.Select(product => new
+                    {
+
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        prixBarre = product.getPrixBarre(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    ConfigGroupDataGrid.ItemsSource = _bind;
+                    Settings.Default.LastUpdateDate = DateTime.Now;
+                    Properties.Settings.Default.Save();
+                    DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+                    int timeDifference = (int)Math.Round(DateTime.Now.Subtract(LastUpdate).TotalSeconds);
+
+                    LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + timeDifference + " secondes)";
+                }), DispatcherPriority.SystemIdle);
+
+                worker.ReportProgress(100, "Mise à jour terminée !");
+
             }
             else
             {
-                // Cas où la base de données contient déjà des données.
-                List<int> IdsPCSaved = new();
-                List<int> IdsPCWeb = new();
-                IdsPCSaved = databaseManager.SelectAllIdPcGamer();
-
-                for (int i = 0; i < productList.Count; i++)
-                {
-                    IdsPCWeb.Add(productList[i].getIdConfig());
-                }
-
-                // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
-                CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
-
-                // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
-                for (int i = 0; i < IdsPCSaved.Count; i++) 
-                {
-                    if (!IdsPCWeb.Contains(IdsPCSaved[i]))
-                    {
-                        Debug.WriteLine("Le PC \"" + databaseManager.SelectPcGamerByID(IdsPCSaved[i]).getName() + "\" n'existe plus sur internet mais est présent dans la base de données. Archivage de la config... \r");
-                        databaseManager.DeleteByID(IdsPCSaved[i]);
-                        //Faire le code pour achiver la config parce qu'elle a disparut d'internet.
-                    }
-                }
-
-                // Vérifie si un composant a changé.
-                CompareComposantsWithWeb(IdsPCSaved, IdsPCWeb, productList);
+                Debug.WriteLine("Tâche asynchrone annulée !!");
+                worker.Dispose();
+                worker = null;
             }
 
-            List<Models.PcGamer> ProductsInDb = new();
-            List<int> newIdsPCSaved = new();
-            newIdsPCSaved = databaseManager.SelectAllIdPcGamer();
-
-            for(int i = 0; i < newIdsPCSaved.Count; i++)
-            {
-                ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
-            }
-
-            var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
-
-            Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
-            
-            Dispatcher.Invoke(new Action(() =>
-            {
-                ConfigGroupDataGrid.AutoGenerateColumns = false;
-                ProductCountTxt.Text = "Nombre de produits : " + ProductsInDb.Count.ToString();
-
-                IEnumerable _bind = sortedProducts.Select(product => new
-                {
-                    
-                    name = product.getName(),
-                    prix = product.getPrix(),
-                    prixBarre = product.getPrixBarre(),
-                    boitier = product.getBoitier(),
-                    carteMere = product.getCarteMere(),
-                    processeur = product.getProcesseur(),
-                    carteGraphique = product.getCarteGraphique(),
-                    ram = product.getRam(),
-
-                });
-
-                ConfigGroupDataGrid.ItemsSource = _bind;
-                Settings.Default.LastUpdateDate = DateTime.Now;
-                Properties.Settings.Default.Save();
-                DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
-                int timeDifference = (int)Math.Round(DateTime.Now.Subtract(LastUpdate).TotalSeconds);
-
-                LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.Day.ToString() + "/" + LastUpdate.Month.ToString() + "/" + LastUpdate.Year.ToString() + " à " + LastUpdate.Hour.ToString() + ":" + LastUpdate.Minute.ToString() + " (Il y a " + timeDifference + " secondes)";
-            }), DispatcherPriority.SystemIdle);
 
             
-
-
-            worker.ReportProgress(100, "Mise à jour terminée !");
+            
 
         }
 
         private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-            CraftPoster(productList[0].getName(), productList[0].getBoitier(), productList[0].getCarteMere(), productList[0].getProcesseur(), productList[0].getRam(), productList[0].getCarteGraphique(), productList[0].getDisqueSsd(), productList[0].getAlimentation(), productList[0].getSystemeExploitation(), productList[0].getPrixBarre().ToString(), productList[0].getPrix().ToString());
+            if (worker != null)
+            {
+                CraftPoster(productList[0].getName(), productList[0].getBoitier(), productList[0].getCarteMere(), productList[0].getProcesseur(), productList[0].getRam(), productList[0].getCarteGraphique(), productList[0].getDisqueSsd(), productList[0].getAlimentation(), productList[0].getSystemeExploitation(), productList[0].getPrixBarre().ToString(), productList[0].getPrix().ToString());
 
-            Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
+                Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
 
-            BitmapImage _image = new();
-            _image.BeginInit();
-            _image.CacheOption = BitmapCacheOption.None;
-            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
-            _image.CacheOption = BitmapCacheOption.OnLoad;
-            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            _image.UriSource = AfficheUri;
-            _image.EndInit();
-            imgAffiche.Source = _image;
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = AfficheUri;
+                _image.EndInit();
+                imgAffiche.Source = _image;
 
 
-            ProgressBar.Value = 0;
-            ProgressBar.Visibility = Visibility.Hidden;
-            ProgressTextBlock.Text = "";
-            ProgressTextBlock.Visibility = Visibility.Hidden;
+                ProgressBar.Value = 0;
+                ProgressBar.Visibility = Visibility.Hidden;
+                ProgressTextBlock.Text = "";
+                ProgressTextBlock.Visibility = Visibility.Hidden;
+            }
         }
 
         public void insertPcAndComposantsInDb(List<Models.PcGamer> productList)
@@ -1474,6 +1512,7 @@ namespace PriceTicker
             BackgroundWorker worker = new();
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
             worker.DoWork += worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
             worker.RunWorkerAsync();

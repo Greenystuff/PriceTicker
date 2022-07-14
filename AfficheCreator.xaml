@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PriceTicker"
         mc:Ignorable="d"
+        Closing="Window_Closed"
         Title="Créateur d'affiches" Height="800" Width="1400" MinHeight="800" MinWidth="1400">
     <Window.Resources>
         <!-- Colors -->
