@@ -46,6 +46,8 @@ namespace PriceTicker
             timer.Start();
         }
 
+
+
         private void Window_Closed(object sender, EventArgs e)
         {
             timer.Stop();
@@ -1552,10 +1554,10 @@ namespace PriceTicker
                 if (row != null)
                 {
                     row.IsSelected = !row.IsSelected;
-
                     e.Handled = true;
                 }
             }
+            
         }
 
         public static Parent FindVisualParent<Parent>(DependencyObject child) where Parent : DependencyObject
@@ -1587,6 +1589,4 @@ namespace PriceTicker
 
 
     }
-
-        
 }
