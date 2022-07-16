@@ -1489,8 +1489,6 @@ namespace PriceTicker
             
         }
 
-       
-
         private void LineSelected(object sender, SelectionChangedEventArgs e)
         {
 

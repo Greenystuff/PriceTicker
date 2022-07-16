@@ -143,7 +143,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <DataGrid SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                        <DataGrid x:Name="ConfigGroupDataGrid" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular"  ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                                   RowDetailsVisibilityMode="VisibleWhenSelected"  AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="LineSelected">
                             <DataGrid.Resources>
                                 <Style TargetType="{x:Type DataGridCell}">
@@ -214,52 +214,66 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Archives" Style="{DynamicResource TabItemStyle}" FontSize="20">
-                    <DataGrid x:Name="ArchiveDataGrid" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}"  ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
-                      RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="LineSelected">
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
-                            <DataGridTextColumn Width="0.60*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                            <DataGridTextColumn Width="0.20*" Header="Prix Barré" Binding="{Binding prixBarre, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                            <DataGridTextColumn Width="0.20*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                        </DataGrid.Columns>
-                        <DataGrid.RowDetailsTemplate>
-                            <DataTemplate >
-                                <Border BorderThickness="0" Padding="10">
-                                    <WrapPanel HorizontalAlignment="Center" Width="700" VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal" >
-                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
-                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                        </StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="ArchiveDataGrid" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                                  RowDetailsVisibilityMode="VisibleWhenSelected"  AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="LineSelected">
+                            <DataGrid.Resources>
+                                <Style TargetType="{x:Type DataGridCell}">
+                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DoSelectedRow"/>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
+                                <DataGridTextColumn Width="0.60*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                                <DataGridTextColumn Width="0.20*" Header="Prix Barré" Binding="{Binding prixBarre, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                                <DataGridTextColumn Width="0.20*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate >
+                                    <Border BorderThickness="0" Padding="10">
+                                        <WrapPanel HorizontalAlignment="Center" Width="700" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" >
+                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
+                                                <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                            </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
-                                            <TextBlock  Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                        </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                                <TextBlock  Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                            </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
-                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
-                                        </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
+                                                <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
+                                            </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
-                                            <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                        </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
+                                                <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                            </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
-                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
-                                            <TextBlock  Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </WrapPanel>
-                                </Border>
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>
-                    </DataGrid>
+                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
+                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
+                                                <TextBlock  Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </WrapPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                        </DataGrid>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </DockPanel>
