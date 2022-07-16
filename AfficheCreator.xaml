@@ -144,7 +144,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <DataGrid SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" x:Name="ConfigGroupDataGrid" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
-                                  RowDetailsVisibilityMode="VisibleWhenSelected"  AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="LineSelected" MouseLeftButtonUp="LineClickedUp">
+                                  RowDetailsVisibilityMode="VisibleWhenSelected"  AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="LineSelected">
                             <DataGrid.Resources>
                                 <Style TargetType="{x:Type DataGridCell}">
                                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DoSelectedRow"/>

@@ -1545,13 +1545,6 @@ namespace PriceTicker
             worker.RunWorkerAsync();
         }
 
-        private void LineClickedUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-             
-         
-        
-        }
-
         public void DoSelectedRow(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             DataGridCell cell = sender as DataGridCell;
