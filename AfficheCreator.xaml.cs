@@ -1559,6 +1559,7 @@ namespace PriceTicker
                 }
             }
         }
+
         public static Parent FindVisualParent<Parent>(DependencyObject child) where Parent : DependencyObject
         {
             DependencyObject parentObject = child;
