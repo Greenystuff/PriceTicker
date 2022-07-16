@@ -17,6 +17,8 @@ using System.Net.Cache;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -464,7 +466,7 @@ namespace PriceTicker
 
                     IEnumerable _bind = sortedProducts.Select(product => new
                     {
-
+                        id = product.getIdConfig(),
                         name = product.getName(),
                         prix = product.getPrix(),
                         prixBarre = product.getPrixBarre(),
@@ -1422,30 +1424,30 @@ namespace PriceTicker
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                 
-                graphics.DrawString("PC monté", IntroFont, Brushes.Black, rectIntro, IntroFormat);
-                graphics.DrawString(Libelle, NameFont, Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString("PC monté", IntroFont, System.Drawing.Brushes.Black, rectIntro, IntroFormat);
+                graphics.DrawString(Libelle, NameFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
 
-                graphics.DrawString("Boîtier", CategorieFont, Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
-                graphics.DrawString("Carte mère", CategorieFont, Brushes.Gray, rectCategorieCM, CategorieCMFormat);
-                graphics.DrawString("Processeur", CategorieFont, Brushes.Gray, rectCategorieProc, CategorieProcFormat);
-                graphics.DrawString("Mémoire vive", CategorieFont, Brushes.Gray, rectCategorieRam, CategorieRamFormat);
-                graphics.DrawString("Carte graphique", CategorieFont, Brushes.Gray, rectCategorieCG, CategorieCGFormat);
-                graphics.DrawString("Stockage", CategorieFont, Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
-                graphics.DrawString("Alimentation", CategorieFont, Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
-                graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
+                graphics.DrawString("Boîtier", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
+                graphics.DrawString("Carte mère", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCM, CategorieCMFormat);
+                graphics.DrawString("Processeur", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieProc, CategorieProcFormat);
+                graphics.DrawString("Mémoire vive", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieRam, CategorieRamFormat);
+                graphics.DrawString("Carte graphique", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCG, CategorieCGFormat);
+                graphics.DrawString("Stockage", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
+                graphics.DrawString("Alimentation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
+                graphics.DrawString("Système d'exploitation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieOS, CategorieOSFormat);
 
-                graphics.DrawString(Boitier, CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
-                graphics.DrawString(CarteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
-                graphics.DrawString(Processeur, CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
-                graphics.DrawString(RAM, CaracFont, Brushes.Black, rectCaracRam, CaracRamFormat);
-                graphics.DrawString(CG, CaracFont, Brushes.Black, rectCaracCG, CaracCGFormat);
-                graphics.DrawString(Stockage, CaracFont, Brushes.Black, rectCaracStockage, CaracStockageFormat);
-                graphics.DrawString(Alim, CaracFont, Brushes.Black, rectCaracAlim, CaracAlimFormat);
-                graphics.DrawString(OS, CaracFont, Brushes.Black, rectCaracOS, CaracOSFormat);
+                graphics.DrawString(Boitier, CaracFont, System.Drawing.Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
+                graphics.DrawString(CarteMere, CaracFont, System.Drawing.Brushes.Black, rectCaracCM, CaracCMFormat);
+                graphics.DrawString(Processeur, CaracFont, System.Drawing.Brushes.Black, rectCaracProc, CaracProcFormat);
+                graphics.DrawString(RAM, CaracFont, System.Drawing.Brushes.Black, rectCaracRam, CaracRamFormat);
+                graphics.DrawString(CG, CaracFont, System.Drawing.Brushes.Black, rectCaracCG, CaracCGFormat);
+                graphics.DrawString(Stockage, CaracFont, System.Drawing.Brushes.Black, rectCaracStockage, CaracStockageFormat);
+                graphics.DrawString(Alim, CaracFont, System.Drawing.Brushes.Black, rectCaracAlim, CaracAlimFormat);
+                graphics.DrawString(OS, CaracFont, System.Drawing.Brushes.Black, rectCaracOS, CaracOSFormat);
 
                 if(PrixBarre != "0")
                 {
-                    graphics.DrawString(PrixBarre + " €", PrixBarreFont, Brushes.Gray, rectPrixBarre, PrixBarreFormat);
+                    graphics.DrawString(PrixBarre + " €", PrixBarreFont, System.Drawing.Brushes.Gray, rectPrixBarre, PrixBarreFormat);
                 }else
                 {
                     PrixFormat.Alignment = StringAlignment.Center;
@@ -1453,7 +1455,7 @@ namespace PriceTicker
                     rectPrix = new(0, 840, bitmap.Width, 100);
                 }
                 
-                graphics.DrawString(Prix + " €", PrixFont, Brushes.Red, rectPrix, PrixFormat);
+                graphics.DrawString(Prix + " €", PrixFont, System.Drawing.Brushes.Red, rectPrix, PrixFormat);
 
                 graphics.DrawImage(bitmapLogo, RectLogo);
 
@@ -1487,37 +1489,47 @@ namespace PriceTicker
             
         }
 
+       
+
         private void LineSelected(object sender, SelectionChangedEventArgs e)
         {
-            string LineSelected = ConfigGroupDataGrid.SelectedItem.ToString();
-            List<long> IdConfigSelectedList = FindIdNumbers(LineSelected);
-            Models.PcGamer product = new();
-            product = databaseManager.SelectPcGamerByID(int.Parse(IdConfigSelectedList.First().ToString()));
 
-            CraftPoster(product.getName(),
-                product.getBoitier(),
-                product.getCarteMere(),
-                product.getProcesseur(),
-                product.getRam(),
-                product.getCarteGraphique(),
-                product.getDisqueSsd(),
-                product.getAlimentation(),
-                product.getSystemeExploitation(),
-                product.getPrixBarre().ToString(),
-                product.getPrix().ToString());
+            DataGrid grid = (DataGrid)sender;
+            dynamic selected_row = grid.SelectedItem;
+            if (selected_row != null)
+            {
+                string LineSelected = ConfigGroupDataGrid.SelectedItem.ToString();
+                List<long> IdConfigSelectedList = FindIdNumbers(LineSelected);
+                Models.PcGamer product = new();
+                product = databaseManager.SelectPcGamerByID(int.Parse(IdConfigSelectedList.First().ToString()));
 
-            Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
+                CraftPoster(product.getName(),
+                    product.getBoitier(),
+                    product.getCarteMere(),
+                    product.getProcesseur(),
+                    product.getRam(),
+                    product.getCarteGraphique(),
+                    product.getDisqueSsd(),
+                    product.getAlimentation(),
+                    product.getSystemeExploitation(),
+                    product.getPrixBarre().ToString(),
+                    product.getPrix().ToString());
 
-            BitmapImage _image = new();
-            _image.BeginInit();
-            _image.CacheOption = BitmapCacheOption.None;
-            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
-            _image.CacheOption = BitmapCacheOption.OnLoad;
-            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            _image.UriSource = AfficheUri;
-            _image.EndInit();
-            imgAffiche.Source = _image;
+                Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
 
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = AfficheUri;
+                _image.EndInit();
+                imgAffiche.Source = _image;
+            }
+
+
+            
         }
 
         private void UpdateDataGrid(object sender, RoutedEventArgs e)
@@ -1535,17 +1547,54 @@ namespace PriceTicker
 
         private void LineClickedUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (sender is DataGrid dataGrid &&
-       e.OriginalSource is FrameworkElement frameworkElement &&
-       frameworkElement.DataContext == dataGrid.SelectedItem)
+             
+         
+        
+        }
+
+        public void DoSelectedRow(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataGridCell cell = sender as DataGridCell;
+            if (cell != null && !cell.IsEditing)
             {
-                if (dataGrid.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.VisibleWhenSelected)
-                    dataGrid.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
-                else
-                    dataGrid.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
+                DataGridRow row = FindVisualParent<DataGridRow>(cell);
+                if (row != null)
+                {
+                    row.IsSelected = !row.IsSelected;
+
+                    e.Handled = true;
+                }
             }
         }
+        public static Parent FindVisualParent<Parent>(DependencyObject child) where Parent : DependencyObject
+        {
+            DependencyObject parentObject = child;
+
+            while (!((parentObject is System.Windows.Media.Visual)
+                    || (parentObject is System.Windows.Media.Media3D.Visual3D)))
+            {
+                if (parentObject is Parent || parentObject == null)
+                {
+                    return parentObject as Parent;
+                }
+                else
+                {
+                    parentObject = (parentObject as FrameworkContentElement).Parent;
+                }
+            }
+            parentObject = VisualTreeHelper.GetParent(parentObject);
+            if (parentObject is Parent || parentObject == null)
+            {
+                return parentObject as Parent;
+            }
+            else
+            {
+                return FindVisualParent<Parent>(parentObject);
+            }
+        }
+
+
     }
 
         
-    }
+}
