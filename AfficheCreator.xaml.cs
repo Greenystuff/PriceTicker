@@ -207,6 +207,41 @@ namespace PriceTicker
             }
         }
 
+        private void ArchiveLineSelected(object sender, SelectionChangedEventArgs e)
+        {
+            DataGrid grid = (DataGrid)sender;
+            dynamic selected_row = grid.SelectedItem;
+            if (selected_row != null)
+            {
+                string LineSelected = ArchiveDataGrid.SelectedItem.ToString();
+                List<long> IdConfigSelectedList = FindIdNumbers(LineSelected);
+                Models.PcGamer product = new();
+                product = databaseManager.SelectArchivedPcGamerByID(int.Parse(IdConfigSelectedList.First().ToString()));
 
+                ticketCrafter.CraftPoster(product.getName(),
+                    product.getBoitier(),
+                    product.getCarteMere(),
+                    product.getProcesseur(),
+                    product.getRam(),
+                    product.getCarteGraphique(),
+                    product.getDisqueSsd(),
+                    product.getAlimentation(),
+                    product.getSystemeExploitation(),
+                    product.getPrixBarre().ToString(),
+                    product.getPrix().ToString());
+
+                Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = AfficheUri;
+                _image.EndInit();
+                imgAffiche.Source = _image;
+            }
+        }
     }
 }

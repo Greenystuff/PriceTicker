@@ -49,9 +49,19 @@ namespace PriceTicker
                     ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
                 }
 
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                List<int> newArchivedIdsPCSaved = new();
+                newArchivedIdsPCSaved = databaseManager.SelectAllIdPcGamerArchived();
+                for (int i = 0; i < newArchivedIdsPCSaved.Count; i++)
+                {
+                    ArchiveProductsInDb.Add(databaseManager.SelectArchivedPcGamerByID(newArchivedIdsPCSaved[i]));
+                }
+
                 var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
 
                 Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+                Debug.WriteLine("Nombre d'éléments archivés : " + ArchiveProductsInDb.Count);
 
                 AfficheCreator.gui.Dispatcher.Invoke(new Action(() =>
                 {
@@ -72,7 +82,26 @@ namespace PriceTicker
 
                     });
 
-                    DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+                    AfficheCreator.gui.ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    AfficheCreator.gui.ArchiveDataGrid.ItemsSource = _bindArchives;
+
+                    DateTime LastUpdate = Settings.Default.LastUpdateDate;
                     if (LastUpdate.Date.ToShortDateString() != "01/01/0001")
                     {
                         TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
@@ -377,7 +406,7 @@ namespace PriceTicker
                     // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
                     dataBaseUpdater.CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
                     //Test :
-                    //IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
+                    IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
                     // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
                     for (int i = 0; i < IdsPCSaved.Count; i++)
                     {
@@ -405,9 +434,19 @@ namespace PriceTicker
                     ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
                 }
 
-                var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                List<int> newArchivedIdsPCSaved = new();
+                newArchivedIdsPCSaved = databaseManager.SelectAllIdPcGamerArchived();
+                for (int i = 0; i < newArchivedIdsPCSaved.Count; i++)
+                {
+                    ArchiveProductsInDb.Add(databaseManager.SelectArchivedPcGamerByID(newArchivedIdsPCSaved[i]));
+                }
 
-                Debug.WriteLine("Nombre d'éléments : " + ProductsInDb.Count);
+                var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                
+                Debug.WriteLine("Nombre d'éléments actuels : " + ProductsInDb.Count);
+                Debug.WriteLine("Nombre d'éléments archivés : " + ArchiveProductsInDb.Count);
 
                 AfficheCreator.gui.Dispatcher.Invoke(new Action(() =>
                 {
@@ -435,6 +474,27 @@ namespace PriceTicker
                     int timeDifference = (int)Math.Round(DateTime.Now.Subtract(LastUpdate).TotalSeconds);
 
                     AfficheCreator.gui.LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + timeDifference + " secondes)";
+
+                    AfficheCreator.gui.ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    AfficheCreator.gui.ArchiveDataGrid.ItemsSource = _bindArchives;
+
+
                 }), DispatcherPriority.SystemIdle);
 
                 worker.ReportProgress(100, "Mise à jour terminée !");

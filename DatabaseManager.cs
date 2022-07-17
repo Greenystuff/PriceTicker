@@ -57,7 +57,7 @@ namespace PriceTicker
             dbConnection.Close();
         }
 
-        public void InsertPCGamer(int idPcGamer ,string name, string prix, string prixBarre, string webLink, DateTime dateEntree)
+        public void InsertPCGamer(int idPcGamer ,string name, string prix, string prixBarre, string webLink)
         {
             string insertQuery = "INSERT INTO PcGamer(IdPcGamer,Name,Prix,PrixBarre,WebLink,DateEntree)"
                                 + "VALUES('"
@@ -66,7 +66,6 @@ namespace PriceTicker
                                 + prix + "','"
                                 + prixBarre + "','"
                                 + webLink + "',"
-                                //+ dateEntree + "');";
                                 + "date('now'));";
             CreateDbConnection();
             ExecuteQuery(insertQuery);
@@ -275,6 +274,22 @@ namespace PriceTicker
             return IdPcGamer;
         }
 
+        public List<int> SelectAllIdPcGamerArchived()
+        {
+            string select = "SELECT IdPcGamer FROM ArchivesPcGamer";
+            CreateDbConnection();
+            SQLiteDataReader reader = ExecuteQueryWithReturn(select);
+            List<int> IdPcGamer = new();
+            while (reader.Read())
+            {
+                IdPcGamer.Add(int.Parse(reader["IdPcGamer"].ToString()));
+            }
+            reader.Close();
+
+            CloseDbConnection();
+            return IdPcGamer;
+        }
+
         public Models.PcGamer SelectPcGamerByID(int IdConfig)
         {
             Models.PcGamer PcGamer = new();
@@ -289,7 +304,7 @@ namespace PriceTicker
                 PcGamer.setPrix(decimal.Parse(PcGamerReader["Prix"].ToString()));
                 PcGamer.setPrixBarre(decimal.Parse(PcGamerReader["PrixBarre"].ToString()));
                 PcGamer.setWebLink(PcGamerReader["WebLink"].ToString());
-                PcGamer.setDateEntree(DateTime.ParseExact(PcGamerReader["DateEntree"].ToString().Replace("00:00:00","").Trim(), @"dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                PcGamer.setDateEntree(DateTime.Parse(PcGamerReader["DateEntree"].ToString()));
 
             }
             PcGamerReader.Close();
@@ -318,6 +333,120 @@ namespace PriceTicker
                 while (ComposantReader.Read())
                 {
                     if(ComposantReader["TypeComposant"].ToString() == "Boîtier")
+                    {
+                        PcGamer.setBoitier(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Accessoire de boîtier")
+                    {
+                        PcGamer.setAccessoireBoitier(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Ventilateurs")
+                    {
+                        PcGamer.setVentilateurBoitier(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Processeur")
+                    {
+                        PcGamer.setProcesseur(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Ventirad")
+                    {
+                        PcGamer.setVentirad(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Watercooling")
+                    {
+                        PcGamer.setWaterCooling(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Carte mère")
+                    {
+                        PcGamer.setCarteMere(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Carte Graphique")
+                    {
+                        PcGamer.setCarteGraphique(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Accessoire de Carte Graphique")
+                    {
+                        PcGamer.setAccessoireCarteGraphique(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Mémoire vive")
+                    {
+                        PcGamer.setRam(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "SSD")
+                    {
+                        PcGamer.setDisqueSsd(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "HDD")
+                    {
+                        PcGamer.setDisqueSupplementaire(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Carte réseau")
+                    {
+                        PcGamer.setCarteReseau(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Alimentation")
+                    {
+                        PcGamer.setAlimentation(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Accessoire alimentation")
+                    {
+                        PcGamer.setAccessoireAlimentation(ComposantReader["NomComposant"].ToString());
+                    }
+                    if (ComposantReader["TypeComposant"].ToString() == "Système exploitation")
+                    {
+                        PcGamer.setSystemeExploitation(ComposantReader["NomComposant"].ToString());
+                    }
+                }
+                ComposantReader.Close();
+                CloseDbConnection();
+            }
+            return PcGamer;
+        }
+
+        public Models.PcGamer SelectArchivedPcGamerByID(int IdConfig)
+        {
+            Models.PcGamer PcGamer = new();
+            PcGamer.setIdConfig(IdConfig);
+            string selectPcGamer = "SELECT Name,Prix,PrixBarre,WebLink,DateEntree,DateSortie FROM ArchivesPcGamer WHERE IdPcGamer=" + IdConfig;
+            CreateDbConnection();
+            SQLiteDataReader PcGamerReader = ExecuteQueryWithReturn(selectPcGamer);
+
+            while (PcGamerReader.Read())
+            {
+                PcGamer.setName(PcGamerReader["Name"].ToString());
+                PcGamer.setPrix(decimal.Parse(PcGamerReader["Prix"].ToString()));
+                PcGamer.setPrixBarre(decimal.Parse(PcGamerReader["PrixBarre"].ToString()));
+                PcGamer.setWebLink(PcGamerReader["WebLink"].ToString());
+                PcGamer.setDateEntree(DateTime.ParseExact(PcGamerReader["DateEntree"].ToString().Trim(), @"dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture));
+                PcGamer.setDateSortie(DateTime.ParseExact(PcGamerReader["DateSortie"].ToString().Trim(), @"dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture));
+
+            }
+            PcGamerReader.Close();
+            CloseDbConnection();
+
+
+
+            string selectIdComposant = "SELECT IdComposant FROM ArchivesComposantsPcGamer WHERE IdPcGamer=" + IdConfig;
+            CreateDbConnection();
+            SQLiteDataReader ComposantPcGamerReader = ExecuteQueryWithReturn(selectIdComposant);
+            List<int> idComposants = new();
+
+            while (ComposantPcGamerReader.Read())
+            {
+                idComposants.Add(int.Parse(ComposantPcGamerReader["IdComposant"].ToString()));
+            }
+            ComposantPcGamerReader.Close();
+            CloseDbConnection();
+
+
+            for (int i = 0; i < idComposants.Count; i++)
+            {
+                string selectComposants = "SELECT TypeComposant,NomComposant FROM Composants WHERE IdComposant=" + idComposants[i];
+                CreateDbConnection();
+                SQLiteDataReader ComposantReader = ExecuteQueryWithReturn(selectComposants);
+                while (ComposantReader.Read())
+                {
+                    if (ComposantReader["TypeComposant"].ToString() == "Boîtier")
                     {
                         PcGamer.setBoitier(ComposantReader["NomComposant"].ToString());
                     }
@@ -440,9 +569,8 @@ namespace PriceTicker
             Models.PcGamer pcGamer = SelectPcGamerByID(rowID);
             bool archivePcGamerSucced = false;
 
-
-            string dateEntree = pcGamer.getDateEntree().ToString();
-            string dateSortie = DateTime.Now.ToString();
+            string dateEntree = pcGamer.getDateEntree().ToString("yyyy-MM-dd");
+            string dateSortie = "date('now')";
             string insertQuery = "INSERT INTO ArchivesPcGamer(IdPcGamer,Name,Prix,PrixBarre,WebLink,DateEntree,DateSortie)"
                                 + "VALUES('"
                                 + pcGamer.getIdConfig() + "','"
@@ -450,8 +578,8 @@ namespace PriceTicker
                                 + pcGamer.getPrix().ToString() + "','"
                                 + pcGamer.getPrixBarre().ToString() + "','"
                                 + pcGamer.getWebLink() + "','"
-                                + dateEntree + "','"
-                                + dateSortie + "');";
+                                + dateEntree + "',"
+                                + dateSortie + ");";
             CreateDbConnection();
             try
             {
@@ -493,8 +621,8 @@ namespace PriceTicker
                                     + "VALUES('"
                                     + pcGamer.getIdConfig() + "','"
                                     + composantsPcGamer[i] + "','"
-                                    + dateEntree + "','"
-                                    + dateSortie + "');";
+                                    + dateEntree + "',"
+                                    + dateSortie + ");";
                     CreateDbConnection();
                     ExecuteQuery(insertComposantQuery);
                     CloseDbConnection();
