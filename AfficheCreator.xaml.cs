@@ -36,8 +36,6 @@ namespace PriceTicker
             timer.Start();
         }
 
-
-
         private void Window_Closed(object sender, EventArgs e)
         {
             timer.Stop();

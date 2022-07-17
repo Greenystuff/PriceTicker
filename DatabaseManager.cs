@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
@@ -52,6 +51,7 @@ namespace PriceTicker
             command = dbConnection.CreateCommand();
             return dbConnection;
         }
+
         public void CloseDbConnection()
         {
             dbConnection.Close();
@@ -102,7 +102,6 @@ namespace PriceTicker
             
         }
 
-
         public void InsertPcGamerComposants(int idPcGamer, string nomPcGamer, int idComposants, string typeComposant, string nomComposant)
         {
             string insertQuery = "INSERT INTO ComposantsPcGamer(IdPcGamer,NomPcGamer,IdComposant,TypeComposant,NomComposant)"
@@ -116,16 +115,6 @@ namespace PriceTicker
             CreateDbConnection();
             ExecuteQuery(insertQuery);
             CloseDbConnection();
-        }
-
-        public int GetLastIDPcGamerComposants(string TypeComposant, string NomComposant)
-        {
-            string insertQuery = "SELECT IdComposant FROM Composants WHERE TypeComposant='"+ TypeComposant + "'" 
-                + " AND NomComposant='"+ NomComposant + "'"+";";
-            CreateDbConnection();
-            int lastID = ExecuteQueryWithIntReturn(insertQuery);
-            CloseDbConnection();
-            return lastID;
         }
 
         public void CreateTables()
@@ -258,6 +247,16 @@ namespace PriceTicker
             CreateDbConnection();
             ExecuteQuery(cmd);
             CloseDbConnection();
+        }
+
+        public int GetLastIDPcGamerComposants(string TypeComposant, string NomComposant)
+        {
+            string insertQuery = "SELECT IdComposant FROM Composants WHERE TypeComposant='" + TypeComposant + "'"
+                + " AND NomComposant='" + NomComposant + "'" + ";";
+            CreateDbConnection();
+            int lastID = ExecuteQueryWithIntReturn(insertQuery);
+            CloseDbConnection();
+            return lastID;
         }
 
         public List<int> SelectAllIdPcGamer()

@@ -289,7 +289,7 @@
                         <Button x:Name="creerAfficheBtn" Content="Créer une nouvelle affiche"
                                 HorizontalAlignment="center"
                                 Grid.Column="2"
-                                Width="270" Click="nouvelleAffiche" 
+                                Width="270" Click="NouvelleAffiche" 
                                 />
                         <Button x:Name="A4btnReset" Content="Reset" Click="ResetWallDatas"
                                 Grid.Column="3"

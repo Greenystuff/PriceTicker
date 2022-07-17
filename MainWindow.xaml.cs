@@ -236,7 +236,7 @@ namespace PriceTicker
             logsWindow.Show();
         }
 
-        private void nouvelleAffiche(object sender, RoutedEventArgs e)
+        private void NouvelleAffiche(object sender, RoutedEventArgs e)
         {
             AfficheCreator creator = new AfficheCreator();
             creator.Owner = this;
