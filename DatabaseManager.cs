@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
@@ -10,7 +11,7 @@ using System.Windows.Threading;
 
 namespace PriceTicker
 {
-    internal class DatabaseManager
+    internal class DatabaseManager 
     {
 
         SQLiteConnection dbConnection;
@@ -64,8 +65,9 @@ namespace PriceTicker
                                 + name + "','"
                                 + prix + "','"
                                 + prixBarre + "','"
-                                + webLink + "','"
-                                + dateEntree + "');";
+                                + webLink + "',"
+                                //+ dateEntree + "');";
+                                + "date('now'));";
             CreateDbConnection();
             ExecuteQuery(insertQuery);
             CloseDbConnection();
@@ -179,7 +181,7 @@ namespace PriceTicker
                 ExecuteQuery(sqlCommand);
             }
 
-            /*if (!CheckIfExist("ArchivesPcGamer"))
+            if (!CheckIfExist("ArchivesPcGamer"))
             {
                 sqlCommand = "CREATE TABLE ArchivesPcGamer("
                              + "IdPcGamer INTEGER,"
@@ -193,40 +195,18 @@ namespace PriceTicker
                              + ");";
                 ExecuteQuery(sqlCommand);
             }
-            if (!CheckIfExist("ArchivesComposants"))
-            {
-                sqlCommand = "CREATE TABLE ArchivesComposants("
-                             + "IdComposant INTEGER PRIMARY KEY AUTOINCREMENT,"
-                             + "TypeComposant TEXT CHECK(TypeComposant IN ( 'Boîtier',"
-                                                                            +"'Accessoire de boîtier',"
-                                                                            +"'Ventilateurs',"
-                                                                            +"'Processeur',"
-                                                                            +"'Ventirad',"
-                                                                            +"'Watercooling',"
-                                                                            +"'Carte mère',"
-                                                                            +"'Carte Graphique',"
-                                                                            +"'Accessoire de Carte Graphique',"
-                                                                            +"'Mémoire vive',"
-                                                                            +"'SSD',"
-                                                                            +"'HDD',"
-                                                                            +"'Carte réseau',"
-                                                                            +"'Alimentation',"
-                                                                            +"'Accessoire alimentation',"
-                                                                            +"'Système Exploitation',"
-                                                                            +") ) NOT NULL,"
-                             + "NomComposant NVARCHAR(100) NOT NULL"
-                             + ");";
-                ExecuteQuery(sqlCommand);
-            }
+            
             if (!CheckIfExist("ArchivesComposantsPcGamer"))
             {
                 sqlCommand = "CREATE TABLE ArchivesComposantsPcGamer("
-                             + "Id INTEGER PRIMARY KEY AUTOINCREMENT,"
                              + "IdPcGamer INTEGER,"
-                             + "IdComposant INTEGER"
+                             + "IdComposant INTEGER,"
+                             + "DateEntree DATETIME,"
+                             + "DateSortie DATETIME,"
+                             + "PRIMARY KEY ('IdPcGamer','IdComposant','DateEntree','DateSortie')"
                              + ");";
                 ExecuteQuery(sqlCommand);
-            }*/
+            }
         }
 
         public bool CheckIfExist(string tableName)
@@ -275,7 +255,6 @@ namespace PriceTicker
         public void DeletePcGamer()
         {
             string cmd = "DELETE FROM PcGamer";
-            CreateDbFile();
             CreateDbConnection();
             ExecuteQuery(cmd);
             CloseDbConnection();
@@ -301,7 +280,7 @@ namespace PriceTicker
         {
             Models.PcGamer PcGamer = new();
             PcGamer.setIdConfig(IdConfig);
-            string selectPcGamer = "SELECT Name,Prix,PrixBarre,WebLink FROM PcGamer WHERE IdPcGamer=" + IdConfig;
+            string selectPcGamer = "SELECT Name,Prix,PrixBarre,WebLink,DateEntree FROM PcGamer WHERE IdPcGamer=" + IdConfig;
             CreateDbConnection();
             SQLiteDataReader PcGamerReader = ExecuteQueryWithReturn(selectPcGamer);
 
@@ -311,6 +290,8 @@ namespace PriceTicker
                 PcGamer.setPrix(decimal.Parse(PcGamerReader["Prix"].ToString()));
                 PcGamer.setPrixBarre(decimal.Parse(PcGamerReader["PrixBarre"].ToString()));
                 PcGamer.setWebLink(PcGamerReader["WebLink"].ToString());
+                PcGamer.setDateEntree(DateTime.ParseExact(PcGamerReader["DateEntree"].ToString().Replace("00:00:00","").Trim(), @"dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture));
+
             }
             PcGamerReader.Close();
             CloseDbConnection();
@@ -411,7 +392,6 @@ namespace PriceTicker
         public void UpdatePcGamerByID(int idConfig, string type, string value)
         {
             string insertQuery = "UPDATE PcGamer SET '" + type + "' = '" + value + "' WHERE IdPcGamer = " + idConfig + ";";
-            CreateDbFile();
             CreateDbConnection();
             ExecuteQuery(insertQuery);
             CloseDbConnection();
@@ -420,8 +400,7 @@ namespace PriceTicker
         public void UpdatePcGamerComposantByID(int idPcGamer, string nomPcGamer, int idComposant, string typeComposant, string nomComposant)
         {
             
-                string insertQuery = "UPDATE ComposantsPcGamer SET NomPcGamer ='" + nomPcGamer + "',IdComposant=" + idComposant + ",NomComposant='" + nomComposant + "' WHERE IdPcGamer = " + idPcGamer + " AND TypeComposant ='" + typeComposant + "';";
-                CreateDbFile();
+                string insertQuery = "UPDATE ComposantsPcGamer SET NomPcGamer ='" + nomPcGamer + "',IdComposant=" + idComposant + ",NomComposant='" + nomComposant + "' WHERE IdPcGamer = " + idPcGamer + " AND TypeComposant ='" + typeComposant + "';"; 
                 CreateDbConnection();
                 ExecuteQuery(insertQuery);
                 CloseDbConnection();
@@ -430,7 +409,7 @@ namespace PriceTicker
 
         public int FindComposantIdByName(string name)
         {
-            string selectIdComposant = "SELECT IdComposant FROM Composants WHERE NomComposant='" + name+"';";
+            string selectIdComposant = "SELECT IdComposant FROM Composants WHERE NomComposant='" + name + "';";
             CreateDbConnection();
             SQLiteDataReader ComposantReader = ExecuteQueryWithReturn(selectIdComposant);
             int idComposant = -1;
@@ -444,13 +423,87 @@ namespace PriceTicker
             return idComposant;
         }
 
-        public void DeleteByID(int rowID)
+        public void DeleteConfigByID(int rowID)
         {
             string cmd = "DELETE FROM PcGamer WHERE IdPcGamer=" + rowID;
-            CreateDbFile();
             CreateDbConnection();
             ExecuteQuery(cmd);
             CloseDbConnection();
+
+            cmd = "DELETE FROM ComposantsPcGamer WHERE IdPcGamer=" + rowID;
+            CreateDbConnection();
+            ExecuteQuery(cmd);
+            CloseDbConnection();
+        }
+
+        public bool ArchiveConfigByID(int rowID)
+        {
+            Models.PcGamer pcGamer = SelectPcGamerByID(rowID);
+
+            string dateEntree = pcGamer.getDateEntree().ToString();
+            string dateSortie = DateTime.Now.ToString();
+            string insertQuery = "INSERT INTO ArchivesPcGamer(IdPcGamer,Name,Prix,PrixBarre,WebLink,DateEntree,DateSortie)"
+                                + "VALUES('"
+                                + pcGamer.getIdConfig() + "','"
+                                + pcGamer.getName() + "','"
+                                + pcGamer.getPrix().ToString() + "','"
+                                + pcGamer.getPrixBarre().ToString() + "','"
+                                + pcGamer.getWebLink() + "','"
+                                + dateEntree + "','"
+                                + dateSortie + "');";
+            CreateDbConnection();
+            try
+            {
+                ExecuteQuery(insertQuery);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("Erreur lors de l'insertion de l'archive du PC Gamer : " + ex.Message);
+            }
+            
+            CloseDbConnection();
+
+
+
+            string selectQuery = "SELECT * FROM ComposantsPcGamer WHERE IdPcGamer = " + rowID;
+            CreateDbConnection();
+            SQLiteDataReader dataReader = ExecuteQueryWithReturn(selectQuery);
+
+            //DataTable ComposantsPcGamerDataTable =  new DataTable();
+            //ComposantsPcGamerDataTable.Load(dataReader);
+
+            
+
+            List<int> composantsPcGamer = new List<int>();
+            int index = 0;
+
+            while (dataReader.Read())
+            {
+                composantsPcGamer.Add(int.Parse(dataReader["IdComposant"].ToString()));
+                Debug.WriteLine("Id composant trouvé : " + composantsPcGamer[index]);
+                index++;
+            }
+
+            dataReader.Close();
+            CloseDbConnection();
+
+            /* Insertion dans la table d'archives */
+            for (int i = 0; i < composantsPcGamer.Count();i++)
+            {
+                string insertComposantQuery = "INSERT INTO ArchivesComposantsPcGamer(IdPcGamer,IdComposant,DateEntree,DateSortie)"
+                                + "VALUES('"
+                                + pcGamer.getIdConfig() + "','"
+                                + composantsPcGamer[i] + "','"
+                                + dateEntree + "','"
+                                + dateSortie + "');";
+                CreateDbConnection();
+                ExecuteQuery(insertComposantQuery);
+                CloseDbConnection();
+            }
+
+            //nbComposants
+
+            return true;
         }
 
     }

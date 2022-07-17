@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PriceTicker"
         mc:Ignorable="d"
         Closing="Window_Closed"
-        Title="Créateur d'affiches" Height="800" Width="1400" MinHeight="800" MinWidth="1400">
+        Title="Créateur d'affiches" Height="955" Width="1400" MinHeight="800" MinWidth="1400">
     <Window.Resources>
         <!-- Colors -->
         <SolidColorBrush x:Key="PrimaryBlackColor" Color="Black"/>
@@ -134,7 +134,7 @@
                HorizontalAlignment="Center"
                VerticalAlignment="Center"/>
         <DockPanel Grid.Column="0"  Margin="25,0,25,0" Grid.RowSpan="3">
-            <TabControl Style="{DynamicResource TabControlStyle}" Height="731">
+            <TabControl Style="{DynamicResource TabControlStyle}" Height="842">
                 <TabItem Header="Config du site" Style="{DynamicResource TabItemStyle}" FontSize="20">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -307,6 +307,7 @@
                                         </Setter>
                                     </Style>
                                 </DatePicker.Resources>
+                                
                             </DatePicker>
                             <DatePicker Grid.Row="1"
                                         Grid.Column="0"
@@ -335,7 +336,7 @@
                                         Grid.Column="1"
                                         Orientation="Vertical"
                                         VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
+                                        HorizontalAlignment="Center" Margin="0,0,0,15">
                                 <TextBlock Text="Libellé"
                                            Foreground="Black"
                                            HorizontalAlignment="Center"

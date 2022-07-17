@@ -432,15 +432,18 @@ namespace PriceTicker
 
                     // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
                     CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
-
+                    //Test :
+                    //IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
                     // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
                     for (int i = 0; i < IdsPCSaved.Count; i++)
                     {
                         if (!IdsPCWeb.Contains(IdsPCSaved[i]))
                         {
                             Debug.WriteLine("Le PC \"" + databaseManager.SelectPcGamerByID(IdsPCSaved[i]).getName() + "\" n'existe plus sur internet mais est présent dans la base de données. Archivage de la config... \r");
-                            databaseManager.DeleteByID(IdsPCSaved[i]);
-                            //Faire le code pour achiver la config parce qu'elle a disparut d'internet.
+                            bool isArchived = databaseManager.ArchiveConfigByID(IdsPCSaved[i]);
+                           if (isArchived) { 
+                               databaseManager.DeleteConfigByID(IdsPCSaved[i]);
+                           }
                         }
                     }
 
@@ -535,6 +538,9 @@ namespace PriceTicker
         {
             for (int i = 0; i < productList.Count; i++)
             {
+
+               
+
                 databaseManager.InsertPCGamer(
                     productList[i].getIdConfig(),
                     productList[i].getName(),

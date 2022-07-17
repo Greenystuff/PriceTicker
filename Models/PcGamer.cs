@@ -11,6 +11,10 @@ namespace PriceTicker.Models
     {
         private int idConfig = 0;
 
+        private DateTime dateEntree;
+
+        private DateTime dateSortie;
+
         private string name = "";
 
         private decimal prix = 0;
@@ -61,6 +65,26 @@ namespace PriceTicker.Models
         public void setIdConfig(int IdConfig)
         {
             this.idConfig = IdConfig;
+        }
+
+        public DateTime getDateEntree()
+        {
+            return dateEntree;
+        }
+
+        public void setDateEntree(DateTime DateEntree)
+        {
+            this.dateEntree = DateEntree;
+        }
+
+        public DateTime getDateSortie()
+        {
+            return dateSortie;
+        }
+
+        public void setDateSortie(DateTime DateSortie)
+        {
+            this.dateSortie = DateSortie;
         }
 
 
