@@ -42,9 +42,9 @@ namespace PriceTicker
         private void Window_Closed(object sender, EventArgs e)
         {
             timer.Stop();
-            if (worker != null)
+            if (scraping.worker != null)
             {
-                worker.CancelAsync();
+                scraping.worker.CancelAsync();
             }
         }
 
