@@ -15,6 +15,7 @@ namespace PriceTicker
 
         private static readonly Socket serverSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static readonly List<Socket> clientSockets = new();
+        XmlReader xmlReader = new();
         private const int BUFFER_SIZE = 2048;
         private const int PORT = 8095;
         private static readonly byte[] buffer = new byte[BUFFER_SIZE];
@@ -96,7 +97,7 @@ namespace PriceTicker
                 String[] datas = text.Split(";");
                 WriteLogs("ID reçu : " + datas[1]);
                 List<String> ProductSpecList = new List<String>();
-                ProductSpecList = MainWindow.gui.FindPriceById(datas[1], datas[0]);
+                ProductSpecList = xmlReader.FindPriceById(datas[1], datas[0]);
                 Debug.WriteLine("Type d'étiquette : " + datas[0]);
                 Debug.WriteLine("Id envoyé au client : " + ProductSpecList[0]);
                 Debug.WriteLine("Libellé envoyé au client : " + ProductSpecList[1]);

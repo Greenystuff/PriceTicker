@@ -177,5 +177,29 @@ namespace PriceTicker.Properties {
                 this["LastUpdateDate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PageSelected {
+            get {
+                return ((int)(this["PageSelected"]));
+            }
+            set {
+                this["PageSelected"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int RailPageSelected {
+            get {
+                return ((int)(this["RailPageSelected"]));
+            }
+            set {
+                this["RailPageSelected"] = value;
+            }
+        }
     }
 }

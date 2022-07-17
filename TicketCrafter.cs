@@ -7,15 +7,283 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace PriceTicker
 {
     internal class TicketCrafter
     {
+        public void InitUi()
+        {
+            MainWindow.gui.ValiderRecherche.IsEnabled = false;
+            MainWindow.gui.RailValiderRecherche.IsEnabled = false;
+
+
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + 1 + ".bmp"))
+            {
+                MainWindow.gui.btnPrecedent.Visibility = Visibility.Hidden;
+                MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
+                MainWindow.gui.pageNumber.Visibility = Visibility.Hidden;
+                MainWindow.gui.pageNumber.Text = Properties.Settings.Default.Pagenumber.ToString();
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+                Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.imgEtiquette.Source = _image;
+
+            }
+            else
+            {
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale2.bmp"))
+                {
+                    MainWindow.gui.btnPrecedent.Visibility = Visibility.Hidden;
+                    MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
+                    MainWindow.gui.pageNumber.Visibility = Visibility.Hidden;
+
+                }
+                else
+                {
+                    MainWindow.gui.btnPrecedent.Visibility = Visibility.Visible;
+                    MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
+                    MainWindow.gui.pageNumber.Visibility = Visibility.Visible;
+                }
+
+                
+                MainWindow.gui.pageNumber.Text = Properties.Settings.Default.Pagenumber.ToString();
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + Properties.Settings.Default.Pagenumber + ".bmp";
+                Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.imgEtiquette.Source = _image;
+            }
+
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + 1 + ".bmp"))
+            {
+                MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Hidden;
+                MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
+                MainWindow.gui.RailpageNumber.Visibility = Visibility.Hidden;
+                MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.PagenumberRail.ToString();
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+                Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.RailimgEtiquette.Source = _image;
+
+            }
+            else
+            {
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail2.bmp"))
+                {
+                    MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Hidden;
+                    MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
+                    MainWindow.gui.RailpageNumber.Visibility = Visibility.Hidden;
+
+                }
+                else
+                {
+                    MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Visible;
+                    MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
+                    MainWindow.gui.RailpageNumber.Visibility = Visibility.Visible;
+                }
+                
+                MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.RailPageSelected.ToString();
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + Properties.Settings.Default.PagenumberRail + ".bmp";
+                Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.RailimgEtiquette.Source = _image;
+            }
+        }
+
+        public void WallTicketCrafter(String IdJaja, String Libelle, String Prix)
+        {
+            Debug.WriteLine("Création de l'étiquette Murale...");
+            string PatronEtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_etiquette_murale.bmp";
+            string EtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Etiquette_Murale.bmp";
+            Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(PatronEtiquettePath);
+
+            StringFormat LibelleFormat = new();
+            LibelleFormat.Alignment = StringAlignment.Center;
+            LibelleFormat.LineAlignment = StringAlignment.Near;
+            Rectangle rectLibelle = new(0, 5, bitmap.Width, 35);
+
+            StringFormat PrixFormat = new();
+            PrixFormat.Alignment = StringAlignment.Center;
+            PrixFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectPrix = new(0, 5, bitmap.Width, 115);
+
+            StringFormat IdFormat = new();
+            IdFormat.Alignment = StringAlignment.Near;
+            IdFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectId = new(0, 90, bitmap.Width, 30);
+
+            StringFormat GarantieFormat = new();
+            GarantieFormat.Alignment = StringAlignment.Far;
+            GarantieFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectGarantie = new(0, 90, bitmap.Width, 30);
+
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                String garantie = "Garantie 2 ans";
+                using Font LibelleFont = new("Arial", 11);
+                using Font PrixFont = new("Arial", 24);
+                using Font IdFont = new("Arial", 12);
+                using Font GarantieFont = new("Arial", 10);
+
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.CompositingMode = CompositingMode.SourceOver;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+                graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
+                graphics.DrawString(IdJaja, IdFont, Brushes.Black, rectId, IdFormat);
+                graphics.DrawString(garantie, GarantieFont, Brushes.Black, rectGarantie, GarantieFormat);
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(0, 0), new System.Drawing.Point(0, bitmap.Height));
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(0, 0), new System.Drawing.Point(bitmap.Width, 0));
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(214, 0), new System.Drawing.Point(214, 214));
+                graphics.Dispose();
+            }
+
+            using (MemoryStream memory = new())
+            {
+                Bitmap bm = new(bitmap);
+                bitmap.Dispose();
+                using (FileStream fs = new(EtiquettePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    bm.Save(memory, ImageFormat.Bmp);
+                    byte[] bytes = memory.ToArray();
+                    fs.Write(bytes, 0, bytes.Length);
+                    fs.Close();
+                    fs.Dispose();
+
+                }
+                bm.Dispose();
+                memory.Close();
+                memory.Dispose();
+                bitmap.Dispose();
+                Debug.WriteLine("Étiquette Murale crée avec succès !");
+
+
+            }
+            WallPagesCrafter(EtiquettePath);
+
+        }
+
+        public void RailTicketCrafter(String IdJaja, String Libelle, String Prix)
+        {
+            Debug.WriteLine("Création de l'étiquette pour Rail...");
+            string PatronEtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_etiquette_rail.bmp";
+            string EtiquettePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Etiquette_Rail.bmp";
+            Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(PatronEtiquettePath);
+
+            StringFormat LibelleFormat = new();
+            LibelleFormat.Alignment = StringAlignment.Center;
+            LibelleFormat.LineAlignment = StringAlignment.Near;
+            Rectangle rectLibelle = new(0, 5, bitmap.Width, 30);
+
+            StringFormat PrixFormat = new();
+            PrixFormat.Alignment = StringAlignment.Center;
+            PrixFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectPrix = new(0, 5, bitmap.Width, 75);
+
+            StringFormat IdFormat = new();
+            IdFormat.Alignment = StringAlignment.Near;
+            IdFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectId = new(0, 48, bitmap.Width, 30);
+
+            StringFormat GarantieFormat = new();
+            GarantieFormat.Alignment = StringAlignment.Far;
+            GarantieFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectGarantie = new(0, 48, bitmap.Width, 30);
+
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                String garantie = "Garantie 2 ans";
+                using Font LibelleFont = new("Arial", 11);
+                using Font PrixFont = new("Arial", 20);
+                using Font IdFont = new("Arial", 12);
+                using Font GarantieFont = new("Arial", 10);
+
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.CompositingMode = CompositingMode.SourceOver;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+                graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
+                graphics.DrawString(IdJaja, IdFont, Brushes.Black, rectId, IdFormat);
+                graphics.DrawString(garantie, GarantieFont, Brushes.Black, rectGarantie, GarantieFormat);
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(0, 0), new System.Drawing.Point(0, bitmap.Height));
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(0, 0), new System.Drawing.Point(bitmap.Width, 00));
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(247, 0), new System.Drawing.Point(247, 247));
+                graphics.DrawLine(new Pen(Brushes.Black, 1), new System.Drawing.Point(247, 71), new System.Drawing.Point(0, 71));
+                graphics.Dispose();
+            }
+
+            using (MemoryStream memory = new())
+            {
+                Bitmap bm = new(bitmap);
+                bitmap.Dispose();
+                using (FileStream fs = new(EtiquettePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    bm.Save(memory, ImageFormat.Bmp);
+                    byte[] bytes = memory.ToArray();
+                    fs.Write(bytes, 0, bytes.Length);
+                    fs.Close();
+                    fs.Dispose();
+
+                }
+                bm.Dispose();
+                memory.Close();
+                memory.Dispose();
+                bitmap.Dispose();
+                Debug.WriteLine("Étiquette pour Rail crée avec succès !");
+
+
+            }
+            RailPagesCrafter(EtiquettePath);
+
+        }
 
         public void CraftPoster(string Libelle, string Boitier, string CarteMere, string Processeur, string RAM, string CG, string Stockage, string Alim, string OS, string PrixBarre, string Prix)
         {
@@ -219,6 +487,372 @@ namespace PriceTicker
                 bitmap.Dispose();
                 Debug.WriteLine("Affiche crée avec succès !");
             }
+
+        }
+
+        private void WallPagesCrafter(string EtiquettePath)
+        {
+
+            string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + Properties.Settings.Default.Pagenumber + ".bmp";
+            Bitmap bitmapFeuille = (Bitmap)System.Drawing.Image.FromFile(FeuilleFilePath);
+            Bitmap bitmapEtiquette = (Bitmap)System.Drawing.Image.FromFile(EtiquettePath);
+            Rectangle Etiquette = new(Properties.Settings.Default.nbColonnes * 215, Properties.Settings.Default.nbLignes * 155, bitmapEtiquette.Width, bitmapEtiquette.Height);
+
+            if (File.Exists(FeuilleFinalePath))
+            {
+                Debug.WriteLine("Mise à jour de la page " + Properties.Settings.Default.Pagenumber);
+                Bitmap bitmapFeuilleFinale = (Bitmap)System.Drawing.Image.FromFile(FeuilleFinalePath);
+                using (Graphics graphics = Graphics.FromImage(bitmapFeuilleFinale))
+                {
+                    graphics.DrawImage(bitmapEtiquette, Etiquette);
+                    graphics.Dispose();
+
+                }
+
+                using (MemoryStream memory = new())
+                {
+                    Bitmap bm = new(bitmapFeuilleFinale);
+                    bitmapFeuilleFinale.Dispose();
+                    using (FileStream fs = new(FeuilleFinalePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    {
+                        bm.Save(memory, ImageFormat.Bmp);
+                        byte[] bytes = memory.ToArray();
+                        fs.Write(bytes, 0, bytes.Length);
+                        fs.Close();
+                        fs.Dispose();
+
+                    }
+                    memory.Close();
+                    memory.Dispose();
+                    bm.Dispose();
+                }
+
+                bitmapFeuilleFinale.Dispose();
+                bitmapEtiquette.Dispose();
+            }
+            else
+            {
+                Debug.WriteLine("Création de la première page d'étiquettes");
+                using (Graphics graphics = Graphics.FromImage(bitmapFeuille))
+                {
+                    graphics.DrawImage(bitmapEtiquette, Etiquette);
+                    graphics.Dispose();
+
+                }
+                using Bitmap tempImage = new(bitmapFeuille);
+                tempImage.Save(FeuilleFinalePath, ImageFormat.Bmp);
+                tempImage.Dispose();
+                bitmapFeuille.Dispose();
+                bitmapEtiquette.Dispose();
+            }
+
+            
+            Properties.Settings.Default.nbColonnes++;
+            Properties.Settings.Default.nbEtiquettes++;
+            Properties.Settings.Default.OnPageNumber++;
+            Properties.Settings.Default.Save();
+            if (Properties.Settings.Default.nbColonnes == 3)
+            {
+                Properties.Settings.Default.nbColonnes = 0;
+                Properties.Settings.Default.nbLignes++;
+                Properties.Settings.Default.Save();
+            }
+
+            if (Properties.Settings.Default.OnPageNumber == 21)
+            {
+                Properties.Settings.Default.OnPageNumber = 0;
+                Properties.Settings.Default.PageSelected++;
+                
+                Properties.Settings.Default.Pagenumber++;
+                Properties.Settings.Default.nbColonnes = 0;
+                Properties.Settings.Default.nbLignes = 0;
+                Properties.Settings.Default.Save();
+            }
+            if (Properties.Settings.Default.nbEtiquettes > 21)
+            {
+                MainWindow.gui.btnPrecedent.Visibility = Visibility.Visible;
+                MainWindow.gui.btnSuivant.Visibility = Visibility.Visible;
+                MainWindow.gui.pageNumber.Visibility = Visibility.Visible;
+            }
+
+
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.imgEtiquette.Source = _image;
+            MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
+            MainWindow.gui.pageNumber.Text = Properties.Settings.Default.PageSelected.ToString();
+
+        }
+
+        private void RailPagesCrafter(string EtiquettePath)
+        {
+
+            string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + Properties.Settings.Default.PagenumberRail + ".bmp";
+            Bitmap bitmapFeuille = (Bitmap)System.Drawing.Image.FromFile(FeuilleFilePath);
+            Bitmap bitmapEtiquette = (Bitmap)System.Drawing.Image.FromFile(EtiquettePath);
+            Rectangle Etiquette = new(Properties.Settings.Default.nbColonnesRail * 249, Properties.Settings.Default.nbLignesRail * 73, bitmapEtiquette.Width, bitmapEtiquette.Height);
+
+            if (File.Exists(FeuilleFinalePath))
+            {
+                Debug.WriteLine("Mise à jour de la page pour Rail " + Properties.Settings.Default.PagenumberRail);
+                Bitmap bitmapFeuilleFinale = (Bitmap)System.Drawing.Image.FromFile(FeuilleFinalePath);
+                using (Graphics graphics = Graphics.FromImage(bitmapFeuilleFinale))
+                {
+                    graphics.DrawImage(bitmapEtiquette, Etiquette);
+                    graphics.Dispose();
+
+                }
+
+                using (MemoryStream memory = new())
+                {
+                    Bitmap bm = new(bitmapFeuilleFinale);
+                    bitmapFeuilleFinale.Dispose();
+                    using (FileStream fs = new(FeuilleFinalePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    {
+                        bm.Save(memory, ImageFormat.Bmp);
+                        byte[] bytes = memory.ToArray();
+                        fs.Write(bytes, 0, bytes.Length);
+                        fs.Close();
+                        fs.Dispose();
+
+                    }
+                    memory.Close();
+                    memory.Dispose();
+                    bm.Dispose();
+                }
+
+                bitmapFeuilleFinale.Dispose();
+                bitmapEtiquette.Dispose();
+            }
+            else
+            {
+                Debug.WriteLine("Création de la première page d'étiquettes pour rail");
+                using (Graphics graphics = Graphics.FromImage(bitmapFeuille))
+                {
+                    graphics.DrawImage(bitmapEtiquette, Etiquette);
+                    graphics.Dispose();
+
+                }
+                using Bitmap tempImage = new(bitmapFeuille);
+                tempImage.Save(FeuilleFinalePath, ImageFormat.Bmp);
+                tempImage.Dispose();
+                bitmapFeuille.Dispose();
+                bitmapEtiquette.Dispose();
+            }
+
+            Properties.Settings.Default.nbColonnesRail++;
+            Properties.Settings.Default.nbEtiquettesRail++;
+            Properties.Settings.Default.OnPageNumberRail++;
+            Properties.Settings.Default.Save();
+            if (Properties.Settings.Default.nbColonnesRail == 3)
+            {
+                Properties.Settings.Default.nbColonnesRail = 0;
+                Properties.Settings.Default.nbLignesRail++;
+                Properties.Settings.Default.Save();
+            }
+
+            if (Properties.Settings.Default.OnPageNumberRail == 42)
+            {
+                Properties.Settings.Default.OnPageNumberRail = 0;
+                Properties.Settings.Default.PagenumberRail++;
+                Properties.Settings.Default.RailPageSelected++;
+                Properties.Settings.Default.nbColonnesRail = 0;
+                Properties.Settings.Default.nbLignesRail = 0;
+                Properties.Settings.Default.Save();
+            }
+            if (Properties.Settings.Default.nbEtiquettesRail > 42)
+            {
+                MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Visible;
+                MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Visible;
+                MainWindow.gui.RailpageNumber.Visibility = Visibility.Visible;
+            }
+
+
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.RailimgEtiquette.Source = _image;
+            MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
+            MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.RailPageSelected.ToString();
+
+        }
+
+        public void setPreviousWallTicketPage()
+        {
+            Properties.Settings.Default.PageSelected--;
+            MainWindow.gui.pageNumber.Text = Properties.Settings.Default.PageSelected.ToString();
+            MainWindow.gui.btnSuivant.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + Properties.Settings.Default.PageSelected + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.imgEtiquette.Source = _image;
+            if (Properties.Settings.Default.PageSelected == 1)
+            {
+                MainWindow.gui.btnPrecedent.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void setNextWallTicketPage()
+        {
+            Properties.Settings.Default.PageSelected++;
+            MainWindow.gui.pageNumber.Text = Properties.Settings.Default.PageSelected.ToString();
+            MainWindow.gui.btnPrecedent.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + Properties.Settings.Default.PageSelected + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.imgEtiquette.Source = _image;
+            if (Properties.Settings.Default.PageSelected == Properties.Settings.Default.Pagenumber)
+            {
+                MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void setPreviousRailTicketPage()
+        {
+            Properties.Settings.Default.RailPageSelected--;
+            MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.RailPageSelected.ToString();
+            MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + Properties.Settings.Default.RailPageSelected + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.RailimgEtiquette.Source = _image;
+            if (Properties.Settings.Default.RailPageSelected == 1)
+            {
+                MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Hidden;
+            }
+        }
+                
+        public void setNextRailTicketPage()
+        {
+            Properties.Settings.Default.RailPageSelected++;
+            MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.RailPageSelected.ToString();
+            MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + Properties.Settings.Default.RailPageSelected + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.RailimgEtiquette.Source = _image;
+            if (Properties.Settings.Default.RailPageSelected == Properties.Settings.Default.PagenumberRail)
+            {
+                MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void ResetWallDatas()
+        {
+            for (int i = 1; i <= Properties.Settings.Default.Pagenumber; i++)
+            {
+                string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + i + ".bmp";
+                Debug.WriteLine("Page Murale " + i + " effacée");
+                File.Delete(FeuilleFinalePath);
+            }
+            Properties.Settings.Default.Pagenumber = 1;
+            Properties.Settings.Default.nbColonnes = 0;
+            Properties.Settings.Default.nbLignes = 0;
+            Properties.Settings.Default.nbEtiquettes = 0;
+            Properties.Settings.Default.PageSelected = 1;
+            Properties.Settings.Default.OnPageNumber = 0;
+            Properties.Settings.Default.Save();
+            MainWindow.gui.btnPrecedent.Visibility = Visibility.Hidden;
+            MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
+            MainWindow.gui.pageNumber.Visibility = Visibility.Hidden;
+
+
+            string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+            Uri lastPageUri = new(FeuilleFilePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.imgEtiquette.Source = _image;
+
+        }
+
+        public void ResetRailDatas()
+        {
+            for (int i = 1; i <= Properties.Settings.Default.PagenumberRail; i++)
+            {
+                string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + i + ".bmp";
+                Debug.WriteLine("Page Rail " + i + " effacée");
+                File.Delete(FeuilleFinalePath);
+            }
+            Properties.Settings.Default.PagenumberRail = 1;
+            Properties.Settings.Default.nbColonnesRail = 0;
+            Properties.Settings.Default.nbLignesRail = 0;
+            Properties.Settings.Default.nbEtiquettesRail = 0;
+            Properties.Settings.Default.PageSelected = 1;
+            Properties.Settings.Default.OnPageNumberRail = 0;
+            Properties.Settings.Default.Save();
+            MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Hidden;
+            MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
+            MainWindow.gui.RailpageNumber.Visibility = Visibility.Hidden;
+
+
+            string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+            Uri lastPageUri = new(FeuilleFilePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.RailimgEtiquette.Source = _image;
 
         }
 
