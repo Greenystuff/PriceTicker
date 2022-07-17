@@ -119,6 +119,9 @@ namespace PriceTicker
             worker.ReportProgress(0, String.Format("Chargement en cours... 0 %"));
             HtmlNodeCollection listArticlesNodes = ProductsHtmlDoc.DocumentNode.SelectNodes("//article");
             int productNbr = listArticlesNodes.Count;
+
+            Debug.WriteLine("Nombre de balises Article : " + productNbr);
+
             for (int i = 0; i < productNbr; i++)
             {
 
@@ -165,16 +168,15 @@ namespace PriceTicker
                 HtmlNodeCollection listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
                 HtmlNodeCollection prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
 
-                if (prixBarreNodes != null)
-                {
-                    if (prixBarreNodes.Last().InnerHtml.Contains("prix_total_sans_remise"))
+                
+                    if (prixBarreNodes.First().InnerHtml.Contains("prix_total_sans_remise"))
                     {
                         HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
                         string prix = prixNodes[0].InnerText.Replace("€", ",");
                         Product.setPrix(Decimal.Parse(prix));
                     }
 
-                    if (prixBarreNodes.Last().InnerHtml.Contains("prix-config-barre-sans-option"))
+                    if (prixBarreNodes.First().InnerHtml.Contains("prix-config-barre-sans-option"))
                     {
                         HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
                         string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
@@ -340,7 +342,7 @@ namespace PriceTicker
 
                     productList.Add(Product);
 
-                }
+                
 
                 Settings.Default.Save();
 
