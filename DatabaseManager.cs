@@ -66,7 +66,7 @@ namespace PriceTicker
                                 + prix + "','"
                                 + prixBarre + "','"
                                 + webLink + "',"
-                                + "date('now'));";
+                                + "datetime('now'));";
             CreateDbConnection();
             ExecuteQuery(insertQuery);
             CloseDbConnection();
@@ -569,8 +569,8 @@ namespace PriceTicker
             Models.PcGamer pcGamer = SelectPcGamerByID(rowID);
             bool archivePcGamerSucced = false;
 
-            string dateEntree = pcGamer.getDateEntree().ToString("yyyy-MM-dd");
-            string dateSortie = "date('now')";
+            string dateEntree = pcGamer.getDateEntree().ToString("yyyy-MM-dd HH:mm:ss");
+            string dateSortie = "datetime('now')";
             string insertQuery = "INSERT INTO ArchivesPcGamer(IdPcGamer,Name,Prix,PrixBarre,WebLink,DateEntree,DateSortie)"
                                 + "VALUES('"
                                 + pcGamer.getIdConfig() + "','"

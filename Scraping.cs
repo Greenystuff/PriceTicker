@@ -406,7 +406,7 @@ namespace PriceTicker
                     // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
                     dataBaseUpdater.CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
                     //Test :
-                    //IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
+                    IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
                     // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
                     for (int i = 0; i < IdsPCSaved.Count; i++)
                     {
