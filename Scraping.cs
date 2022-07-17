@@ -8,8 +8,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using System.Windows.Media.Imaging;
