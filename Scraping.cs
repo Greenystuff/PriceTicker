@@ -23,7 +23,7 @@ namespace PriceTicker
         DataBaseUpdater dataBaseUpdater = new DataBaseUpdater();
         TicketCrafter ticketCrafter = new TicketCrafter();
         List<Models.PcGamer> productList = new List<Models.PcGamer>();
-        private BackgroundWorker? worker = null;
+        public BackgroundWorker? worker = null;
 
         public void ScrapWebsite()
         {

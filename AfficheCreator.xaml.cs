@@ -61,7 +61,7 @@ namespace PriceTicker
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+            DateTime LastUpdate = Settings.Default.LastUpdateDate;
 
             TimeSpan Interval = DateTime.Now.Subtract(LastUpdate);
             if (Interval.Days == 0 && Interval.Hours == 0 && Interval.Minutes == 0)
@@ -170,13 +170,13 @@ namespace PriceTicker
 
             ProgressBar.Visibility = Visibility.Visible;
             ProgressTextBlock.Visibility = Visibility.Visible;
-            BackgroundWorker worker = new();
-            worker.RunWorkerCompleted += scraping.worker_RunWorkerCompleted;
-            worker.WorkerReportsProgress = true;
-            worker.WorkerSupportsCancellation = true;
-            worker.DoWork += scraping.worker_DoWork;
-            worker.ProgressChanged += scraping.worker_ProgressChanged;
-            worker.RunWorkerAsync();
+            scraping.worker = new();
+            scraping.worker.RunWorkerCompleted += scraping.worker_RunWorkerCompleted;
+            scraping.worker.WorkerReportsProgress = true;
+            scraping.worker.WorkerSupportsCancellation = true;
+            scraping.worker.DoWork += scraping.worker_DoWork;
+            scraping.worker.ProgressChanged += scraping.worker_ProgressChanged;
+            scraping.worker.RunWorkerAsync();
         }
 
         public void DoSelectedRow(object sender, System.Windows.Input.MouseButtonEventArgs e)
