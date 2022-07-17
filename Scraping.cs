@@ -196,6 +196,19 @@ namespace PriceTicker
                 HtmlDocument ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
                 HtmlNodeCollection listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
                 HtmlNodeCollection prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
+                if(prixBarreNodes == null)
+                {
+                    webPageProduct = new HtmlWeb();
+                    ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
+                    prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
+                }
+
+                if(listDescNodes == null)
+                {
+                    webPageProduct = new HtmlWeb();
+                    ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
+                    listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
+                }
 
                 
                     if (prixBarreNodes.First().InnerHtml.Contains("prix_total_sans_remise"))
@@ -406,7 +419,7 @@ namespace PriceTicker
                     // Vérifie si chacune des configs relevées sur internet sont présentes dans la base de données. Sinon on INSERT les nouvelles.
                     dataBaseUpdater.CompareWebwithDbAndInsertNews(productList, IdsPCSaved);
                     //Test :
-                    IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
+                    //IdsPCWeb.RemoveAt(IdsPCWeb.Count - 1);
                     // Vérifie si une config a disparu d'internet, et dans ce cas il faudra la virer de la table pour l'archiver dans la table des archives.
                     for (int i = 0; i < IdsPCSaved.Count; i++)
                     {
