@@ -18,7 +18,7 @@ namespace PriceTicker
         SQLiteCommand command;
         private string sqlCommand;
         string dbPath = Environment.CurrentDirectory + "\\DB";
-        private string dbFilePath;
+        string dbFilePath;
 
         public void CreateDbFile()
         {
@@ -37,6 +37,7 @@ namespace PriceTicker
 
         public string CreateDbConnection()
         {
+            dbFilePath = dbPath + "\\PC_Gamer.db";
             string strCon = string.Format("Data Source={0}", dbFilePath);
             dbConnection = new SQLiteConnection(strCon);
             dbConnection.Open();
@@ -46,6 +47,7 @@ namespace PriceTicker
 
         public SQLiteConnection Connection()
         {
+            dbFilePath = dbPath + "\\PC_Gamer.db";
             string strCon = string.Format("Data Source={0}", dbFilePath);
             dbConnection = new SQLiteConnection(strCon);
             dbConnection.Open();
@@ -468,10 +470,6 @@ namespace PriceTicker
             string selectQuery = "SELECT * FROM ComposantsPcGamer WHERE IdPcGamer = " + rowID;
             CreateDbConnection();
             SQLiteDataReader dataReader = ExecuteQueryWithReturn(selectQuery);
-
-            //DataTable ComposantsPcGamerDataTable =  new DataTable();
-            //ComposantsPcGamerDataTable.Load(dataReader);
-
             
 
             List<int> composantsPcGamer = new List<int>();
