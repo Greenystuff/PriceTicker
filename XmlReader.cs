@@ -11,12 +11,12 @@ namespace PriceTicker
     internal class XmlReader
     {
         TicketCrafter ticketCrafter = new();
-        String? IdJaja = "N/A";
-        String? Libelle = "Aucun Produit ne correspond à l'Id demandé";
-        String? Prix = "N/A";
 
         public List<String> FindPriceById(string Id, String typeEtiquette)
         {
+            String? IdJaja = "N/A";
+            String? Libelle = "Aucun Produit ne correspond à l'Id demandé";
+            String? Prix = "N/A";
 
             MainWindow.gui.Dispatcher.Invoke(new Action(() =>
             {
