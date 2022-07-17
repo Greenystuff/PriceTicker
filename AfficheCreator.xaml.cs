@@ -21,7 +21,6 @@ namespace PriceTicker
         Scraping scraping = new();
         TicketCrafter ticketCrafter = new TicketCrafter();
         DispatcherTimer timer = new DispatcherTimer();
-        private BackgroundWorker? worker = null;
 
         public AfficheCreator()
         {
