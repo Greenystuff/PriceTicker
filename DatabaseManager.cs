@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace PriceTicker
@@ -441,6 +442,8 @@ namespace PriceTicker
         public bool ArchiveConfigByID(int rowID)
         {
             Models.PcGamer pcGamer = SelectPcGamerByID(rowID);
+            bool archivePcGamerSucced = false;
+
 
             string dateEntree = pcGamer.getDateEntree().ToString();
             string dateSortie = DateTime.Now.ToString();
@@ -457,51 +460,56 @@ namespace PriceTicker
             try
             {
                 ExecuteQuery(insertQuery);
+                archivePcGamerSucced = true;
             }
             catch(Exception ex)
             {
-                Debug.WriteLine("Erreur lors de l'insertion de l'archive du PC Gamer : " + ex.Message);
+                MessageBox.Show("Erreur lors de l'insertion de l'archive du PC Gamer : " + ex.Message);
+                archivePcGamerSucced = false;
             }
             
             CloseDbConnection();
 
-
-
-            string selectQuery = "SELECT * FROM ComposantsPcGamer WHERE IdPcGamer = " + rowID;
-            CreateDbConnection();
-            SQLiteDataReader dataReader = ExecuteQueryWithReturn(selectQuery);
-            
-
-            List<int> composantsPcGamer = new List<int>();
-            int index = 0;
-
-            while (dataReader.Read())
+            if(archivePcGamerSucced)
             {
-                composantsPcGamer.Add(int.Parse(dataReader["IdComposant"].ToString()));
-                Debug.WriteLine("Id composant trouvé : " + composantsPcGamer[index]);
-                index++;
-            }
-
-            dataReader.Close();
-            CloseDbConnection();
-
-            /* Insertion dans la table d'archives */
-            for (int i = 0; i < composantsPcGamer.Count();i++)
-            {
-                string insertComposantQuery = "INSERT INTO ArchivesComposantsPcGamer(IdPcGamer,IdComposant,DateEntree,DateSortie)"
-                                + "VALUES('"
-                                + pcGamer.getIdConfig() + "','"
-                                + composantsPcGamer[i] + "','"
-                                + dateEntree + "','"
-                                + dateSortie + "');";
+                string selectQuery = "SELECT * FROM ComposantsPcGamer WHERE IdPcGamer = " + rowID;
                 CreateDbConnection();
-                ExecuteQuery(insertComposantQuery);
+                SQLiteDataReader dataReader = ExecuteQueryWithReturn(selectQuery);
+
+
+                List<int> composantsPcGamer = new List<int>();
+                int index = 0;
+
+                while (dataReader.Read())
+                {
+                    composantsPcGamer.Add(int.Parse(dataReader["IdComposant"].ToString()));
+                    Debug.WriteLine("Id composant trouvé : " + composantsPcGamer[index]);
+                    index++;
+                }
+
+                dataReader.Close();
                 CloseDbConnection();
+
+                /* Insertion dans la table d'archives */
+                for (int i = 0; i < composantsPcGamer.Count(); i++)
+                {
+                    string insertComposantQuery = "INSERT INTO ArchivesComposantsPcGamer(IdPcGamer,IdComposant,DateEntree,DateSortie)"
+                                    + "VALUES('"
+                                    + pcGamer.getIdConfig() + "','"
+                                    + composantsPcGamer[i] + "','"
+                                    + dateEntree + "','"
+                                    + dateSortie + "');";
+                    CreateDbConnection();
+                    ExecuteQuery(insertComposantQuery);
+                    CloseDbConnection();
+                }
             }
+
+            
 
             //nbComposants
 
-            return true;
+            return archivePcGamerSucced;
         }
 
     }

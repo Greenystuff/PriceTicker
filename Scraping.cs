@@ -27,7 +27,6 @@ namespace PriceTicker
 
         public void ScrapWebsite()
         {
-           
 
             if (!databaseManager.CheckIfTableContainsData("PcGamer"))
             {
@@ -431,8 +430,8 @@ namespace PriceTicker
 
                     AfficheCreator.gui.ConfigGroupDataGrid.ItemsSource = _bind;
                     Settings.Default.LastUpdateDate = DateTime.Now;
-                    Properties.Settings.Default.Save();
-                    DateTime LastUpdate = Properties.Settings.Default.LastUpdateDate;
+                    Settings.Default.Save();
+                    DateTime LastUpdate = Settings.Default.LastUpdateDate;
                     int timeDifference = (int)Math.Round(DateTime.Now.Subtract(LastUpdate).TotalSeconds);
 
                     AfficheCreator.gui.LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + timeDifference + " secondes)";
