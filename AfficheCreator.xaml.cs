@@ -66,6 +66,11 @@ namespace PriceTicker
             {
                 LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
             }
+
+            if(LastUpdate == DateTime.Parse("01/01/1970"))
+            {
+                LastUpdateDate.Text = "Dernière mise à jour : Jamais";
+            }
         }
 
         public static List<long> FindIdNumbers(string str)

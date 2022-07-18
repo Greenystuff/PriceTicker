@@ -203,13 +203,6 @@ namespace PriceTicker
                     prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
                 }
 
-                if(listDescNodes == null)
-                {
-                    webPageProduct = new HtmlWeb();
-                    ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
-                    listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
-                }
-
                 
                     if (prixBarreNodes.First().InnerHtml.Contains("prix_total_sans_remise"))
                     {
@@ -225,7 +218,14 @@ namespace PriceTicker
                         Product.setPrixBarre(Decimal.Parse(prixBarreStr));
                     }
 
-                    int caracNbr = listDescNodes.Count;
+                if (listDescNodes == null)
+                {
+                    webPageProduct = new HtmlWeb();
+                    ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
+                    listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
+                }
+
+                int caracNbr = listDescNodes.Count;
                     for (int i2 = 0; i2 < caracNbr; i2++)
                     {
 
