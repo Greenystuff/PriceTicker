@@ -248,5 +248,10 @@ namespace PriceTicker
                 imgAffiche.Source = _image;
             }
         }
+
+        private void DateEntreeSelected(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
     }
 }
