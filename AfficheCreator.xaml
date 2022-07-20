@@ -217,13 +217,89 @@
                 <TabItem Header="Archives" Style="{DynamicResource TabItemStyle}" FontSize="20">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <DataGrid x:Name="ArchiveDataGrid" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                        
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <DatePicker Grid.Row="0"
+                                        Grid.Column="0"
+                                        Width="200"
+                                        Text="Entrée" 
+                                        FontSize="15"
+                                        VerticalContentAlignment="Center"
+                                        HorizontalContentAlignment="Center" 
+                                        Margin="0,15,0,15"
+                                        BorderThickness="0">
+                                <DatePicker.Resources>
+                                    <Style TargetType="{x:Type DatePickerTextBox}">
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <TextBox Text="Date d'entrée" 
+                                                             Width="200"
+                                                             HorizontalContentAlignment="Center"/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+
+                            </DatePicker>
+                            <DatePicker Grid.Row="1"
+                                        Grid.Column="0"
+                                        Width="200"
+                                        Text="Entrée" 
+                                        FontSize="15"
+                                        VerticalContentAlignment="Center"
+                                        HorizontalContentAlignment="Center" 
+                                        Margin="0,15,0,15"
+                                        BorderThickness="0">
+                                <DatePicker.Resources>
+                                    <Style TargetType="{x:Type DatePickerTextBox}">
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <TextBox Text="Date de sortie" 
+                                                             Width="200"
+                                                             HorizontalContentAlignment="Center"/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+                            </DatePicker>
+                            <StackPanel Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center" Margin="0,0,0,15">
+                                <TextBlock Text="Libellé"
+                                           Foreground="Black"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" 
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="SearchedLibelle" 
+                                         Width="300"
+                                         Margin="0,5,0,0"
+                                         HorizontalContentAlignment="Center"
+                                         FontWeight="Regular"/>
+                            </StackPanel>
+
+                        </Grid>
+                        <DataGrid x:Name="ArchiveDataGrid" Grid.Row="1" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                                   RowDetailsVisibilityMode="VisibleWhenSelected" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="ArchiveLineSelected">
                             <DataGrid.Resources>
                                 <Style TargetType="{x:Type DataGridCell}">
@@ -275,81 +351,7 @@
                                 </DataTemplate>
                             </DataGrid.RowDetailsTemplate>
                         </DataGrid>
-                        <Grid Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <DatePicker Grid.Row="0"
-                                        Grid.Column="0"
-                                        Width="200"
-                                        Text="Entrée" 
-                                        FontSize="15"
-                                        VerticalContentAlignment="Center"
-                                        HorizontalContentAlignment="Center" 
-                                        Margin="0,15,0,15"
-                                        BorderThickness="0">
-                                <DatePicker.Resources>
-                                    <Style TargetType="{x:Type DatePickerTextBox}">
-                                        <Setter Property="Control.Template">
-                                            <Setter.Value>
-                                                <ControlTemplate>
-                                                    <TextBox Text="Date d'entrée" 
-                                                             Width="200"
-                                                             HorizontalContentAlignment="Center"/>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </DatePicker.Resources>
-                                
-                            </DatePicker>
-                            <DatePicker Grid.Row="1"
-                                        Grid.Column="0"
-                                        Width="200"
-                                        Text="Entrée" 
-                                        FontSize="15"
-                                        VerticalContentAlignment="Center"
-                                        HorizontalContentAlignment="Center" 
-                                        Margin="0,15,0,15"
-                                        BorderThickness="0">
-                                <DatePicker.Resources>
-                                    <Style TargetType="{x:Type DatePickerTextBox}">
-                                        <Setter Property="Control.Template">
-                                            <Setter.Value>
-                                                <ControlTemplate>
-                                                    <TextBox Text="Date de sortie" 
-                                                             Width="200"
-                                                             HorizontalContentAlignment="Center"/>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </DatePicker.Resources>
-                            </DatePicker>
-                            <StackPanel Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Orientation="Vertical"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center" Margin="0,0,0,15">
-                                <TextBlock Text="Libellé"
-                                           Foreground="Black"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" 
-                                           Margin="0,0,0,5"/>
-                                <TextBox x:Name="SearchedLibelle" 
-                                         Width="300"
-                                         Margin="0,5,0,0"
-                                         HorizontalContentAlignment="Center"
-                                         FontWeight="Regular"/>
-                            </StackPanel>
-
-                        </Grid>
+                        
                     </Grid>
                 </TabItem>
             </TabControl>
