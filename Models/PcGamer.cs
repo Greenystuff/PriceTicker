@@ -137,63 +137,65 @@ namespace PriceTicker.Models
 
         public string getBoitier()
         {
-            if (boitier.Contains("Boîtier PC"))
-            {
-                string[] boitierSplit = boitier.Split("Boîtier PC ");
-                boitier = boitierSplit[1];
-            }
-            return boitier.Trim();
+            return boitier;
         }
 
         public void setBoitier(string Boitier)
         {
-            this.boitier = Boitier;
+            if (Boitier.Contains("Boîtier PC"))
+            {
+                string[] boitierSplit = Boitier.Split("Boîtier PC");
+                Boitier = boitierSplit.Last();
+            }
+            this.boitier = Boitier.Trim();
         }
 
         public string getAccessoireBoitier()
         {
-            return accessoireBoitier.Trim();
+            return accessoireBoitier;
         }
 
         public void setAccessoireBoitier(string AccessoireBoitier)
         {
-            this.accessoireBoitier = AccessoireBoitier;
+            string[] boitierSplit = AccessoireBoitier.Split("Accessoire boîtier");
+            AccessoireBoitier = boitierSplit.Last();
+            this.accessoireBoitier = AccessoireBoitier.Trim();
         }
 
         public string getVentilateurBoitier()
         {
-            return ventilateurBoitier.Trim();
+            return ventilateurBoitier;
         }
 
         public void setVentilateurBoitier(string VentilateurBoitier)
         {
-            this.ventilateurBoitier = VentilateurBoitier;
+            string[] ventilateurBoitier = VentilateurBoitier.Split("Ventilateur boîtier");
+            VentilateurBoitier = ventilateurBoitier.Last();
+            this.ventilateurBoitier = VentilateurBoitier.Trim();
         }
 
         public string getProcesseur()
         {
-            if (processeur.Contains("Processeur"))
-            {
-                string[] processeurSplit = processeur.Split("Processeur ");
-                processeur = processeurSplit.Last();
-            }
-
-            return processeur.Trim();
+            return processeur;
         }
 
         public void setProcesseur(string Processeur)
         {
-            this.processeur = Processeur;
+            string[] processeurSplit = Processeur.Split("Processeur");
+            Processeur = processeurSplit.Last();
+            this.processeur = Processeur.Trim();
         }
 
         public string getVentirad()
         {
-            return ventirad.Trim();
+            return ventirad;
         }
 
         public void setVentirad(string Ventirad)
         {
-            this.ventirad = Ventirad;
+            string[] ventiradSplit = Ventirad.Split("Ventilateur CPU");
+            Ventirad = ventiradSplit.Last();
+            this.ventirad = Ventirad.Trim();
         }
 
         public string getWaterCooling()
@@ -203,67 +205,72 @@ namespace PriceTicker.Models
 
         public void setWaterCooling(string WaterCooling)
         {
+            string[] watercoolingSplit = WaterCooling.Split("Watercooling");
+            WaterCooling = watercoolingSplit.Last();
             this.waterCooling = WaterCooling;
         }
 
         public string getCarteMere()
         {
-            if (carteMere.Contains("Carte mère"))
-            {
-                string[] cmSplit = carteMere.Split("Carte mère ");
-                carteMere = cmSplit.Last();
-            }
-            return carteMere.Trim();
+            return carteMere;
         }
 
         public void setCarteMere(string CarteMere)
         {
-            this.carteMere = CarteMere;
+            if (CarteMere.Contains("Carte mère"))
+            {
+                string[] cmSplit = CarteMere.Split("Carte mère");
+                CarteMere = cmSplit.Last();
+            }
+            this.carteMere = CarteMere.Trim();
         }
 
         public string getCarteGraphique()
         {
-            if (carteGraphique.Contains("Carte graphique"))
-            {
-                string[] cgSplit = carteGraphique.Split("Carte graphique ");
-                carteGraphique = cgSplit.Last();
-            }
-            return carteGraphique.Trim();
+            return carteGraphique;
         }
 
         public void setCarteGraphique(string CarteGraphique)
         {
-            this.carteGraphique = CarteGraphique;
+            if (CarteGraphique.Contains("Carte graphique"))
+            {
+                string[] cgSplit = CarteGraphique.Split("Carte graphique");
+                CarteGraphique = cgSplit.Last();
+            }
+            this.carteGraphique = CarteGraphique.Trim();
         }
 
         public string getAccessoireCarteGraphique()
         {
-            return accessoireCarteGraphique.Trim();
+            return accessoireCarteGraphique;
         }
 
         public void setAccessoireCarteGraphique(string AccessoireCarteGraphique)
         {
-            this.accessoireCarteGraphique = AccessoireCarteGraphique;
+            string[] accessoireCarteGraphiqueSplit = AccessoireCarteGraphique.Split("Accessoire carte graphique");
+            AccessoireCarteGraphique = accessoireCarteGraphiqueSplit.Last();
+            this.accessoireCarteGraphique = AccessoireCarteGraphique.Trim();
         }
 
         public string getRam()
         {
-            if (ram.Contains("Mémoire PC"))
-            {
-                string[] ramSplit = ram.Split("Mémoire PC ");
-                ram = ramSplit.Last();
-            }
-            return ram.Trim();
+            
+            return ram;
         }
 
         public void setRam(string Ram)
         {
-            this.ram = Ram;
+            if (Ram.Contains("Mémoire PC"))
+            {
+                string[] ramSplit = Ram.Split("Mémoire PC");
+                Ram = ramSplit.Last();
+            }
+            this.ram = Ram.Trim();
         }
 
         public string getDisqueSsd()
         {
-            return disqueSsd.Trim();
+            return disqueSsd;
         }
 
         public void setDisqueSsd(string DisqueSsd)
@@ -279,12 +286,14 @@ namespace PriceTicker.Models
 
         public string getDisqueSupplementaire()
         {
-            return disqueSupplementaire.Trim();
+            return disqueSupplementaire;
         }
 
         public void setDisqueSupplementaire(string DisqueSupplementaire)
         {
-            this.disqueSupplementaire = DisqueSupplementaire;
+            string[] HDDSplit = DisqueSupplementaire.Split("Disque dur interne 3.5\"");
+            DisqueSupplementaire = HDDSplit.Last();
+            this.disqueSupplementaire = DisqueSupplementaire.Trim();
         }
 
         public string getCarteReseau()
@@ -294,22 +303,24 @@ namespace PriceTicker.Models
 
         public void setCarteReseau(string CarteReseau)
         {
-            this.carteReseau = CarteReseau;
+            string[] cartereseauSplit = CarteReseau.Split("Carte réseau");
+            CarteReseau = cartereseauSplit.Last();
+            this.carteReseau = CarteReseau.Trim();
         }
 
         public string getAlimentation()
         {
-            if (alimentation.Contains("Alimentation"))
-            {
-                string[] alimSplit = alimentation.Split("Alimentation ");
-                alimentation = alimSplit.Last();
-            }
-            return alimentation.Trim();
+            return alimentation;
         }
 
         public void setAlimentation(string Alimentation)
         {
-            this.alimentation = Alimentation;
+            if (Alimentation.Contains("Alimentation"))
+            {
+                string[] alimSplit = Alimentation.Split("Alimentation");
+                Alimentation = alimSplit.Last();
+            }
+            this.alimentation = Alimentation.Trim();
         }
 
         public string getAccessoireAlimentation()
@@ -319,7 +330,9 @@ namespace PriceTicker.Models
 
         public void setAccessoireAlimentation(string AccessoireAlimentation)
         {
-            this.accessoireAlimentation = AccessoireAlimentation;
+            string[] accessoireAlimSplit = AccessoireAlimentation.Split("Accessoire alimentation");
+            AccessoireAlimentation = accessoireAlimSplit.Last();
+            this.accessoireAlimentation = AccessoireAlimentation.Trim();
         }
 
         public string getSystemeExploitation()
