@@ -325,7 +325,7 @@ namespace PriceTicker.Models
 
         public string getAccessoireAlimentation()
         {
-            return accessoireAlimentation.Trim();
+            return accessoireAlimentation;
         }
 
         public void setAccessoireAlimentation(string AccessoireAlimentation)
