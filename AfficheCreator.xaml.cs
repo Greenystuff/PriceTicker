@@ -254,23 +254,43 @@ namespace PriceTicker
         private void SelectedStartDate(object sender, SelectionChangedEventArgs e)
         {
             DatePicker datePicker = (DatePicker)sender;
-            
-            if(datePicker.SelectedDate != null)
+            List<Models.PcGamer> ArchiveProductsFoundByDates = new();
+
+            if (datePicker.SelectedDate != null)
             {
                 dateSortieField.BlackoutDates.Clear();
                 dateSortieField.BlackoutDates.Add(new CalendarDateRange(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate));
 
-                List<Models.PcGamer> ArchiveProductsInDb = new();
+                
                 if (dateSortieField.SelectedDate == null)
                 {
                     dateSortieField.SelectedDate = DateTime.Now;
-                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, DateTime.Now);
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, DateTime.Now);
                 }else
                 {
-                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
                 }
 
-                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                
+                List<Models.PcGamer> ArchiveProducts = new();
+
+                if (SearchedLibelle.Text == "")
+                {
+                    ArchiveProducts = ArchiveProductsFoundByDates;
+                }
+                else
+                {
+                    
+                    for (int i = 0; i < ArchiveProductsFoundByDates.Count() ; i++)
+                    {
+                        if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByDates[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -299,17 +319,35 @@ namespace PriceTicker
             {
                 dateSortieField.BlackoutDates.Clear();
 
-                List<Models.PcGamer> ArchiveProductsInDb = new();
+                
                 if (dateSortieField.SelectedDate == null)
                 {
-                    ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
+                    ArchiveProductsFoundByDates = databaseManager.SelectAllArchivedPcGamer();
                 }
                 else
                 {
-                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)dateSortieField.SelectedDate);
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)dateSortieField.SelectedDate);
                 }
 
-                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                List<Models.PcGamer> ArchiveProducts = new();
+
+                if (SearchedLibelle.Text == "")
+                {
+                    ArchiveProducts = ArchiveProductsFoundByDates;
+                }
+                else
+                {
+
+                    for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
+                    {
+                        if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByDates[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -341,22 +379,41 @@ namespace PriceTicker
         private void SelectedEndDate(object sender, SelectionChangedEventArgs e)
         {
             DatePicker datePicker = (DatePicker)sender;
+            List<Models.PcGamer> ArchiveProductsFoundByDates = new();
 
             if (datePicker.SelectedDate != null)
             {
                 dateEntreeField.BlackoutDates.Clear();
                 dateEntreeField.BlackoutDates.Add(new CalendarDateRange((DateTime)datePicker.SelectedDate, new DateTime(2500, 1, 1)));
 
-                List<Models.PcGamer> ArchiveProductsInDb = new();
+                
                 if (dateEntreeField.SelectedDate == null)
                 {
-                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate);
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate);
                 }else
                 {
-                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, (DateTime)datePicker.SelectedDate);
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, (DateTime)datePicker.SelectedDate);
                 }
 
-                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                List<Models.PcGamer> ArchiveProducts = new();
+
+                if (SearchedLibelle.Text == "")
+                {
+                    ArchiveProducts = ArchiveProductsFoundByDates;
+                }
+                else
+                {
+
+                    for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
+                    {
+                        if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByDates[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -385,17 +442,35 @@ namespace PriceTicker
             {
                 dateEntreeField.BlackoutDates.Clear();
 
-                List<Models.PcGamer> ArchiveProductsInDb = new();
+                
                 if (dateEntreeField.SelectedDate == null)
                 {
-                    ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
+                    ArchiveProductsFoundByDates = databaseManager.SelectAllArchivedPcGamer();
                 }
                 else
                 {
-                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, DateTime.Now);
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, DateTime.Now);
                 }
 
-                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                List<Models.PcGamer> ArchiveProducts = new();
+
+                if (SearchedLibelle.Text == "")
+                {
+                    ArchiveProducts = ArchiveProductsFoundByDates;
+                }
+                else
+                {
+
+                    for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
+                    {
+                        if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByDates[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -426,13 +501,56 @@ namespace PriceTicker
         private void searchedLibelleChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
+            List<Models.PcGamer> ArchiveProductsFoundByName = new();
 
-            if(textBox.Text != "")
+            if (textBox.Text != "")
             {
-                List<Models.PcGamer> ArchiveProductsInDb = new();
-                ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByName(textBox.Text);
+                
+                ArchiveProductsFoundByName = databaseManager.SelectArchivedPcGamerByName(textBox.Text);
 
-                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                List<Models.PcGamer> ArchiveProducts = new();
+
+                if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate == null)
+                {
+                    ArchiveProducts = ArchiveProductsFoundByName;
+                }
+                else
+                {
+                    if(dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate == null)
+                    {
+                        for(int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                        {
+                            if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate)
+                            {
+                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                            }
+                        }
+                    }
+
+                    if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate != null)
+                    {
+                        for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                        {
+                            if (ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
+                            {
+                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                            }
+                        }
+                    }
+                }
+
+                if (dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate != null)
+                {
+                    for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                    {
+                        if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate && ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -459,15 +577,52 @@ namespace PriceTicker
 
             }else
             {
-                List<Models.PcGamer> ArchiveProductsInDb = new();
-                List<int> newArchivedIdsPCSaved = new();
-                newArchivedIdsPCSaved = databaseManager.SelectAllIdPcGamerArchived();
-                for (int i = 0; i < newArchivedIdsPCSaved.Count; i++)
+
+                ArchiveProductsFoundByName = databaseManager.SelectAllArchivedPcGamer();
+
+                List<Models.PcGamer> ArchiveProducts = new();
+
+                if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate == null)
                 {
-                    ArchiveProductsInDb.Add(databaseManager.SelectArchivedPcGamerByID(newArchivedIdsPCSaved[i]));
+                    ArchiveProducts = ArchiveProductsFoundByName;
                 }
-                
-                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+                else
+                {
+                    if (dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate == null)
+                    {
+                        for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                        {
+                            if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate)
+                            {
+                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                            }
+                        }
+                    }
+
+                    if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate != null)
+                    {
+                        for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                        {
+                            if (ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
+                            {
+                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                            }
+                        }
+                    }
+                }
+
+                if (dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate != null)
+                {
+                    for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                    {
+                        if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate && ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
 
                 Dispatcher.Invoke(new Action(() =>
                 {
