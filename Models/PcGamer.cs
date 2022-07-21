@@ -142,11 +142,7 @@ namespace PriceTicker.Models
 
         public void setBoitier(string Boitier)
         {
-            if (Boitier.Contains("Boîtier PC"))
-            {
-                string[] boitierSplit = Boitier.Split("Boîtier PC");
-                Boitier = boitierSplit.Last();
-            }
+            Boitier = Boitier.Replace("Boîtier PC", "");
             this.boitier = Boitier.Trim();
         }
 
@@ -157,8 +153,7 @@ namespace PriceTicker.Models
 
         public void setAccessoireBoitier(string AccessoireBoitier)
         {
-            string[] boitierSplit = AccessoireBoitier.Split("Accessoire boîtier");
-            AccessoireBoitier = boitierSplit.Last();
+            AccessoireBoitier = AccessoireBoitier.Replace("Accessoire boîtier", "");
             this.accessoireBoitier = AccessoireBoitier.Trim();
         }
 
@@ -169,8 +164,7 @@ namespace PriceTicker.Models
 
         public void setVentilateurBoitier(string VentilateurBoitier)
         {
-            string[] ventilateurBoitier = VentilateurBoitier.Split("Ventilateur boîtier");
-            VentilateurBoitier = ventilateurBoitier.Last();
+            VentilateurBoitier = VentilateurBoitier.Replace("Ventilateur boîtier", "").Replace("Ventilateur ", "");
             this.ventilateurBoitier = VentilateurBoitier.Trim();
         }
 
@@ -181,8 +175,7 @@ namespace PriceTicker.Models
 
         public void setProcesseur(string Processeur)
         {
-            string[] processeurSplit = Processeur.Split("Processeur");
-            Processeur = processeurSplit.Last();
+            Processeur = Processeur.Replace("Processeur", "");
             this.processeur = Processeur.Trim();
         }
 
@@ -193,21 +186,19 @@ namespace PriceTicker.Models
 
         public void setVentirad(string Ventirad)
         {
-            string[] ventiradSplit = Ventirad.Split("Ventilateur CPU");
-            Ventirad = ventiradSplit.Last();
+            Ventirad = Ventirad.Replace("Ventilateur CPU", "");
             this.ventirad = Ventirad.Trim();
         }
 
         public string getWaterCooling()
         {
-            return waterCooling.Trim();
+            return waterCooling;
         }
 
         public void setWaterCooling(string WaterCooling)
         {
-            string[] watercoolingSplit = WaterCooling.Split("Watercooling");
-            WaterCooling = watercoolingSplit.Last();
-            this.waterCooling = WaterCooling;
+            WaterCooling = WaterCooling.Replace("Watercooling", "").Replace("WaterCooling ", "");
+            this.waterCooling = WaterCooling.Trim();
         }
 
         public string getCarteMere()
@@ -217,11 +208,7 @@ namespace PriceTicker.Models
 
         public void setCarteMere(string CarteMere)
         {
-            if (CarteMere.Contains("Carte mère"))
-            {
-                string[] cmSplit = CarteMere.Split("Carte mère");
-                CarteMere = cmSplit.Last();
-            }
+            CarteMere = CarteMere.Replace("Carte mère", "");
             this.carteMere = CarteMere.Trim();
         }
 
@@ -232,11 +219,7 @@ namespace PriceTicker.Models
 
         public void setCarteGraphique(string CarteGraphique)
         {
-            if (CarteGraphique.Contains("Carte graphique"))
-            {
-                string[] cgSplit = CarteGraphique.Split("Carte graphique");
-                CarteGraphique = cgSplit.Last();
-            }
+            CarteGraphique = CarteGraphique.Replace("Carte graphique", "");
             this.carteGraphique = CarteGraphique.Trim();
         }
 
@@ -247,8 +230,7 @@ namespace PriceTicker.Models
 
         public void setAccessoireCarteGraphique(string AccessoireCarteGraphique)
         {
-            string[] accessoireCarteGraphiqueSplit = AccessoireCarteGraphique.Split("Accessoire carte graphique");
-            AccessoireCarteGraphique = accessoireCarteGraphiqueSplit.Last();
+            AccessoireCarteGraphique = AccessoireCarteGraphique.Replace("Accessoire carte graphique", "");
             this.accessoireCarteGraphique = AccessoireCarteGraphique.Trim();
         }
 
@@ -260,11 +242,7 @@ namespace PriceTicker.Models
 
         public void setRam(string Ram)
         {
-            if (Ram.Contains("Mémoire PC"))
-            {
-                string[] ramSplit = Ram.Split("Mémoire PC");
-                Ram = ramSplit.Last();
-            }
+            Ram = Ram.Replace("Mémoire PC", "");
             this.ram = Ram.Trim();
         }
 
@@ -275,12 +253,7 @@ namespace PriceTicker.Models
 
         public void setDisqueSsd(string DisqueSsd)
         {
-            string[] SsdSplit = DisqueSsd.Split("SSD :");
-            DisqueSsd = SsdSplit.Last();
-
-            SsdSplit = DisqueSsd.Split("Disque SSD");
-            DisqueSsd = SsdSplit.Last();
-
+            DisqueSsd = DisqueSsd.Replace("SSD :", "").Replace("Disque SSD", "");
             this.disqueSsd = DisqueSsd.Trim();
         }
 
@@ -291,20 +264,18 @@ namespace PriceTicker.Models
 
         public void setDisqueSupplementaire(string DisqueSupplementaire)
         {
-            string[] HDDSplit = DisqueSupplementaire.Split("Disque dur interne 3.5\"");
-            DisqueSupplementaire = HDDSplit.Last();
+            DisqueSupplementaire = DisqueSupplementaire.Replace("Disque dur interne 3.5\"", "");
             this.disqueSupplementaire = DisqueSupplementaire.Trim();
         }
 
         public string getCarteReseau()
         {
-            return carteReseau.Trim();
+            return carteReseau;
         }
 
         public void setCarteReseau(string CarteReseau)
         {
-            string[] cartereseauSplit = CarteReseau.Split("Carte réseau");
-            CarteReseau = cartereseauSplit.Last();
+            CarteReseau = CarteReseau.Replace("Carte réseau", "");
             this.carteReseau = CarteReseau.Trim();
         }
 
@@ -315,11 +286,7 @@ namespace PriceTicker.Models
 
         public void setAlimentation(string Alimentation)
         {
-            if (Alimentation.Contains("Alimentation"))
-            {
-                string[] alimSplit = Alimentation.Split("Alimentation");
-                Alimentation = alimSplit.Last();
-            }
+            Alimentation = Alimentation.Replace("Alimentation", "");
             this.alimentation = Alimentation.Trim();
         }
 
@@ -330,19 +297,18 @@ namespace PriceTicker.Models
 
         public void setAccessoireAlimentation(string AccessoireAlimentation)
         {
-            string[] accessoireAlimSplit = AccessoireAlimentation.Split("Accessoire alimentation");
-            AccessoireAlimentation = accessoireAlimSplit.Last();
+            AccessoireAlimentation = AccessoireAlimentation.Replace("Accessoire alimentation", "");
             this.accessoireAlimentation = AccessoireAlimentation.Trim();
         }
 
         public string getSystemeExploitation()
         {
-            return systemeExploitation.Trim();
+            return systemeExploitation;
         }
 
         public void setSystemeExploitation(string SystemeExploitation)
         {
-            this.systemeExploitation = SystemeExploitation;
+            this.systemeExploitation = SystemeExploitation.Trim();
         }
 
         //Debug
