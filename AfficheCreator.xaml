@@ -391,20 +391,21 @@
                                     </DatePicker.Resources>
                                 </DatePicker>
                                 <StackPanel Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Orientation="Vertical"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center" Margin="0,0,0,15">
+                                            Grid.Column="1"
+                                            Orientation="Vertical"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center" Margin="0,0,0,15">
                                     <TextBlock Text="Libellé"
-                                           Foreground="Black"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" 
-                                           Margin="0,0,0,5"/>
+                                               Foreground="Black"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" 
+                                               Margin="0,0,0,5"/>
                                     <TextBox x:Name="SearchedLibelle" 
-                                         Width="300"
-                                         Margin="0,5,0,0"
-                                         HorizontalContentAlignment="Center"
-                                         FontWeight="Regular"/>
+                                             Width="300"
+                                             Margin="0,5,0,0"
+                                             HorizontalContentAlignment="Center"
+                                             FontWeight="Regular" 
+                                             TextChanged="searchedLibelleChanged"/>
                                 </StackPanel>
 
                             </Grid>

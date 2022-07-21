@@ -274,7 +274,7 @@ namespace PriceTicker
             {
                 // Écrire le code pour afficher dans la liste les Configs de la range de temps indiqué.
                 List<Models.PcGamer> ArchiveProductsInDb = new();
-                ArchiveProductsInDb = databaseManager.SelectPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+                ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
 
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
 
@@ -324,7 +324,7 @@ namespace PriceTicker
             {
                 // Écrire le code pour afficher dans la liste les Configs de la range de temps indiqué.
                 List<Models.PcGamer> ArchiveProductsInDb = new();
-                ArchiveProductsInDb = databaseManager.SelectPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+                ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
 
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
 
@@ -353,6 +353,77 @@ namespace PriceTicker
 
             }
 
+        }
+
+        private void searchedLibelleChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if(textBox.Text != "")
+            {
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByName(textBox.Text);
+
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.Background);
+
+            }else
+            {
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                List<int> newArchivedIdsPCSaved = new();
+                newArchivedIdsPCSaved = databaseManager.SelectAllIdPcGamerArchived();
+                for (int i = 0; i < newArchivedIdsPCSaved.Count; i++)
+                {
+                    ArchiveProductsInDb.Add(databaseManager.SelectArchivedPcGamerByID(newArchivedIdsPCSaved[i]));
+                }
+                
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+
+                AfficheCreator.gui.Dispatcher.Invoke(new Action(() =>
+                {
+                    AfficheCreator.gui.ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    AfficheCreator.gui.ArchiveDataGrid.ItemsSource = _bindArchives;
+
+                }), DispatcherPriority.SystemIdle);
+            }
         }
     }
 }
