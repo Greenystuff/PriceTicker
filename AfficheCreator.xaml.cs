@@ -160,7 +160,9 @@ namespace PriceTicker
 
         private void UpdateDataGrid(object sender, RoutedEventArgs e)
         {
-
+            dateEntreeField.SelectedDate = null;
+            dateSortieField.SelectedDate = null;
+            SearchedLibelle.Text = "";
             ProgressBar.Visibility = Visibility.Visible;
             ProgressTextBlock.Visibility = Visibility.Visible;
             scraping.worker = new();
