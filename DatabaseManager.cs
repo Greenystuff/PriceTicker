@@ -517,6 +517,138 @@ namespace PriceTicker
             return PcGamer;
         }
 
+        public List<Models.PcGamer> SelectPcGamerByDates(DateTime DateEntree, DateTime DateSortie)
+        {
+            List<Models.PcGamer> ArchivedProductsFound = new();
+
+            
+            string selectPcGamer = "SELECT IdPcGamer,Name,Prix,PrixBarre,WebLink,DateEntree,DateSortie FROM ArchivesPcGamer";
+            CreateDbConnection();
+            SQLiteDataReader PcGamerReader = ExecuteQueryWithReturn(selectPcGamer);
+
+            while (PcGamerReader.Read())
+            {
+                DateTime foundStartDate = DateTime.Parse(PcGamerReader["DateEntree"].ToString());
+                DateTime foundEndDate = DateTime.Parse(PcGamerReader["DateSortie"].ToString());
+
+                if (foundStartDate >= DateEntree && foundEndDate <= DateSortie)
+                {
+                    Models.PcGamer PcGamer = new();
+
+                    PcGamer.setIdConfig(int.Parse(PcGamerReader["IdPcGamer"].ToString()));
+                    PcGamer.setName(PcGamerReader["Name"].ToString());
+                    PcGamer.setPrix(decimal.Parse(PcGamerReader["Prix"].ToString()));
+                    PcGamer.setPrixBarre(decimal.Parse(PcGamerReader["PrixBarre"].ToString()));
+                    PcGamer.setWebLink(PcGamerReader["WebLink"].ToString());
+                    PcGamer.setDateEntree(DateTime.Parse(PcGamerReader["DateEntree"].ToString()));
+                    PcGamer.setDateSortie(DateTime.Parse(PcGamerReader["DateSortie"].ToString()));
+
+                    ArchivedProductsFound.Add(PcGamer);
+                }
+
+            }
+            PcGamerReader.Close();
+            CloseDbConnection();
+
+            for(int j = 0; j < ArchivedProductsFound.Count; j++)
+            {
+                string selectIdComposant = "SELECT IdComposant FROM ArchivesComposantsPcGamer WHERE IdPcGamer=" + ArchivedProductsFound[j].getIdConfig();
+                CreateDbConnection();
+                SQLiteDataReader ComposantPcGamerReader = ExecuteQueryWithReturn(selectIdComposant);
+                List<int> idComposants = new();
+
+                while (ComposantPcGamerReader.Read())
+                {
+                    idComposants.Add(int.Parse(ComposantPcGamerReader["IdComposant"].ToString()));
+                }
+                ComposantPcGamerReader.Close();
+                CloseDbConnection();
+
+                for (int i = 0; i < idComposants.Count; i++)
+                {
+                    string selectComposants = "SELECT TypeComposant,NomComposant FROM Composants WHERE IdComposant=" + idComposants[i];
+                    CreateDbConnection();
+                    SQLiteDataReader ComposantReader = ExecuteQueryWithReturn(selectComposants);
+                    while (ComposantReader.Read())
+                    {
+                        if (ComposantReader["TypeComposant"].ToString() == "Boîtier")
+                        {
+                            ArchivedProductsFound[j].setBoitier(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Accessoire de boîtier")
+                        {
+                            ArchivedProductsFound[j].setAccessoireBoitier(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Ventilateurs")
+                        {
+                            ArchivedProductsFound[j].setVentilateurBoitier(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Processeur")
+                        {
+                            ArchivedProductsFound[j].setProcesseur(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Ventirad")
+                        {
+                            ArchivedProductsFound[j].setVentirad(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Watercooling")
+                        {
+                            ArchivedProductsFound[j].setWaterCooling(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Carte mère")
+                        {
+                            ArchivedProductsFound[j].setCarteMere(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Carte Graphique")
+                        {
+                            ArchivedProductsFound[j].setCarteGraphique(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Accessoire de Carte Graphique")
+                        {
+                            ArchivedProductsFound[j].setAccessoireCarteGraphique(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Mémoire vive")
+                        {
+                            ArchivedProductsFound[j].setRam(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "SSD")
+                        {
+                            ArchivedProductsFound[j].setDisqueSsd(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "HDD")
+                        {
+                            ArchivedProductsFound[j].setDisqueSupplementaire(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Carte réseau")
+                        {
+                            ArchivedProductsFound[j].setCarteReseau(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Alimentation")
+                        {
+                            ArchivedProductsFound[j].setAlimentation(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Accessoire alimentation")
+                        {
+                            ArchivedProductsFound[j].setAccessoireAlimentation(ComposantReader["NomComposant"].ToString());
+                        }
+                        if (ComposantReader["TypeComposant"].ToString() == "Système exploitation")
+                        {
+                            ArchivedProductsFound[j].setSystemeExploitation(ComposantReader["NomComposant"].ToString());
+                        }
+                    }
+                    ComposantReader.Close();
+                    CloseDbConnection();
+                }
+
+            }
+
+            
+
+
+            
+            return ArchivedProductsFound;
+        }
+
         public void UpdatePcGamerByID(int idConfig, string type, string value)
         {
             string insertQuery = "UPDATE PcGamer SET '" + type + "' = '" + value + "' WHERE IdPcGamer = " + idConfig + ";";

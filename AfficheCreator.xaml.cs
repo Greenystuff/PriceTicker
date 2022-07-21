@@ -1,12 +1,14 @@
 ﻿using PriceTicker.Properties;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Cache;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -249,9 +251,108 @@ namespace PriceTicker
             }
         }
 
-        private void DateEntreeSelected(object sender, SelectionChangedEventArgs e)
+        private void SelectedStartDate(object sender, SelectionChangedEventArgs e)
         {
             
+            DatePicker datePicker = (DatePicker)sender;
+
+            if (datePicker.SelectedDate != null)
+            {
+                dateSortieField.BlackoutDates.Clear();
+                dateSortieField.BlackoutDates.Add(new CalendarDateRange(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate));
+            }else
+            {
+                dateSortieField.BlackoutDates.Clear();
+            }
+
+            if (dateSortieField.SelectedDate == null && datePicker.SelectedDate != null)
+            {
+                dateSortieField.SelectedDate = DateTime.Now;
+            }
+            
+            if(dateSortieField.SelectedDate != null && datePicker.SelectedDate != null)
+            {
+                // Écrire le code pour afficher dans la liste les Configs de la range de temps indiqué.
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                ArchiveProductsInDb = databaseManager.SelectPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.SystemIdle);
+
+            }
+            
+
+        }
+
+        private void SelectedEndDate(object sender, SelectionChangedEventArgs e)
+        {
+            DatePicker datePicker = (DatePicker)sender;
+
+
+            if (datePicker.SelectedDate != null)
+            {
+                dateEntreeField.BlackoutDates.Clear();
+                dateEntreeField.BlackoutDates.Add(new CalendarDateRange((DateTime)datePicker.SelectedDate, new DateTime(2500, 1, 1)));
+            }else
+            {
+                dateEntreeField.BlackoutDates.Clear();
+            }
+
+            if (dateSortieField.SelectedDate != null && datePicker.SelectedDate != null)
+            {
+                // Écrire le code pour afficher dans la liste les Configs de la range de temps indiqué.
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                ArchiveProductsInDb = databaseManager.SelectPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.SystemIdle);
+
+            }
+
         }
     }
 }
