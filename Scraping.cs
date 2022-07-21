@@ -30,6 +30,7 @@ namespace PriceTicker
             {
                 AfficheCreator.gui.ProgressBar.Visibility = Visibility.Visible;
                 AfficheCreator.gui.ProgressTextBlock.Visibility = Visibility.Visible;
+                AfficheCreator.gui.UpdateDataGridFromWeb.IsEnabled = false;
                 worker = new();
                 worker.RunWorkerCompleted += worker_RunWorkerCompleted;
                 worker.WorkerReportsProgress = true;
@@ -242,7 +243,7 @@ namespace PriceTicker
                                 {
                                     Product.setSystemeExploitation(caracteristique);
                                 }
-                                if (categorie.StartsWith("Disque"))
+                                if (categorie.StartsWith("Disque") || categorie.StartsWith("SSD"))
                                 {
                                     Product.setDisqueSsd(caracteristique);
                                 }
@@ -274,7 +275,7 @@ namespace PriceTicker
                                 if (index > 0)
                                 {
 
-                                    categorie = categorie.Substring(0, index); // or index + 1 to keep slash
+                                    categorie = categorie.Substring(0, index);
                                 }
 
                                 string[] tempArray = listNode.FirstChild.OuterHtml.Split("<strong>");
@@ -282,7 +283,7 @@ namespace PriceTicker
                                 int indexCaracDesc = caracteristiqueDesc.IndexOf("</strong>");
                                 if (indexCaracDesc > 0)
                                 {
-                                    caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc)); // or index + 1 to keep slash
+                                    caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc));
                                 }
 
                                 string[] tempArray2 = listNode.FirstChild.OuterHtml.Split("</strong>");
@@ -290,7 +291,7 @@ namespace PriceTicker
                                 int indexCarac = caracteristique.IndexOf("</a>");
                                 if (indexCarac > 0)
                                 {
-                                    caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac)); // or index + 1 to keep slash
+                                    caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac));
                                 }
 
                                 switch (categorie)
@@ -442,13 +443,7 @@ namespace PriceTicker
                     ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
                 }
 
-                List<Models.PcGamer> ArchiveProductsInDb = new();
-                List<int> newArchivedIdsPCSaved = new();
-                newArchivedIdsPCSaved = databaseManager.SelectAllIdPcGamerArchived();
-                for (int i = 0; i < newArchivedIdsPCSaved.Count; i++)
-                {
-                    ArchiveProductsInDb.Add(databaseManager.SelectArchivedPcGamerByID(newArchivedIdsPCSaved[i]));
-                }
+                List<Models.PcGamer> ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
 
                 var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
@@ -540,6 +535,7 @@ namespace PriceTicker
                 AfficheCreator.gui.ProgressBar.Visibility = Visibility.Hidden;
                 AfficheCreator.gui.ProgressTextBlock.Text = "";
                 AfficheCreator.gui.ProgressTextBlock.Visibility = Visibility.Hidden;
+                AfficheCreator.gui.UpdateDataGridFromWeb.IsEnabled = true;
             }
         }
 

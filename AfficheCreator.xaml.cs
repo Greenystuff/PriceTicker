@@ -160,6 +160,7 @@ namespace PriceTicker
 
         private void UpdateDataGrid(object sender, RoutedEventArgs e)
         {
+            UpdateDataGridFromWeb.IsEnabled = false;
             dateEntreeField.SelectedDate = null;
             dateSortieField.SelectedDate = null;
             SearchedLibelle.Text = "";

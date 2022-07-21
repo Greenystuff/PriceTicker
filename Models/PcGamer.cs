@@ -268,7 +268,13 @@ namespace PriceTicker.Models
 
         public void setDisqueSsd(string DisqueSsd)
         {
-            this.disqueSsd = DisqueSsd;
+            string[] SsdSplit = DisqueSsd.Split("SSD :");
+            DisqueSsd = SsdSplit.Last();
+
+            SsdSplit = DisqueSsd.Split("Disque SSD");
+            DisqueSsd = SsdSplit.Last();
+
+            this.disqueSsd = DisqueSsd.Trim();
         }
 
         public string getDisqueSupplementaire()
