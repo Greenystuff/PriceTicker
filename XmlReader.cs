@@ -120,7 +120,7 @@ namespace PriceTicker
                 }
 
 
-            }), DispatcherPriority.SystemIdle);
+            }), DispatcherPriority.Background);
 
             List<string> ProductSpecList = new List<string>();
             ProductSpecList.Add(Id);

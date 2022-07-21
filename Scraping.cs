@@ -49,13 +49,8 @@ namespace PriceTicker
                     ProductsInDb.Add(databaseManager.SelectPcGamerByID(newIdsPCSaved[i]));
                 }
 
-                List<Models.PcGamer> ArchiveProductsInDb = new();
-                List<int> newArchivedIdsPCSaved = new();
-                newArchivedIdsPCSaved = databaseManager.SelectAllIdPcGamerArchived();
-                for (int i = 0; i < newArchivedIdsPCSaved.Count; i++)
-                {
-                    ArchiveProductsInDb.Add(databaseManager.SelectArchivedPcGamerByID(newArchivedIdsPCSaved[i]));
-                }
+                List<Models.PcGamer> ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
+                
 
                 var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
@@ -124,7 +119,7 @@ namespace PriceTicker
                     }
 
                     AfficheCreator.gui.ConfigGroupDataGrid.ItemsSource = _bind;
-                }), DispatcherPriority.SystemIdle);
+                }), DispatcherPriority.Background);
 
             }
 
@@ -508,7 +503,7 @@ namespace PriceTicker
                     AfficheCreator.gui.ArchiveDataGrid.ItemsSource = _bindArchives;
 
 
-                }), DispatcherPriority.SystemIdle);
+                }), DispatcherPriority.Background);
 
                 worker.ReportProgress(100, "Mise à jour terminée !");
 

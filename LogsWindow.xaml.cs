@@ -48,7 +48,7 @@ namespace PriceTicker
                         LogBox.Text += s + "\n";
                             
                         }
-                    }), DispatcherPriority.SystemIdle);
+                    }), DispatcherPriority.Background);
                 }
             }
         }

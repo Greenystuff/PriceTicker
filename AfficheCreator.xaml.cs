@@ -253,28 +253,22 @@ namespace PriceTicker
 
         private void SelectedStartDate(object sender, SelectionChangedEventArgs e)
         {
-            
             DatePicker datePicker = (DatePicker)sender;
-
-            if (datePicker.SelectedDate != null)
+            
+            if(datePicker.SelectedDate != null)
             {
                 dateSortieField.BlackoutDates.Clear();
                 dateSortieField.BlackoutDates.Add(new CalendarDateRange(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate));
-            }else
-            {
-                dateSortieField.BlackoutDates.Clear();
-            }
 
-            if (dateSortieField.SelectedDate == null && datePicker.SelectedDate != null)
-            {
-                dateSortieField.SelectedDate = DateTime.Now;
-            }
-            
-            if(dateSortieField.SelectedDate != null && datePicker.SelectedDate != null)
-            {
-                // Écrire le code pour afficher dans la liste les Configs de la range de temps indiqué.
                 List<Models.PcGamer> ArchiveProductsInDb = new();
-                ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+                if (dateSortieField.SelectedDate == null)
+                {
+                    dateSortieField.SelectedDate = DateTime.Now;
+                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, DateTime.Now);
+                }else
+                {
+                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+                }
 
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
 
@@ -299,8 +293,46 @@ namespace PriceTicker
                     });
 
                     ArchiveDataGrid.ItemsSource = _bindArchives;
-                }), DispatcherPriority.SystemIdle);
+                }), DispatcherPriority.Background);
 
+            }else
+            {
+                dateSortieField.BlackoutDates.Clear();
+
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                if (dateSortieField.SelectedDate == null)
+                {
+                    ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
+                }
+                else
+                {
+                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)dateSortieField.SelectedDate);
+                }
+
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.Background);
             }
             
 
@@ -310,21 +342,19 @@ namespace PriceTicker
         {
             DatePicker datePicker = (DatePicker)sender;
 
-
             if (datePicker.SelectedDate != null)
             {
                 dateEntreeField.BlackoutDates.Clear();
                 dateEntreeField.BlackoutDates.Add(new CalendarDateRange((DateTime)datePicker.SelectedDate, new DateTime(2500, 1, 1)));
-            }else
-            {
-                dateEntreeField.BlackoutDates.Clear();
-            }
 
-            if (dateSortieField.SelectedDate != null && datePicker.SelectedDate != null)
-            {
-                // Écrire le code pour afficher dans la liste les Configs de la range de temps indiqué.
                 List<Models.PcGamer> ArchiveProductsInDb = new();
-                ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
+                if (dateEntreeField.SelectedDate == null)
+                {
+                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate);
+                }else
+                {
+                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, (DateTime)datePicker.SelectedDate);
+                }
 
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
 
@@ -349,8 +379,46 @@ namespace PriceTicker
                     });
 
                     ArchiveDataGrid.ItemsSource = _bindArchives;
-                }), DispatcherPriority.SystemIdle);
+                }), DispatcherPriority.Background);
 
+            }else
+            {
+                dateEntreeField.BlackoutDates.Clear();
+
+                List<Models.PcGamer> ArchiveProductsInDb = new();
+                if (dateEntreeField.SelectedDate == null)
+                {
+                    ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
+                }
+                else
+                {
+                    ArchiveProductsInDb = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, DateTime.Now);
+                }
+
+                var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam(),
+
+                    });
+
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.Background);
             }
 
         }
@@ -401,9 +469,9 @@ namespace PriceTicker
                 
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
 
-                AfficheCreator.gui.Dispatcher.Invoke(new Action(() =>
+                Dispatcher.Invoke(new Action(() =>
                 {
-                    AfficheCreator.gui.ArchiveDataGrid.AutoGenerateColumns = false;
+                    ArchiveDataGrid.AutoGenerateColumns = false;
 
                     IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
                     {
@@ -420,9 +488,9 @@ namespace PriceTicker
 
                     });
 
-                    AfficheCreator.gui.ArchiveDataGrid.ItemsSource = _bindArchives;
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
 
-                }), DispatcherPriority.SystemIdle);
+                }), DispatcherPriority.Background);
             }
         }
     }
