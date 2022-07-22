@@ -309,8 +309,10 @@
                                 Width="160"
                                 Height="30"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center" Click="ShowPreviousAffiche"/>
-                        <TextBlock x:Name="A4pageNumber" Text="1"
+                                VerticalAlignment="Center" 
+                                Click="ShowPreviousAffiche"/>
+                        <TextBlock x:Name="A4pageNumber" 
+                                   Text="1"
                                    Foreground="{DynamicResource PrimaryBlackColor}"
                                    Margin="20,0,20,0"
                                    VerticalAlignment="Center"
@@ -323,7 +325,8 @@
                                 Width="160"
                                 Height="30"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center" Click="ShowNextAffiche"/>
+                                VerticalAlignment="Center" 
+                                Click="ShowNextAffiche"/>
                     </StackPanel>
                     <Grid Margin="0,25,0,0">
                         <Grid.ColumnDefinitions>
@@ -335,9 +338,9 @@
                         <Button x:Name="A4btnImprimer" Content="Imprimer"
                                 Grid.Column="0"
                                 Grid.Row="0"
-                                Click="PrintWallPages"
                                 Width="100"
-                                Height="30"/>
+                                Height="30" 
+                                Click="PrintAffiches"/>
                     </Grid>
                 </StackPanel>
             </TabItem>
