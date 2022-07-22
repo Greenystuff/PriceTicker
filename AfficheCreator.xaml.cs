@@ -156,8 +156,8 @@ namespace PriceTicker
                 _image.EndInit();
                 MainWindow.gui.A4imgEtiquette.Source = _image;
                 MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
-                MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.affichePageSelected.ToString();
-
+                MainWindow.gui.A4pageNumber.Text = Settings.Default.affichePageSelected.ToString();
+                MainWindow.gui.A4btnImprimer.IsEnabled = true;
             }
             else
             {

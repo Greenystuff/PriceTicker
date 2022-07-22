@@ -22,6 +22,7 @@ namespace PriceTicker
             
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + 1 + ".bmp"))
             {
+                MainWindow.gui.btnImprimer.IsEnabled = false;
                 MainWindow.gui.btnPrecedent.Visibility = Visibility.Hidden;
                 MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
                 MainWindow.gui.pageNumber.Visibility = Visibility.Hidden;
@@ -56,7 +57,7 @@ namespace PriceTicker
                     MainWindow.gui.pageNumber.Visibility = Visibility.Visible;
                 }
 
-                
+                MainWindow.gui.btnImprimer.IsEnabled = true;
                 MainWindow.gui.pageNumber.Text = Properties.Settings.Default.Pagenumber.ToString();
                 string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + Properties.Settings.Default.Pagenumber + ".bmp";
                 Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
@@ -74,6 +75,7 @@ namespace PriceTicker
 
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + 1 + ".bmp"))
             {
+                MainWindow.gui.RailbtnImprimer.IsEnabled = false;
                 MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Hidden;
                 MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
                 MainWindow.gui.RailpageNumber.Visibility = Visibility.Hidden;
@@ -107,7 +109,8 @@ namespace PriceTicker
                     MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
                     MainWindow.gui.RailpageNumber.Visibility = Visibility.Visible;
                 }
-                
+
+                MainWindow.gui.RailbtnImprimer.IsEnabled = true;
                 MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.RailPageSelected.ToString();
                 string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale_Rail" + Properties.Settings.Default.PagenumberRail + ".bmp";
                 Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
@@ -127,6 +130,7 @@ namespace PriceTicker
             Properties.Settings.Default.Save();
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_1.bmp"))
             {
+                MainWindow.gui.A4btnImprimer.IsEnabled = false;
                 MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Hidden;
                 MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
                 MainWindow.gui.A4pageNumber.Visibility = Visibility.Hidden;
@@ -159,6 +163,7 @@ namespace PriceTicker
                     MainWindow.gui.A4pageNumber.Visibility = Visibility.Visible;
                 }
 
+                MainWindow.gui.A4btnImprimer.IsEnabled = true;
                 MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.nbrAffiches.ToString();
                 string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + Properties.Settings.Default.nbrAffiches + ".bmp";
                 Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
@@ -613,30 +618,30 @@ namespace PriceTicker
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-                graphics.DrawString("PC monté", IntroFont, System.Drawing.Brushes.Black, rectIntro, IntroFormat);
-                graphics.DrawString(Libelle, NameFont, System.Drawing.Brushes.Black, rectLibelle, LibelleFormat);
+                graphics.DrawString("PC monté", IntroFont, Brushes.Black, rectIntro, IntroFormat);
+                graphics.DrawString(Libelle, NameFont, Brushes.Black, rectLibelle, LibelleFormat);
 
-                graphics.DrawString("Boîtier", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
-                graphics.DrawString("Carte mère", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCM, CategorieCMFormat);
-                graphics.DrawString("Processeur", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieProc, CategorieProcFormat);
-                graphics.DrawString("Mémoire vive", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieRam, CategorieRamFormat);
-                graphics.DrawString("Carte graphique", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieCG, CategorieCGFormat);
-                graphics.DrawString("Stockage", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
-                graphics.DrawString("Alimentation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
-                graphics.DrawString("Système d'exploitation", CategorieFont, System.Drawing.Brushes.Gray, rectCategorieOS, CategorieOSFormat);
+                graphics.DrawString("Boîtier", CategorieFont, Brushes.Gray, rectCategorieBoitier, CategorieBoitierFormat);
+                graphics.DrawString("Carte mère", CategorieFont, Brushes.Gray, rectCategorieCM, CategorieCMFormat);
+                graphics.DrawString("Processeur", CategorieFont, Brushes.Gray, rectCategorieProc, CategorieProcFormat);
+                graphics.DrawString("Mémoire vive", CategorieFont, Brushes.Gray, rectCategorieRam, CategorieRamFormat);
+                graphics.DrawString("Carte graphique", CategorieFont, Brushes.Gray, rectCategorieCG, CategorieCGFormat);
+                graphics.DrawString("Stockage", CategorieFont, Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
+                graphics.DrawString("Alimentation", CategorieFont, Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
+                graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
 
-                graphics.DrawString(Boitier, CaracFont, System.Drawing.Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
-                graphics.DrawString(CarteMere, CaracFont, System.Drawing.Brushes.Black, rectCaracCM, CaracCMFormat);
-                graphics.DrawString(Processeur, CaracFont, System.Drawing.Brushes.Black, rectCaracProc, CaracProcFormat);
-                graphics.DrawString(RAM, CaracFont, System.Drawing.Brushes.Black, rectCaracRam, CaracRamFormat);
-                graphics.DrawString(CG, CaracFont, System.Drawing.Brushes.Black, rectCaracCG, CaracCGFormat);
-                graphics.DrawString(Stockage, CaracFont, System.Drawing.Brushes.Black, rectCaracStockage, CaracStockageFormat);
-                graphics.DrawString(Alim, CaracFont, System.Drawing.Brushes.Black, rectCaracAlim, CaracAlimFormat);
-                graphics.DrawString(OS, CaracFont, System.Drawing.Brushes.Black, rectCaracOS, CaracOSFormat);
+                graphics.DrawString(Boitier, CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
+                graphics.DrawString(CarteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
+                graphics.DrawString(Processeur, CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
+                graphics.DrawString(RAM, CaracFont, Brushes.Black, rectCaracRam, CaracRamFormat);
+                graphics.DrawString(CG, CaracFont, Brushes.Black, rectCaracCG, CaracCGFormat);
+                graphics.DrawString(Stockage, CaracFont, Brushes.Black, rectCaracStockage, CaracStockageFormat);
+                graphics.DrawString(Alim, CaracFont, Brushes.Black, rectCaracAlim, CaracAlimFormat);
+                graphics.DrawString(OS, CaracFont, Brushes.Black, rectCaracOS, CaracOSFormat);
 
                 if (PrixBarre != "0")
                 {
-                    graphics.DrawString(PrixBarre + " €", PrixBarreFont, System.Drawing.Brushes.Gray, rectPrixBarre, PrixBarreFormat);
+                    graphics.DrawString(PrixBarre + " €", PrixBarreFont, Brushes.Gray, rectPrixBarre, PrixBarreFormat);
                 }
                 else
                 {
@@ -645,7 +650,7 @@ namespace PriceTicker
                     rectPrix = new(0, 840, bitmap.Width, 100);
                 }
 
-                graphics.DrawString(Prix + " €", PrixFont, System.Drawing.Brushes.Red, rectPrix, PrixFormat);
+                graphics.DrawString(Prix + " €", PrixFont, Brushes.Red, rectPrix, PrixFormat);
 
                 graphics.DrawImage(bitmapLogo, RectLogo);
 
@@ -774,6 +779,7 @@ namespace PriceTicker
             MainWindow.gui.imgEtiquette.Source = _image;
             MainWindow.gui.btnSuivant.Visibility = Visibility.Hidden;
             MainWindow.gui.pageNumber.Text = Properties.Settings.Default.PageSelected.ToString();
+            MainWindow.gui.btnImprimer.IsEnabled = true;
 
         }
 
@@ -875,7 +881,7 @@ namespace PriceTicker
             MainWindow.gui.RailimgEtiquette.Source = _image;
             MainWindow.gui.RailbtnSuivant.Visibility = Visibility.Hidden;
             MainWindow.gui.RailpageNumber.Text = Properties.Settings.Default.RailPageSelected.ToString();
-
+            MainWindow.gui.RailbtnImprimer.IsEnabled = true;
         }
 
         public void setPreviousWallTicketPage()
@@ -1049,6 +1055,8 @@ namespace PriceTicker
             _image.EndInit();
             MainWindow.gui.imgEtiquette.Source = _image;
 
+            MainWindow.gui.btnImprimer.IsEnabled = false;
+
         }
 
         public void ResetRailDatas()
@@ -1083,7 +1091,7 @@ namespace PriceTicker
             _image.UriSource = lastPageUri;
             _image.EndInit();
             MainWindow.gui.RailimgEtiquette.Source = _image;
-
+            MainWindow.gui.RailbtnImprimer.IsEnabled = false;
         }
 
         public void ResetAffichesDatas()
@@ -1114,6 +1122,7 @@ namespace PriceTicker
             _image.UriSource = lastPageUri;
             _image.EndInit();
             MainWindow.gui.A4imgEtiquette.Source = _image;
+            MainWindow.gui.A4btnImprimer.IsEnabled = false;
 
         }
 
