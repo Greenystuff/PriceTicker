@@ -468,9 +468,8 @@ namespace PriceTicker
                 }
             }
 
-            if(RAM.Length > 30)
+            if(RAM.Length > 34)
             {
-                Debug.WriteLine("Intitulé de la RAM : " + RAM);
                 string[] Ram = RAM.Split();
                 RAM = "";
                 for(int i = 0; i < Ram.Length; i++)
@@ -485,8 +484,59 @@ namespace PriceTicker
                 {
                     RAM = RAM.Replace(c.ToString(), String.Empty);
                 }
+
+                RAM = RAM.Trim();
+                if(RAM.Length >= 34)
+                {
+                    int Index = RAM.LastIndexOf(" ");
+                    RAM = RAM.Substring(0, Index);
+                }
             }
             
+            while (CG.Length >= 34)
+            {
+                CG = CG.Trim();
+                int Index = CG.LastIndexOf(" ");
+                CG = CG.Substring(0, Index);
+            }
+            char CGcharAt = CG[CG.Length - 1];
+            if (CGcharAt == '-')
+            {
+                CG = CG.Substring(0, CG.Length - 1);
+            }
+
+
+            if (Stockage.Length >= 34)
+            {
+                int Index = Stockage.IndexOf(" -", StringComparison.CurrentCultureIgnoreCase);
+                if (Index != -1)
+                {
+                    Stockage = Stockage.Substring(0, Index);
+                }
+                while (Stockage.Length >= 34)
+                {
+                    Stockage = Stockage.Trim();
+                    Index = Stockage.LastIndexOf(" ");
+                    Stockage = Stockage.Substring(0, Index);
+                }
+            }
+
+            while (Alim.Length >= 34)
+            {
+                Alim = Alim.Trim();
+                int Index = Alim.LastIndexOf(" ");
+                Alim = Alim.Substring(0, Index);
+            }
+
+            char AlimcharAt = Alim[Alim.Length - 1];
+            if(AlimcharAt == '-')
+            {
+                Alim = Alim.Substring(0, Alim.Length - 1);
+            }
+
+
+
+
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
@@ -576,16 +626,6 @@ namespace PriceTicker
                 Debug.WriteLine("Affiche crée avec succès !");
             }
 
-        }
-
-        public string Filter(string str, List<char> charsToRemove)
-        {
-            foreach (char c in charsToRemove)
-            {
-                str = str.Replace(c.ToString(), String.Empty);
-            }
-
-            return str;
         }
 
         private void WallPagesCrafter(string EtiquettePath)
