@@ -284,7 +284,7 @@ namespace PriceTicker
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 String garantie = "Garantie 2 ans";
-                using Font LibelleFont = new("Arial", 11);
+                using Font LibelleFont = new("Arial", 8);
                 using Font PrixFont = new("Arial", 20);
                 using Font IdFont = new("Arial", 12);
                 using Font GarantieFont = new("Arial", 10);
