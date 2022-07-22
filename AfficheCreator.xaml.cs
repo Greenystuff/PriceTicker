@@ -134,7 +134,7 @@ namespace PriceTicker
 
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
-            int nbrAffiches = Settings.Default.nbrAffiches+1;
+            int nbrAffiches = Settings.Default.nbrAffiches + 1;
             string AffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp";
             string FinaleAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + nbrAffiches + ".bmp";
 
@@ -154,8 +154,15 @@ namespace PriceTicker
                 _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 _image.UriSource = lastPageUri;
                 _image.EndInit();
+                Settings.Default.affichePageSelected = Settings.Default.nbrAffiches;
+                Settings.Default.Save();
                 MainWindow.gui.A4imgEtiquette.Source = _image;
+                if(Settings.Default.affichePageSelected > 1)
+                {
+                    MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Visible;
+                }
                 MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+                MainWindow.gui.A4pageNumber.Visibility = Visibility.Visible;
                 MainWindow.gui.A4pageNumber.Text = Settings.Default.affichePageSelected.ToString();
                 MainWindow.gui.A4btnImprimer.IsEnabled = true;
             }
