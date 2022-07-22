@@ -459,6 +459,35 @@ namespace PriceTicker
 
             }
 
+            if(Processeur.Length > 35)
+            {
+                int Index = Processeur.IndexOf("/", StringComparison.CurrentCultureIgnoreCase);
+                if (Index != -1)
+                {
+                    Processeur = Processeur.Substring(0, Index);
+                }
+            }
+
+            if(RAM.Length > 30)
+            {
+                Debug.WriteLine("Intitulé de la RAM : " + RAM);
+                string[] Ram = RAM.Split();
+                RAM = "";
+                for(int i = 0; i < Ram.Length; i++)
+                {
+                    if(i != 1)
+                    {
+                        RAM += Ram[i] + " ";
+                    }
+                }
+                List<char> charsToRemove = new List<char>() {'(', ')'};
+                foreach (char c in charsToRemove)
+                {
+                    RAM = RAM.Replace(c.ToString(), String.Empty);
+                }
+            }
+            
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection();
@@ -547,6 +576,16 @@ namespace PriceTicker
                 Debug.WriteLine("Affiche crée avec succès !");
             }
 
+        }
+
+        public string Filter(string str, List<char> charsToRemove)
+        {
+            foreach (char c in charsToRemove)
+            {
+                str = str.Replace(c.ToString(), String.Empty);
+            }
+
+            return str;
         }
 
         private void WallPagesCrafter(string EtiquettePath)
