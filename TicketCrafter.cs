@@ -123,7 +123,6 @@ namespace PriceTicker
                 MainWindow.gui.RailimgEtiquette.Source = _image;
             }
 
-            Debug.WriteLine("Nombre d'affiches enregistrées : " + Properties.Settings.Default.nbrAffiches);
             Properties.Settings.Default.affichePageSelected = Properties.Settings.Default.nbrAffiches;
             Properties.Settings.Default.Save();
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_1.bmp"))
