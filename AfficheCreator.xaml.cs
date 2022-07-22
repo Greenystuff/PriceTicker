@@ -144,8 +144,22 @@ namespace PriceTicker
                 Settings.Default.nbrAffiches++;
                 Settings.Default.affichePageSelected++;
                 Settings.Default.Save();
+                Uri lastPageUri = new(FinaleAffichePath, UriKind.RelativeOrAbsolute);
 
-            }else
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.A4imgEtiquette.Source = _image;
+                MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+                MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.affichePageSelected.ToString();
+
+            }
+            else
             {
                 MessageBox.Show("Veuillez sélectionner une affiche !");
             }
