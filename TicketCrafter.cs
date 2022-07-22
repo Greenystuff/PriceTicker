@@ -459,11 +459,6 @@ namespace PriceTicker
 
             }
 
-            if(Libelle.Length > 14)
-            {
-
-            }
-
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection();
