@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -303,82 +304,82 @@ namespace PriceTicker
             StringFormat CategorieBoitierFormat = new();
             CategorieBoitierFormat.Alignment = StringAlignment.Far;
             CategorieBoitierFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieBoitier = new(-110, 225, bitmap.Width / 2, 40);
+            Rectangle rectCategorieBoitier = new(-170, 225, bitmap.Width / 2, 40);
 
             StringFormat CategorieCMFormat = new();
             CategorieCMFormat.Alignment = StringAlignment.Far;
             CategorieCMFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieCM = new(-110, 295, bitmap.Width / 2, 40);
+            Rectangle rectCategorieCM = new(-170, 295, bitmap.Width / 2, 40);
 
             StringFormat CategorieProcFormat = new();
             CategorieProcFormat.Alignment = StringAlignment.Far;
             CategorieProcFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieProc = new(-110, 365, bitmap.Width / 2, 40);
+            Rectangle rectCategorieProc = new(-170, 365, bitmap.Width / 2, 40);
 
             StringFormat CategorieRamFormat = new();
             CategorieRamFormat.Alignment = StringAlignment.Far;
             CategorieRamFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieRam = new(-110, 435, bitmap.Width / 2, 40);
+            Rectangle rectCategorieRam = new(-170, 435, bitmap.Width / 2, 40);
 
             StringFormat CategorieCGFormat = new();
             CategorieCGFormat.Alignment = StringAlignment.Far;
             CategorieCGFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieCG = new(-110, 505, bitmap.Width / 2, 40);
+            Rectangle rectCategorieCG = new(-170, 505, bitmap.Width / 2, 40);
 
             StringFormat CategorieStockageFormat = new();
             CategorieStockageFormat.Alignment = StringAlignment.Far;
             CategorieStockageFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieStockage = new(-110, 575, bitmap.Width / 2, 40);
+            Rectangle rectCategorieStockage = new(-170, 575, bitmap.Width / 2, 40);
 
             StringFormat CategorieAlimFormat = new();
             CategorieAlimFormat.Alignment = StringAlignment.Far;
             CategorieAlimFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieAlim = new(-110, 645, bitmap.Width / 2, 40);
+            Rectangle rectCategorieAlim = new(-170, 645, bitmap.Width / 2, 40);
 
             StringFormat CategorieOSFormat = new();
             CategorieOSFormat.Alignment = StringAlignment.Far;
             CategorieOSFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCategorieOS = new(-110, 715, bitmap.Width / 2, 40);
+            Rectangle rectCategorieOS = new(-170, 715, bitmap.Width / 2, 40);
 
             StringFormat CaracBoitierFormat = new();
             CaracBoitierFormat.Alignment = StringAlignment.Near;
             CaracBoitierFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracBoitier = new(320, 225, bitmap.Width / 2, 40);
+            Rectangle rectCaracBoitier = new(250, 225, 550, 40);
 
             StringFormat CaracCMFormat = new();
             CaracCMFormat.Alignment = StringAlignment.Near;
             CaracCMFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracCM = new(320, 295, bitmap.Width / 2, 40);
+            Rectangle rectCaracCM = new(250, 295, 550, 40);
 
             StringFormat CaracProcFormat = new();
             CaracProcFormat.Alignment = StringAlignment.Near;
             CaracProcFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracProc = new(320, 365, bitmap.Width / 2, 40);
+            Rectangle rectCaracProc = new(250, 365, 550, 40);
 
             StringFormat CaracRamFormat = new();
             CaracRamFormat.Alignment = StringAlignment.Near;
             CaracRamFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracRam = new(320, 435, bitmap.Width / 2, 40);
+            Rectangle rectCaracRam = new(250, 435, 550, 40);
 
             StringFormat CaracCGFormat = new();
             CaracCGFormat.Alignment = StringAlignment.Near;
             CaracCGFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracCG = new(320, 505, bitmap.Width / 2, 40);
+            Rectangle rectCaracCG = new(250, 505, 550, 40);
 
             StringFormat CaracStockageFormat = new();
             CaracStockageFormat.Alignment = StringAlignment.Near;
             CaracStockageFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracStockage = new(320, 575, bitmap.Width / 2, 40);
+            Rectangle rectCaracStockage = new(250, 575, 550, 40);
 
             StringFormat CaracAlimFormat = new();
             CaracAlimFormat.Alignment = StringAlignment.Near;
             CaracAlimFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracAlim = new(320, 645, bitmap.Width / 2, 40);
+            Rectangle rectCaracAlim = new(250, 645, 550, 40);
 
             StringFormat CaracOSFormat = new();
             CaracOSFormat.Alignment = StringAlignment.Near;
             CaracOSFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectCaracOS = new(320, 715, bitmap.Width / 2, 40);
+            Rectangle rectCaracOS = new(250, 715, 550, 40);
 
             StringFormat PrixBarreFormat = new();
             PrixBarreFormat.Alignment = StringAlignment.Center;
@@ -400,6 +401,68 @@ namespace PriceTicker
             {
                 CG = "Chipset Graphique";
             }
+            Boitier = Boitier.Replace("Sans Alim/", "", StringComparison.CurrentCultureIgnoreCase);
+            if (Boitier.Length >= 37) 
+            {
+                int start = Boitier.IndexOf(" ", 28, StringComparison.CurrentCultureIgnoreCase);
+                if (start != -1)
+                {
+                    Boitier = Boitier.Substring(0, start);
+                    if (Boitier[Boitier.Length - 1] == char.Parse("-"))
+                    {
+                        Boitier = Boitier.Substring(0, Boitier.Length - 1);
+                    }
+                }
+            }
+
+            if (CarteMere.Length >= 34)
+            {
+                int Index = CarteMere.IndexOf("/LGA", StringComparison.CurrentCultureIgnoreCase);
+                if (Index != -1)
+                {
+                    string first = CarteMere.Substring(0, Index);
+                    string second = CarteMere.Substring(Index+8);
+                    CarteMere = first + second;
+                }
+                Index = CarteMere.IndexOf("/DDR", StringComparison.CurrentCultureIgnoreCase);
+                if (Index != -1)
+                {
+                    string first = CarteMere.Substring(0, Index);
+                    string second = CarteMere.Substring(Index+5);
+                    CarteMere = first + second;
+                }
+                Index = CarteMere.IndexOf("/AM", StringComparison.CurrentCultureIgnoreCase);
+                if (Index != -1)
+                {
+                    string first = CarteMere.Substring(0, Index);
+                    string second = CarteMere.Substring(Index + 4);
+                    CarteMere = first + second;
+                }
+                if (CarteMere.Length >= 35)
+                {
+                    Index = CarteMere.IndexOf("/", StringComparison.CurrentCultureIgnoreCase);
+                    if (Index != -1)
+                    {
+                        string first = CarteMere.Substring(0, Index - 4);
+                        string second = CarteMere.Substring(Index + 1);
+                        CarteMere = first + second;
+                    }
+                }
+                if (CarteMere.Length >= 35)
+                {
+                    Index = CarteMere.IndexOf(" -", StringComparison.CurrentCultureIgnoreCase);
+                    if (Index != -1)
+                    {
+                        CarteMere = CarteMere.Substring(0, Index);
+                    }
+                }
+
+            }
+
+            if(Libelle.Length > 14)
+            {
+
+            }
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
@@ -417,6 +480,11 @@ namespace PriceTicker
                 Font CaracFont = new(privateFonts.Families[1], 20, System.Drawing.FontStyle.Bold);
                 Font PrixBarreFont = new(privateFonts.Families[1], 30, System.Drawing.FontStyle.Strikeout);
                 Font PrixFont = new(privateFonts.Families[1], 65, System.Drawing.FontStyle.Bold);
+
+                if (Libelle.Length > 14)
+                {
+                    NameFont = new(privateFonts.Families[0], 42);
+                }
 
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
