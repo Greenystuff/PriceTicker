@@ -291,10 +291,10 @@
                                 Grid.Column="2"
                                 Width="270" Click="NouvelleAffiche" 
                                 />
-                        <Button x:Name="A4btnReset" Content="Reset" Click="ResetWallDatas"
+                        <Button x:Name="A4btnReset" Content="Reset"
                                 Grid.Column="3"
                                 HorizontalAlignment="Right" HorizontalContentAlignment="Center" 
-                                Margin="0,0,10,0" Width="70"/>
+                                Margin="0,0,10,0" Width="70" Click="ResetAffichesDatas"/>
                     </Grid>
                     <TextBlock x:Name="A4ResultatTxt" Text="Affiche :"
                                Foreground="{DynamicResource PrimaryBlackColor}"
@@ -304,12 +304,12 @@
                            Height="500" 
                            Width="354"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                        <Button x:Name="A4btnPrecedent" Content="Page Précédente" Click="ShowPreviousPage"
+                        <Button x:Name="A4btnPrecedent" Content="Page Précédente"
                                 FontWeight="DemiBold"
                                 Width="160"
                                 Height="30"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
+                                VerticalAlignment="Center" Click="ShowPreviousAffiche"/>
                         <TextBlock x:Name="A4pageNumber" Text="1"
                                    Foreground="{DynamicResource PrimaryBlackColor}"
                                    Margin="20,0,20,0"
@@ -319,11 +319,11 @@
                                    Padding="3"
                                    FontSize="20"
                                    Height="30" Width="20"/>
-                        <Button x:Name="A4btnSuivant" Content="Page Suivante" Click="ShowNextPage" FontWeight="DemiBold"
+                        <Button x:Name="A4btnSuivant" Content="Page Suivante" FontWeight="DemiBold"
                                 Width="160"
                                 Height="30"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
+                                VerticalAlignment="Center" Click="ShowNextAffiche"/>
                     </StackPanel>
                     <Grid Margin="0,25,0,0">
                         <Grid.ColumnDefinitions>

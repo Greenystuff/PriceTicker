@@ -34,8 +34,6 @@ namespace PriceTicker
             ticketCrafter.InitUi();
         }
 
-        
-
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new("[^0-9]+");
@@ -241,6 +239,21 @@ namespace PriceTicker
             AfficheCreator creator = new AfficheCreator();
             creator.Owner = this;
             creator.Show();
+        }
+
+        private void ShowPreviousAffiche(object sender, RoutedEventArgs e)
+        {
+            ticketCrafter.setPreviousAffiche();
+        }
+
+        private void ShowNextAffiche(object sender, RoutedEventArgs e)
+        {
+            ticketCrafter.setNextAffiche();
+        }
+
+        private void ResetAffichesDatas(object sender, RoutedEventArgs e)
+        {
+            ticketCrafter.ResetAffichesDatas();
         }
     }
 

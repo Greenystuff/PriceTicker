@@ -134,14 +134,17 @@ namespace PriceTicker
 
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
-            int nbrAffiches = Settings.Default.nbrAffiches + 1;
+            int nbrAffiches = Settings.Default.nbrAffiches+1;
             string AffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp";
             string FinaleAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + nbrAffiches + ".bmp";
 
             if (File.Exists(AffichePath))
             {
                 File.Copy(AffichePath, FinaleAffichePath);
-                Settings.Default.nbrAffiches = nbrAffiches;
+                Settings.Default.nbrAffiches++;
+                Settings.Default.affichePageSelected++;
+                Settings.Default.Save();
+
             }else
             {
                 MessageBox.Show("Veuillez sélectionner une affiche !");

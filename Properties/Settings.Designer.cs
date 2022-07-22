@@ -214,5 +214,17 @@ namespace PriceTicker.Properties {
                 this["nbrAffiches"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int affichePageSelected {
+            get {
+                return ((int)(this["affichePageSelected"]));
+            }
+            set {
+                this["affichePageSelected"] = value;
+            }
+        }
     }
 }

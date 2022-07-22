@@ -19,8 +19,7 @@ namespace PriceTicker
         {
             MainWindow.gui.ValiderRecherche.IsEnabled = false;
             MainWindow.gui.RailValiderRecherche.IsEnabled = false;
-
-
+            
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + 1 + ".bmp"))
             {
                 MainWindow.gui.btnPrecedent.Visibility = Visibility.Hidden;
@@ -122,6 +121,58 @@ namespace PriceTicker
                 _image.UriSource = lastPageUri;
                 _image.EndInit();
                 MainWindow.gui.RailimgEtiquette.Source = _image;
+            }
+
+            Debug.WriteLine("Nombre d'affiches enregistrées : " + Properties.Settings.Default.nbrAffiches);
+            Properties.Settings.Default.affichePageSelected = Properties.Settings.Default.nbrAffiches;
+            Properties.Settings.Default.Save();
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_1.bmp"))
+            {
+                MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Hidden;
+                MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+                MainWindow.gui.A4pageNumber.Visibility = Visibility.Hidden;
+                MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.nbrAffiches.ToString();
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+                Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.A4imgEtiquette.Source = _image;
+            }
+            else
+            {
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_2.bmp"))
+                {
+                    MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Hidden;
+                    MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+                    MainWindow.gui.A4pageNumber.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Visible;
+                    MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+                    MainWindow.gui.A4pageNumber.Visibility = Visibility.Visible;
+                }
+
+                MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.nbrAffiches.ToString();
+                string LastPagePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + Properties.Settings.Default.nbrAffiches + ".bmp";
+                Uri lastPageUri = new(LastPagePath, UriKind.RelativeOrAbsolute);
+
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = lastPageUri;
+                _image.EndInit();
+                MainWindow.gui.A4imgEtiquette.Source = _image;
             }
         }
 
@@ -920,6 +971,52 @@ namespace PriceTicker
             }
         }
 
+        public void setPreviousAffiche()
+        {
+            Properties.Settings.Default.affichePageSelected--;
+            MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.affichePageSelected.ToString();
+            MainWindow.gui.A4btnSuivant.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + Properties.Settings.Default.affichePageSelected + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.A4imgEtiquette.Source = _image;
+            if (Properties.Settings.Default.affichePageSelected == 1)
+            {
+                MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void setNextAffiche()
+        {
+            Properties.Settings.Default.affichePageSelected++;
+            MainWindow.gui.A4pageNumber.Text = Properties.Settings.Default.affichePageSelected.ToString();
+            MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Visible;
+            string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + Properties.Settings.Default.affichePageSelected + ".bmp";
+            Uri lastPageUri = new(FeuilleFinalePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.A4imgEtiquette.Source = _image;
+            if (Properties.Settings.Default.affichePageSelected == Properties.Settings.Default.nbrAffiches)
+            {
+                MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+            }
+        }
+
         public void ResetWallDatas()
         {
             for (int i = 1; i <= Properties.Settings.Default.Pagenumber; i++)
@@ -987,6 +1084,37 @@ namespace PriceTicker
             _image.UriSource = lastPageUri;
             _image.EndInit();
             MainWindow.gui.RailimgEtiquette.Source = _image;
+
+        }
+
+        public void ResetAffichesDatas()
+        {
+            for (int i = 1; i <= Properties.Settings.Default.nbrAffiches; i++)
+            {
+                string FeuilleFinalePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + i + ".bmp";
+                Debug.WriteLine("Affiche " + i + " effacée");
+                File.Delete(FeuilleFinalePath);
+            }
+            Properties.Settings.Default.nbrAffiches = 0;
+            Properties.Settings.Default.affichePageSelected = 1;
+            Properties.Settings.Default.Save();
+            MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Hidden;
+            MainWindow.gui.A4btnSuivant.Visibility = Visibility.Hidden;
+            MainWindow.gui.A4pageNumber.Visibility = Visibility.Hidden;
+
+
+            string FeuilleFilePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Patron_feuille_finale.bmp";
+            Uri lastPageUri = new(FeuilleFilePath, UriKind.RelativeOrAbsolute);
+
+            BitmapImage _image = new();
+            _image.BeginInit();
+            _image.CacheOption = BitmapCacheOption.None;
+            _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            _image.UriSource = lastPageUri;
+            _image.EndInit();
+            MainWindow.gui.A4imgEtiquette.Source = _image;
 
         }
 
