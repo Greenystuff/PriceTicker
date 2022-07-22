@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Cache;
 using System.Reflection;
@@ -36,6 +37,25 @@ namespace PriceTicker
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
+
+            string AffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp";
+            if (File.Exists(AffichePath))
+            {
+                Uri AfficheUri = new(AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp", UriKind.RelativeOrAbsolute);
+                BitmapImage _image = new();
+                _image.BeginInit();
+                _image.CacheOption = BitmapCacheOption.None;
+                _image.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache);
+                _image.CacheOption = BitmapCacheOption.OnLoad;
+                _image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                _image.UriSource = AfficheUri;
+                _image.EndInit();
+                imgAffiche.Source = _image;
+                ValiderAfficheBtn.IsEnabled = true;
+            }else
+            {
+                ValiderAfficheBtn.IsEnabled = false;
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -114,7 +134,18 @@ namespace PriceTicker
 
         private void ValiderAffiche(object sender, RoutedEventArgs e)
         {
-            
+            int nbrAffiches = Settings.Default.nbrAffiches + 1;
+            string AffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Nouvelle_Affiche.bmp";
+            string FinaleAffichePath = AppDomain.CurrentDomain.BaseDirectory + "Img\\Affiche_" + nbrAffiches + ".bmp";
+
+            if (File.Exists(AffichePath))
+            {
+                File.Copy(AffichePath, FinaleAffichePath);
+                Settings.Default.nbrAffiches = nbrAffiches;
+            }else
+            {
+                MessageBox.Show("Veuillez sélectionner une affiche !");
+            }
         }
 
         private void LineSelected(object sender, SelectionChangedEventArgs e)

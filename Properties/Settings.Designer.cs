@@ -202,5 +202,17 @@ namespace PriceTicker.Properties {
                 this["RailPageSelected"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int nbrAffiches {
+            get {
+                return ((int)(this["nbrAffiches"]));
+            }
+            set {
+                this["nbrAffiches"] = value;
+            }
+        }
     }
 }

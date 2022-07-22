@@ -534,10 +534,6 @@ namespace PriceTicker
                 Alim = Alim.Substring(0, Alim.Length - 1);
             }
 
-
-
-
-
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 PrivateFontCollection privateFonts = new PrivateFontCollection();
