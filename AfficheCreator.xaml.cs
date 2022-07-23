@@ -205,6 +205,7 @@ namespace PriceTicker
                 _image.UriSource = AfficheUri;
                 _image.EndInit();
                 imgAffiche.Source = _image;
+                ValiderAfficheBtn.IsEnabled = true;
             }
 
 
