@@ -19,7 +19,7 @@ namespace PriceTicker
         {
             MainWindow.gui.ValiderRecherche.IsEnabled = false;
             MainWindow.gui.RailValiderRecherche.IsEnabled = false;
-            
+
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Img\\Feuille_Finale" + 1 + ".bmp"))
             {
                 MainWindow.gui.btnImprimer.IsEnabled = false;
@@ -457,7 +457,7 @@ namespace PriceTicker
                 CG = "Chipset Graphique";
             }
             Boitier = Boitier.Replace("Sans Alim/", "", StringComparison.CurrentCultureIgnoreCase);
-            if (Boitier.Length >= 37) 
+            if (Boitier.Length >= 37)
             {
                 int start = Boitier.IndexOf(" ", 28, StringComparison.CurrentCultureIgnoreCase);
                 if (start != -1)
@@ -476,14 +476,14 @@ namespace PriceTicker
                 if (Index != -1)
                 {
                     string first = CarteMere.Substring(0, Index);
-                    string second = CarteMere.Substring(Index+8);
+                    string second = CarteMere.Substring(Index + 8);
                     CarteMere = first + second;
                 }
                 Index = CarteMere.IndexOf("/DDR", StringComparison.CurrentCultureIgnoreCase);
                 if (Index != -1)
                 {
                     string first = CarteMere.Substring(0, Index);
-                    string second = CarteMere.Substring(Index+5);
+                    string second = CarteMere.Substring(Index + 5);
                     CarteMere = first + second;
                 }
                 Index = CarteMere.IndexOf("/AM", StringComparison.CurrentCultureIgnoreCase);
@@ -513,7 +513,7 @@ namespace PriceTicker
                 }
             }
 
-            if(Processeur.Length > 35)
+            if (Processeur.Length > 35)
             {
                 int Index = Processeur.IndexOf("/", StringComparison.CurrentCultureIgnoreCase);
                 if (Index != -1)
@@ -522,31 +522,31 @@ namespace PriceTicker
                 }
             }
 
-            if(RAM.Length > 34)
+            if (RAM.Length > 34)
             {
                 string[] Ram = RAM.Split();
                 RAM = "";
-                for(int i = 0; i < Ram.Length; i++)
+                for (int i = 0; i < Ram.Length; i++)
                 {
-                    if(i != 1)
+                    if (i != 1)
                     {
                         RAM += Ram[i] + " ";
                     }
                 }
-                List<char> charsToRemove = new List<char>() {'(', ')'};
+                List<char> charsToRemove = new List<char>() { '(', ')' };
                 foreach (char c in charsToRemove)
                 {
                     RAM = RAM.Replace(c.ToString(), String.Empty);
                 }
 
                 RAM = RAM.Trim();
-                if(RAM.Length >= 34)
+                if (RAM.Length >= 34)
                 {
                     int Index = RAM.LastIndexOf(" ");
                     RAM = RAM.Substring(0, Index);
                 }
             }
-            
+
             while (CG.Length >= 34)
             {
                 CG = CG.Trim();
@@ -583,7 +583,7 @@ namespace PriceTicker
             }
 
             char AlimcharAt = Alim[Alim.Length - 1];
-            if(AlimcharAt == '-')
+            if (AlimcharAt == '-')
             {
                 Alim = Alim.Substring(0, Alim.Length - 1);
             }
@@ -628,7 +628,7 @@ namespace PriceTicker
                 graphics.DrawString("Stockage", CategorieFont, Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
                 graphics.DrawString("Alimentation", CategorieFont, Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
                 graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
-                
+
                 graphics.DrawString(Boitier, CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
                 graphics.DrawString(CarteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
                 graphics.DrawString(Processeur, CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
@@ -741,7 +741,7 @@ namespace PriceTicker
                 bitmapEtiquette.Dispose();
             }
 
-            
+
             Properties.Settings.Default.nbColonnes++;
             Properties.Settings.Default.nbEtiquettes++;
             Properties.Settings.Default.OnPageNumber++;
@@ -757,7 +757,7 @@ namespace PriceTicker
             {
                 Properties.Settings.Default.OnPageNumber = 0;
                 Properties.Settings.Default.PageSelected++;
-                
+
                 Properties.Settings.Default.Pagenumber++;
                 Properties.Settings.Default.nbColonnes = 0;
                 Properties.Settings.Default.nbLignes = 0;
@@ -963,7 +963,7 @@ namespace PriceTicker
                 MainWindow.gui.RailbtnPrecedent.Visibility = Visibility.Hidden;
             }
         }
-                
+
         public void setNextRailTicketPage()
         {
             Properties.Settings.Default.RailPageSelected++;

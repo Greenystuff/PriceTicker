@@ -51,7 +51,7 @@ namespace PriceTicker
                 }
 
                 List<Models.PcGamer> ArchiveProductsInDb = databaseManager.SelectAllArchivedPcGamer();
-                
+
 
                 var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
@@ -193,27 +193,27 @@ namespace PriceTicker
                 HtmlDocument ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
                 HtmlNodeCollection listDescNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='pcgamer__caracteristiques__fiche-pc']");
                 HtmlNodeCollection prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
-                if(prixBarreNodes == null)
+                if (prixBarreNodes == null)
                 {
                     webPageProduct = new HtmlWeb();
                     ProductHtmlDoc = webPageProduct.Load(ProductWebAdress);
                     prixBarreNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='price-gaming-page']");
                 }
 
-                
-                    if (prixBarreNodes.First().InnerHtml.Contains("prix_total_sans_remise"))
-                    {
-                        HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
-                        string prix = prixNodes[0].InnerText.Replace("€", ",");
-                        Product.setPrix(Decimal.Parse(prix));
-                    }
 
-                    if (prixBarreNodes.First().InnerHtml.Contains("prix-config-barre-sans-option"))
-                    {
-                        HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
-                        string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
-                        Product.setPrixBarre(Decimal.Parse(prixBarreStr));
-                    }
+                if (prixBarreNodes.First().InnerHtml.Contains("prix_total_sans_remise"))
+                {
+                    HtmlNodeCollection prixNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@class='prix_total_sans_remise']");
+                    string prix = prixNodes[0].InnerText.Replace("€", ",");
+                    Product.setPrix(Decimal.Parse(prix));
+                }
+
+                if (prixBarreNodes.First().InnerHtml.Contains("prix-config-barre-sans-option"))
+                {
+                    HtmlNodeCollection prixBarreSpanNodes = ProductHtmlDoc.DocumentNode.SelectNodes("//*[@id='prix-config-barre-sans-option']");
+                    string prixBarreStr = prixBarreSpanNodes[0].InnerText.Replace("€", ",");
+                    Product.setPrixBarre(Decimal.Parse(prixBarreStr));
+                }
 
                 if (listDescNodes == null)
                 {
@@ -223,165 +223,165 @@ namespace PriceTicker
                 }
 
                 int caracNbr = listDescNodes.Count;
-                    for (int i2 = 0; i2 < caracNbr; i2++)
+                for (int i2 = 0; i2 < caracNbr; i2++)
+                {
+
+                    var listNodes = listDescNodes[i2].Descendants("li");
+
+                    foreach (var listNode in listNodes)
                     {
+                        string categorie = "";
+                        string caracteristiqueDesc = "";
+                        string caracteristique = "";
 
-                        var listNodes = listDescNodes[i2].Descendants("li");
-
-                        foreach (var listNode in listNodes)
+                        if (!listNode.InnerHtml.StartsWith("<a"))
                         {
-                            string categorie = "";
-                            string caracteristiqueDesc = "";
-                            string caracteristique = "";
+                            categorie = HttpUtility.HtmlDecode(listNode.Descendants("strong").First().InnerText);
+                            caracteristique = HttpUtility.HtmlDecode(listNode.InnerText).Replace(categorie, "");
 
-                            if (!listNode.InnerHtml.StartsWith("<a"))
+
+                            if (categorie.StartsWith("Sans sys"))
                             {
-                                categorie = HttpUtility.HtmlDecode(listNode.Descendants("strong").First().InnerText);
-                                caracteristique = HttpUtility.HtmlDecode(listNode.InnerText).Replace(categorie, "");
-
-
-                                if (categorie.StartsWith("Sans sys"))
-                                {
-                                    Product.setSystemeExploitation(caracteristique);
-                                }
-                                if (categorie.StartsWith("Disque") || categorie.StartsWith("SSD"))
-                                {
-                                    Product.setDisqueSsd(caracteristique);
-                                }
-                                if (categorie.StartsWith("Mémoire PC") || categorie.StartsWith("Memoire PC"))
-                                {
-                                    Product.setRam(caracteristique);
-                                }
-                                if (categorie.StartsWith("Carte graphique") || categorie.StartsWith("Carte Graphique") || categorie.StartsWith("Composant"))
-                                {
-                                    Product.setCarteGraphique(caracteristique);
-                                }
-                                if (categorie.StartsWith("Processeur"))
-                                {
-                                    Product.setProcesseur(categorie + caracteristique);
-                                }
-                                if (categorie.StartsWith("Alimentation"))
-                                {
-                                    Product.setAlimentation(caracteristique);
-                                }
-
-
-                                //Debug.WriteLine("Catégorie non Link : " + categorie);
-                                //Debug.WriteLine("Caractéristique non link : " + categorie + caracteristique);
+                                Product.setSystemeExploitation(caracteristique);
                             }
-                            else
+                            if (categorie.StartsWith("Disque") || categorie.StartsWith("SSD"))
                             {
-                                categorie = listNode.FirstChild.Attributes["href"].Value.Replace("../../", "");
-                                int index = categorie.IndexOf("/");
-                                if (index > 0)
-                                {
-
-                                    categorie = categorie.Substring(0, index);
-                                }
-
-                                string[] tempArray = listNode.FirstChild.OuterHtml.Split("<strong>");
-                                caracteristiqueDesc = tempArray[1];
-                                int indexCaracDesc = caracteristiqueDesc.IndexOf("</strong>");
-                                if (indexCaracDesc > 0)
-                                {
-                                    caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc));
-                                }
-
-                                string[] tempArray2 = listNode.FirstChild.OuterHtml.Split("</strong>");
-                                caracteristique = tempArray2[1];
-                                int indexCarac = caracteristique.IndexOf("</a>");
-                                if (indexCarac > 0)
-                                {
-                                    caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac));
-                                }
-
-                                switch (categorie)
-                                {
-                                    case "boitier-pc":
-                                        Product.setBoitier(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "accessoire-boitier":
-                                        Product.setAccessoireBoitier(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "ventilateur-boitier":
-                                        Product.setVentilateurBoitier(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "carte-mere":
-                                        Product.setCarteMere(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "processeur":
-                                        Product.setProcesseur(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "ventilateur-cpu":
-                                        Product.setVentirad(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "disque-ssd":
-                                        Product.setDisqueSsd(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "disque-dur-interne-3-5":
-                                        Product.setDisqueSupplementaire(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "memoire-pc":
-                                        Product.setRam(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "watercooling":
-                                        Product.setWaterCooling(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "carte-graphique":
-                                        Product.setCarteGraphique(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "accessoire-carte-graphique":
-                                        Product.setAccessoireCarteGraphique(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "carte-reseau":
-                                        Product.setCarteReseau(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "alimentation":
-                                        Product.setAlimentation(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "accessoire-alimentation":
-                                        Product.setAccessoireAlimentation(caracteristiqueDesc + caracteristique);
-                                        break;
-
-                                    case "logiciel-systeme-exploitation":
-                                        Product.setSystemeExploitation(caracteristique);
-                                        break;
-
-                                    case "integration-logicielle":
-                                        Product.setSystemeExploitation(caracteristique);
-                                        break;
-
-
-                                }
-
-                                //Debug.WriteLine("Catégorie : " + categorie);
-                                //Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
+                                Product.setDisqueSsd(caracteristique);
                             }
+                            if (categorie.StartsWith("Mémoire PC") || categorie.StartsWith("Memoire PC"))
+                            {
+                                Product.setRam(caracteristique);
+                            }
+                            if (categorie.StartsWith("Carte graphique") || categorie.StartsWith("Carte Graphique") || categorie.StartsWith("Composant"))
+                            {
+                                Product.setCarteGraphique(caracteristique);
+                            }
+                            if (categorie.StartsWith("Processeur"))
+                            {
+                                Product.setProcesseur(categorie + caracteristique);
+                            }
+                            if (categorie.StartsWith("Alimentation"))
+                            {
+                                Product.setAlimentation(caracteristique);
+                            }
+
+
+                            //Debug.WriteLine("Catégorie non Link : " + categorie);
+                            //Debug.WriteLine("Caractéristique non link : " + categorie + caracteristique);
                         }
+                        else
+                        {
+                            categorie = listNode.FirstChild.Attributes["href"].Value.Replace("../../", "");
+                            int index = categorie.IndexOf("/");
+                            if (index > 0)
+                            {
 
+                                categorie = categorie.Substring(0, index);
+                            }
+
+                            string[] tempArray = listNode.FirstChild.OuterHtml.Split("<strong>");
+                            caracteristiqueDesc = tempArray[1];
+                            int indexCaracDesc = caracteristiqueDesc.IndexOf("</strong>");
+                            if (indexCaracDesc > 0)
+                            {
+                                caracteristiqueDesc = HttpUtility.HtmlDecode(caracteristiqueDesc.Substring(0, indexCaracDesc));
+                            }
+
+                            string[] tempArray2 = listNode.FirstChild.OuterHtml.Split("</strong>");
+                            caracteristique = tempArray2[1];
+                            int indexCarac = caracteristique.IndexOf("</a>");
+                            if (indexCarac > 0)
+                            {
+                                caracteristique = HttpUtility.HtmlDecode(caracteristique.Substring(0, indexCarac));
+                            }
+
+                            switch (categorie)
+                            {
+                                case "boitier-pc":
+                                    Product.setBoitier(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "accessoire-boitier":
+                                    Product.setAccessoireBoitier(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "ventilateur-boitier":
+                                    Product.setVentilateurBoitier(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "carte-mere":
+                                    Product.setCarteMere(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "processeur":
+                                    Product.setProcesseur(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "ventilateur-cpu":
+                                    Product.setVentirad(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "disque-ssd":
+                                    Product.setDisqueSsd(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "disque-dur-interne-3-5":
+                                    Product.setDisqueSupplementaire(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "memoire-pc":
+                                    Product.setRam(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "watercooling":
+                                    Product.setWaterCooling(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "carte-graphique":
+                                    Product.setCarteGraphique(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "accessoire-carte-graphique":
+                                    Product.setAccessoireCarteGraphique(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "carte-reseau":
+                                    Product.setCarteReseau(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "alimentation":
+                                    Product.setAlimentation(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "accessoire-alimentation":
+                                    Product.setAccessoireAlimentation(caracteristiqueDesc + caracteristique);
+                                    break;
+
+                                case "logiciel-systeme-exploitation":
+                                    Product.setSystemeExploitation(caracteristique);
+                                    break;
+
+                                case "integration-logicielle":
+                                    Product.setSystemeExploitation(caracteristique);
+                                    break;
+
+
+                            }
+
+                            //Debug.WriteLine("Catégorie : " + categorie);
+                            //Debug.WriteLine("Caractéristique : " + caracteristiqueDesc + caracteristique);
+                        }
                     }
 
-                    int nbrPc = i + 1;
-                    string resultat = "PC N°" + nbrPc + "\r" + Product.getAllCaracteristiques();
-                    Debug.WriteLine(resultat);
+                }
 
-                    productList.Add(Product);
+                int nbrPc = i + 1;
+                string resultat = "PC N°" + nbrPc + "\r" + Product.getAllCaracteristiques();
+                Debug.WriteLine(resultat);
 
-                
+                productList.Add(Product);
+
+
 
                 Settings.Default.Save();
 
@@ -448,7 +448,7 @@ namespace PriceTicker
 
                 var sortedProducts = ProductsInDb.OrderBy(c => c.getPrix());
                 var sortedArchivedProducts = ArchiveProductsInDb.OrderBy(c => c.getDateSortie());
-                
+
                 Debug.WriteLine("Nombre d'éléments actuels : " + ProductsInDb.Count);
                 Debug.WriteLine("Nombre d'éléments archivés : " + ArchiveProductsInDb.Count);
 

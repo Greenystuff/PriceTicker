@@ -37,10 +37,11 @@ namespace PriceTicker
 
         private void ValiderRechercheMurale_Click(object sender, RoutedEventArgs e)
         {
-            if(!IdRecherche.Text.ToString().Equals(""))
+            if (!IdRecherche.Text.ToString().Equals(""))
             {
                 xmlReader.FindPriceById(IdRecherche.Text, "Murale");
-            }else
+            }
+            else
             {
                 Debug.WriteLine("Champ ID mural vide");
             }
@@ -122,7 +123,7 @@ namespace PriceTicker
                 bImg.UriSource = PageUri;
                 bImg.EndInit();
                 ms.Dispose();
-                
+
 
                 //img is an Image control.
                 img.Source = bImg;
@@ -197,10 +198,11 @@ namespace PriceTicker
 
         private void InputIdJaja_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(IdRecherche.Text.ToString().Equals(""))
+            if (IdRecherche.Text.ToString().Equals(""))
             {
                 ValiderRecherche.IsEnabled = false;
-            }else
+            }
+            else
             {
                 ValiderRecherche.IsEnabled = true;
             }

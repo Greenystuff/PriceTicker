@@ -16,9 +16,9 @@
         <SolidColorBrush x:Key="SecondaryTextColor" Color="#BBC1D1"/>
 
         <SolidColorBrush x:Key="PrimaryGrayColor" Color="#BBC1D1"/>
-        
+
         <!--Start: Styles-->
-        
+
         <!--Start: TabItem Style-->
         <Style x:Key="TabItemStyle" TargetType="TabItem">
             <Setter Property="Background" Value="Transparent"/>
@@ -67,7 +67,7 @@
             </Setter>
         </Style>
         <!--End: TabItem Style-->
-        
+
         <!--Start: TabControl Style-->
         <Style x:Key="TabControlStyle" TargetType="TabControl">
             <Setter Property="Background" Value="{DynamicResource PrimaryGrayColor}"/>
@@ -103,9 +103,9 @@
             </Setter>
         </Style>
         <!--End: TabControl Style-->
-        
+
         <!--End: Styles-->
-        
+
     </Window.Resources>
     <Grid Background="{DynamicResource PrimaryBlackColor}">
         <Border CornerRadius="10"
