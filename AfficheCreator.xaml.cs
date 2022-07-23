@@ -14,7 +14,7 @@ using System.Windows.Threading;
 
 namespace PriceTicker
 {
-   
+
     public partial class AfficheCreator : Window
     {
         public static AfficheCreator? gui;
@@ -50,7 +50,8 @@ namespace PriceTicker
                 _image.EndInit();
                 imgAffiche.Source = _image;
                 ValiderAfficheBtn.IsEnabled = true;
-            }else
+            }
+            else
             {
                 ValiderAfficheBtn.IsEnabled = false;
             }
@@ -87,7 +88,7 @@ namespace PriceTicker
                 LastUpdateDate.Text = "Dernière mise à jour : " + LastUpdate.ToShortDateString() + " à " + LastUpdate.ToShortTimeString() + " (Il y a " + Interval.Days + " jours, " + Interval.Hours + " heures et " + Interval.Minutes + " minutes)";
             }
 
-            if(LastUpdate == DateTime.Parse("01/01/1970"))
+            if (LastUpdate == DateTime.Parse("01/01/1970"))
             {
                 LastUpdateDate.Text = "Dernière mise à jour : Jamais";
             }
@@ -121,7 +122,7 @@ namespace PriceTicker
             LineSelected = IdConfigSelectedList.First().ToString();
             Models.PcGamer product = new();
             product = databaseManager.SelectPcGamerByID(int.Parse(LineSelected));
-            
+
             string url = product.getWebLink();
             ProcessStartInfo sInfo = new ProcessStartInfo(url)
             {
@@ -155,7 +156,7 @@ namespace PriceTicker
                 Settings.Default.affichePageSelected = Settings.Default.nbrAffiches;
                 Settings.Default.Save();
                 MainWindow.gui.A4imgEtiquette.Source = _image;
-                if(Settings.Default.affichePageSelected > 1)
+                if (Settings.Default.affichePageSelected > 1)
                 {
                     MainWindow.gui.A4btnPrecedent.Visibility = Visibility.Visible;
                 }
@@ -207,9 +208,6 @@ namespace PriceTicker
                 imgAffiche.Source = _image;
                 ValiderAfficheBtn.IsEnabled = true;
             }
-
-
-            
         }
 
         private void UpdateDataGrid(object sender, RoutedEventArgs e)
@@ -241,7 +239,6 @@ namespace PriceTicker
                     e.Handled = true;
                 }
             }
-            
         }
 
         public static Parent FindVisualParent<Parent>(DependencyObject child) where Parent : DependencyObject
@@ -318,17 +315,16 @@ namespace PriceTicker
                 dateSortieField.BlackoutDates.Clear();
                 dateSortieField.BlackoutDates.Add(new CalendarDateRange(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate));
 
-                
                 if (dateSortieField.SelectedDate == null)
                 {
                     dateSortieField.SelectedDate = DateTime.Now;
                     ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, DateTime.Now);
-                }else
+                }
+                else
                 {
                     ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)datePicker.SelectedDate, (DateTime)dateSortieField.SelectedDate);
                 }
 
-                
                 List<Models.PcGamer> ArchiveProducts = new();
 
                 if (SearchedLibelle.Text == "")
@@ -337,64 +333,6 @@ namespace PriceTicker
                 }
                 else
                 {
-                    
-                    for (int i = 0; i < ArchiveProductsFoundByDates.Count() ; i++)
-                    {
-                        if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            ArchiveProducts.Add(ArchiveProductsFoundByDates[i]);
-                        }
-                    }
-                }
-
-                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
-
-                Dispatcher.Invoke(new Action(() =>
-                {
-
-                    ArchiveDataGrid.AutoGenerateColumns = false;
-
-                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
-                    {
-                        id = product.getIdConfig(),
-                        dateEntree = product.getDateEntree(),
-                        dateSortie = product.getDateSortie(),
-                        name = product.getName(),
-                        prix = product.getPrix(),
-                        boitier = product.getBoitier(),
-                        carteMere = product.getCarteMere(),
-                        processeur = product.getProcesseur(),
-                        carteGraphique = product.getCarteGraphique(),
-                        ram = product.getRam(),
-
-                    });
-
-                    ArchiveDataGrid.ItemsSource = _bindArchives;
-                }), DispatcherPriority.Background);
-
-            }else
-            {
-                dateSortieField.BlackoutDates.Clear();
-
-                
-                if (dateSortieField.SelectedDate == null)
-                {
-                    ArchiveProductsFoundByDates = databaseManager.SelectAllArchivedPcGamer();
-                }
-                else
-                {
-                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)dateSortieField.SelectedDate);
-                }
-
-                List<Models.PcGamer> ArchiveProducts = new();
-
-                if (SearchedLibelle.Text == "")
-                {
-                    ArchiveProducts = ArchiveProductsFoundByDates;
-                }
-                else
-                {
-
                     for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
                     {
                         if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
@@ -408,9 +346,7 @@ namespace PriceTicker
 
                 Dispatcher.Invoke(new Action(() =>
                 {
-
                     ArchiveDataGrid.AutoGenerateColumns = false;
-
                     IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
                     {
                         id = product.getIdConfig(),
@@ -422,15 +358,62 @@ namespace PriceTicker
                         carteMere = product.getCarteMere(),
                         processeur = product.getProcesseur(),
                         carteGraphique = product.getCarteGraphique(),
-                        ram = product.getRam(),
-
+                        ram = product.getRam()
                     });
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.Background);
 
+            }
+            else
+            {
+                dateSortieField.BlackoutDates.Clear();
+
+                if (dateSortieField.SelectedDate == null)
+                {
+                    ArchiveProductsFoundByDates = databaseManager.SelectAllArchivedPcGamer();
+                }
+                else
+                {
+                    ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)dateSortieField.SelectedDate);
+                }
+
+                List<Models.PcGamer> ArchiveProducts = new();
+                if (SearchedLibelle.Text == "")
+                {
+                    ArchiveProducts = ArchiveProductsFoundByDates;
+                }
+                else
+                {
+                    for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
+                    {
+                        if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByDates[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam()
+                    });
                     ArchiveDataGrid.ItemsSource = _bindArchives;
                 }), DispatcherPriority.Background);
             }
-            
-
         }
 
         private void SelectedEndDate(object sender, SelectionChangedEventArgs e)
@@ -443,24 +426,22 @@ namespace PriceTicker
                 dateEntreeField.BlackoutDates.Clear();
                 dateEntreeField.BlackoutDates.Add(new CalendarDateRange((DateTime)datePicker.SelectedDate, new DateTime(2500, 1, 1)));
 
-                
                 if (dateEntreeField.SelectedDate == null)
                 {
                     ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates(new DateTime(1500, 1, 1), (DateTime)datePicker.SelectedDate);
-                }else
+                }
+                else
                 {
                     ArchiveProductsFoundByDates = databaseManager.SelectArchivedPcGamerByDates((DateTime)dateEntreeField.SelectedDate, (DateTime)datePicker.SelectedDate);
                 }
 
                 List<Models.PcGamer> ArchiveProducts = new();
-
                 if (SearchedLibelle.Text == "")
                 {
                     ArchiveProducts = ArchiveProductsFoundByDates;
                 }
                 else
                 {
-
                     for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
                     {
                         if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
@@ -471,12 +452,9 @@ namespace PriceTicker
                 }
 
                 var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
-
                 Dispatcher.Invoke(new Action(() =>
                 {
-
                     ArchiveDataGrid.AutoGenerateColumns = false;
-
                     IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
                     {
                         id = product.getIdConfig(),
@@ -488,18 +466,15 @@ namespace PriceTicker
                         carteMere = product.getCarteMere(),
                         processeur = product.getProcesseur(),
                         carteGraphique = product.getCarteGraphique(),
-                        ram = product.getRam(),
-
+                        ram = product.getRam()
                     });
-
                     ArchiveDataGrid.ItemsSource = _bindArchives;
                 }), DispatcherPriority.Background);
-
-            }else
+            }
+            else
             {
                 dateEntreeField.BlackoutDates.Clear();
 
-                
                 if (dateEntreeField.SelectedDate == null)
                 {
                     ArchiveProductsFoundByDates = databaseManager.SelectAllArchivedPcGamer();
@@ -517,7 +492,6 @@ namespace PriceTicker
                 }
                 else
                 {
-
                     for (int i = 0; i < ArchiveProductsFoundByDates.Count(); i++)
                     {
                         if (ArchiveProductsFoundByDates[i].getName().Contains(SearchedLibelle.Text, StringComparison.CurrentCultureIgnoreCase))
@@ -528,12 +502,9 @@ namespace PriceTicker
                 }
 
                 var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
-
                 Dispatcher.Invoke(new Action(() =>
                 {
-
                     ArchiveDataGrid.AutoGenerateColumns = false;
-
                     IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
                     {
                         id = product.getIdConfig(),
@@ -545,14 +516,11 @@ namespace PriceTicker
                         carteMere = product.getCarteMere(),
                         processeur = product.getProcesseur(),
                         carteGraphique = product.getCarteGraphique(),
-                        ram = product.getRam(),
-
+                        ram = product.getRam()
                     });
-
                     ArchiveDataGrid.ItemsSource = _bindArchives;
                 }), DispatcherPriority.Background);
             }
-
         }
 
         private void searchedLibelleChanged(object sender, TextChangedEventArgs e)
@@ -562,83 +530,8 @@ namespace PriceTicker
 
             if (textBox.Text != "")
             {
-                
                 ArchiveProductsFoundByName = databaseManager.SelectArchivedPcGamerByName(textBox.Text);
-
                 List<Models.PcGamer> ArchiveProducts = new();
-
-                if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate == null)
-                {
-                    ArchiveProducts = ArchiveProductsFoundByName;
-                }
-                else
-                {
-                    if(dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate == null)
-                    {
-                        for(int i = 0; i < ArchiveProductsFoundByName.Count; i++)
-                        {
-                            if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate)
-                            {
-                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
-                            }
-                        }
-                    }
-
-                    if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate != null)
-                    {
-                        for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
-                        {
-                            if (ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
-                            {
-                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
-                            }
-                        }
-                    }
-                }
-
-                if (dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate != null)
-                {
-                    for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
-                    {
-                        if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate && ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
-                        {
-                            ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
-                        }
-                    }
-                }
-
-                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
-
-                Dispatcher.Invoke(new Action(() =>
-                {
-
-                    ArchiveDataGrid.AutoGenerateColumns = false;
-
-                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
-                    {
-                        id = product.getIdConfig(),
-                        dateEntree = product.getDateEntree(),
-                        dateSortie = product.getDateSortie(),
-                        name = product.getName(),
-                        prix = product.getPrix(),
-                        boitier = product.getBoitier(),
-                        carteMere = product.getCarteMere(),
-                        processeur = product.getProcesseur(),
-                        carteGraphique = product.getCarteGraphique(),
-                        ram = product.getRam(),
-
-                    });
-
-                    ArchiveDataGrid.ItemsSource = _bindArchives;
-                }), DispatcherPriority.Background);
-
-            }else
-            {
-
-                ArchiveProductsFoundByName = databaseManager.SelectAllArchivedPcGamer();
-
-                List<Models.PcGamer> ArchiveProducts = new();
-
                 if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate == null)
                 {
                     ArchiveProducts = ArchiveProductsFoundByName;
@@ -680,11 +573,9 @@ namespace PriceTicker
                 }
 
                 var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
-
                 Dispatcher.Invoke(new Action(() =>
                 {
                     ArchiveDataGrid.AutoGenerateColumns = false;
-
                     IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
                     {
                         id = product.getIdConfig(),
@@ -696,12 +587,74 @@ namespace PriceTicker
                         carteMere = product.getCarteMere(),
                         processeur = product.getProcesseur(),
                         carteGraphique = product.getCarteGraphique(),
-                        ram = product.getRam(),
-
+                        ram = product.getRam()
                     });
-
                     ArchiveDataGrid.ItemsSource = _bindArchives;
+                }), DispatcherPriority.Background);
+            }
+            else
+            {
+                ArchiveProductsFoundByName = databaseManager.SelectAllArchivedPcGamer();
 
+                List<Models.PcGamer> ArchiveProducts = new();
+                if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate == null)
+                {
+                    ArchiveProducts = ArchiveProductsFoundByName;
+                }
+                else
+                {
+                    if (dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate == null)
+                    {
+                        for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                        {
+                            if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate)
+                            {
+                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                            }
+                        }
+                    }
+
+                    if (dateEntreeField.SelectedDate == null && dateSortieField.SelectedDate != null)
+                    {
+                        for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                        {
+                            if (ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
+                            {
+                                ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                            }
+                        }
+                    }
+                }
+
+                if (dateEntreeField.SelectedDate != null && dateSortieField.SelectedDate != null)
+                {
+                    for (int i = 0; i < ArchiveProductsFoundByName.Count; i++)
+                    {
+                        if (ArchiveProductsFoundByName[i].getDateEntree() >= dateEntreeField.SelectedDate && ArchiveProductsFoundByName[i].getDateSortie().AddDays(-1) <= dateSortieField.SelectedDate)
+                        {
+                            ArchiveProducts.Add(ArchiveProductsFoundByName[i]);
+                        }
+                    }
+                }
+
+                var sortedArchivedProducts = ArchiveProducts.OrderBy(c => c.getDateSortie());
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    ArchiveDataGrid.AutoGenerateColumns = false;
+                    IEnumerable _bindArchives = sortedArchivedProducts.Select(product => new
+                    {
+                        id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
+                        dateSortie = product.getDateSortie(),
+                        name = product.getName(),
+                        prix = product.getPrix(),
+                        boitier = product.getBoitier(),
+                        carteMere = product.getCarteMere(),
+                        processeur = product.getProcesseur(),
+                        carteGraphique = product.getCarteGraphique(),
+                        ram = product.getRam()
+                    });
+                    ArchiveDataGrid.ItemsSource = _bindArchives;
                 }), DispatcherPriority.Background);
             }
         }
