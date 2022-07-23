@@ -236,6 +236,8 @@ namespace PriceTicker
             AfficheCreator creator = new AfficheCreator();
             creator.Owner = this;
             creator.Show();
+            Window thisWindow = this;
+            thisWindow.Left = 1650;
         }
 
         private void ShowPreviousAffiche(object sender, RoutedEventArgs e)
