@@ -107,12 +107,11 @@
             </Setter>
         </Style>
         <!--End: TabControl Style-->
-
     </Window.Resources>
     <Grid Background="{DynamicResource SecondaryTextColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
-            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="0.77*"/>
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.03*"/>
         </Grid.RowDefinitions>
@@ -126,84 +125,85 @@
                    VerticalAlignment="Center"
                    FontSize="30"
                    FontWeight="Bold"/>
-        <Image x:Name="imgAffiche" Source="/PriceTicker;component/Img/Patron_feuille_finale.bmp" 
+        <Image x:Name="imgAffiche" 
+               Source="/PriceTicker;component/Img/Patron_feuille_finale.bmp" 
                Margin="25,0,25,0"
                Grid.Column="1"
                Grid.Row="1"
                Height="auto"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"/>
-        <DockPanel Grid.Column="0"  Margin="25,0,25,0" Grid.RowSpan="3">
-            <TabControl Style="{DynamicResource TabControlStyle}" Height="842">
-                <TabItem Header="Config du site" Style="{DynamicResource TabItemStyle}" FontSize="20">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <DataGrid x:Name="ConfigGroupDataGrid" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular"  ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+        <TabControl Style="{DynamicResource TabControlStyle}" Height="842" Grid.Column="0"  Margin="25,0,25,0" Grid.RowSpan="3">
+            <TabItem Header="Config du site" Style="{DynamicResource TabItemStyle}" FontSize="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="ConfigGroupDataGrid" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                                   RowDetailsVisibilityMode="VisibleWhenSelected" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="LineSelected">
-                            <DataGrid.Resources>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DoSelectedRow"/>
-                                </Style>
-                            </DataGrid.Resources>
-                            <DataGrid.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
-                                </ContextMenu>
-                            </DataGrid.ContextMenu>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
-                                <DataGridTextColumn Width="0.16*" Header="Mis en ligne" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                                <DataGridTextColumn Width="0.44*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                                <DataGridTextColumn Width="0.20*" Header="Prix Barré" Binding="{Binding prixBarre, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                                <DataGridTextColumn Width="0.20*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                            </DataGrid.Columns>
-                            <DataGrid.RowDetailsTemplate>
-                                <DataTemplate >
-                                    <Border BorderThickness="0" Padding="10">
-                                        <WrapPanel HorizontalAlignment="Center" Width="700" VerticalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" >
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
-                                                <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                            </StackPanel>
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DoSelectedRow"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
+                            <DataGridTextColumn Width="0.16*" Header="Mis en ligne" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                            <DataGridTextColumn Width="0.44*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                            <DataGridTextColumn Width="0.20*" Header="Prix Barré" Binding="{Binding prixBarre, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                            <DataGridTextColumn Width="0.20*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate >
+                                <Border BorderThickness="0" Padding="10">
+                                    <WrapPanel HorizontalAlignment="Center" Width="700" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" >
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
+                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
-                                                <TextBlock  Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                            </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
-                                                <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
-                                            </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
+                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
-                                                <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                            </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
+                                            <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
-                                                <TextBlock  Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </WrapPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </DataGrid.RowDetailsTemplate>
-                        </DataGrid>
-                        <TextBlock Grid.Row="1"
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
+                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </WrapPanel>
+                                </Border>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                    <TextBlock x:Name="ProductCountTxt"
+                                   Grid.Row="1"
                                    HorizontalAlignment="Right"
                                    Height="30"
                                    Foreground="Black"
                                    VerticalAlignment="Bottom"
                                    TextAlignment="Center"
-                                   x:Name="ProductCountTxt" Margin="0,0,10,0"/>
-                        <Button x:Name="UpdateDataGridFromWeb" 
+                                   Margin="0,0,10,0"/>
+                    <Button x:Name="UpdateDataGridFromWeb" 
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 Content="Mettre à jour"
@@ -213,29 +213,28 @@
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 FontSize="18" Click="UpdateDataGrid" Margin="0,10,0,0"/>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Archives" Style="{DynamicResource TabItemStyle}" FontSize="20">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Expander Name="ExpanderControl" Grid.Row="0" Header="Filtres" Margin="0,0,0,0" >
-                            <Grid Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <DatePicker x:Name="dateEntreeField"
+                </Grid>
+            </TabItem>
+            <TabItem Header="Archives" Style="{DynamicResource TabItemStyle}" FontSize="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Expander Grid.Row="0" Header="Filtres" Margin="0,0,0,0" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker x:Name="dateEntreeField"
                                             Grid.Row="0"
                                             TextBlock.TextAlignment="Center"
                                             Grid.Column="0"
@@ -243,232 +242,229 @@
                                             FontSize="15"
                                             Margin="0,15,0,15"
                                             BorderThickness="0" SelectedDateChanged="SelectedStartDate">
-                                    <DatePicker.Resources>
-                                        <Style TargetType="DatePickerTextBox">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
-                                                        <Grid>
-                                                            <Grid.Resources>
-                                                                <SolidColorBrush x:Key="WatermarkBrush" Color="#FFAAAAAA"/>
-                                                            </Grid.Resources>
-                                                            <VisualStateManager.VisualStateGroups>
-                                                                <VisualStateGroup x:Name="CommonStates">
-                                                                    <VisualStateGroup.Transitions>
-                                                                        <VisualTransition GeneratedDuration="0"/>
-                                                                        <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                                                    </VisualStateGroup.Transitions>
-                                                                    <VisualState x:Name="Normal"/>
-                                                                    <VisualState x:Name="MouseOver">
-                                                                        <Storyboard>
-                                                                            <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="ContentElement"/>
-                                                                            <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="watermark_decorator"/>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                                <VisualStateGroup x:Name="WatermarkStates">
-                                                                    <VisualStateGroup.Transitions>
-                                                                        <VisualTransition GeneratedDuration="0"/>
-                                                                    </VisualStateGroup.Transitions>
-                                                                    <VisualState x:Name="Unwatermarked"/>
-                                                                    <VisualState x:Name="Watermarked">
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ContentElement"/>
-                                                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Watermark"/>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                                <VisualStateGroup x:Name="FocusStates">
-                                                                    <VisualStateGroup.Transitions>
-                                                                        <VisualTransition GeneratedDuration="0"/>
-                                                                    </VisualStateGroup.Transitions>
-                                                                    <VisualState x:Name="Unfocused"/>
-                                                                    <VisualState x:Name="Focused">
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisual"/>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                            </VisualStateManager.VisualStateGroups>
-                                                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="1" Opacity="1" Padding="{TemplateBinding Padding}">
-                                                                <Grid x:Name="WatermarkContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                                                                    <Border x:Name="ContentElement" BorderBrush="#FFFFFFFF" BorderThickness="1"/>
-                                                                    <Border x:Name="watermark_decorator" BorderBrush="#FFFFFFFF" BorderThickness="1">
-                                                                        <ContentControl x:Name="PART_Watermark" Focusable="False" IsHitTestVisible="False" Opacity="0" Padding="2">
-                                                                            <ContentControl.Template>
-                                                                                <ControlTemplate>
-                                                                                    <TextBlock Text="Date de mise en ligne" HorizontalAlignment="Center" Opacity="0.30"/>
-                                                                                </ControlTemplate>
-                                                                            </ContentControl.Template>
-                                                                        </ContentControl>
-                                                                    </Border>
-                                                                    <ScrollViewer x:Name="PART_ContentHost" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                                                    <Border x:Name="FocusVisual" BorderBrush="#FF45D6FA" CornerRadius="1" IsHitTestVisible="False" Opacity="0"/>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </DatePicker.Resources>
-
-                                </DatePicker>
-                                <DatePicker x:Name="dateSortieField" Grid.Row="1"
-                                        TextBlock.TextAlignment="Center"
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
+                                                    <Grid>
+                                                        <Grid.Resources>
+                                                            <SolidColorBrush x:Key="WatermarkBrush" Color="#FFAAAAAA"/>
+                                                        </Grid.Resources>
+                                                        <VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualStateGroup.Transitions>
+                                                                    <VisualTransition GeneratedDuration="0"/>
+                                                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
+                                                                </VisualStateGroup.Transitions>
+                                                                <VisualState x:Name="Normal"/>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="ContentElement"/>
+                                                                        <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="watermark_decorator"/>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="WatermarkStates">
+                                                                <VisualStateGroup.Transitions>
+                                                                    <VisualTransition GeneratedDuration="0"/>
+                                                                </VisualStateGroup.Transitions>
+                                                                <VisualState x:Name="Unwatermarked"/>
+                                                                <VisualState x:Name="Watermarked">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ContentElement"/>
+                                                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Watermark"/>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="FocusStates">
+                                                                <VisualStateGroup.Transitions>
+                                                                    <VisualTransition GeneratedDuration="0"/>
+                                                                </VisualStateGroup.Transitions>
+                                                                <VisualState x:Name="Unfocused"/>
+                                                                <VisualState x:Name="Focused">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisual"/>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="1" Opacity="1" Padding="{TemplateBinding Padding}">
+                                                            <Grid x:Name="WatermarkContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                                <Border x:Name="ContentElement" BorderBrush="#FFFFFFFF" BorderThickness="1"/>
+                                                                <Border x:Name="watermark_decorator" BorderBrush="#FFFFFFFF" BorderThickness="1">
+                                                                    <ContentControl x:Name="PART_Watermark" Focusable="False" IsHitTestVisible="False" Opacity="0" Padding="2">
+                                                                        <ContentControl.Template>
+                                                                            <ControlTemplate>
+                                                                                <TextBlock Text="Date de mise en ligne" HorizontalAlignment="Center" Opacity="0.30"/>
+                                                                            </ControlTemplate>
+                                                                        </ContentControl.Template>
+                                                                    </ContentControl>
+                                                                </Border>
+                                                                <ScrollViewer x:Name="PART_ContentHost" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                                <Border x:Name="FocusVisual" BorderBrush="#FF45D6FA" CornerRadius="1" IsHitTestVisible="False" Opacity="0"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+                            </DatePicker>
+                            <DatePicker x:Name="dateSortieField" Grid.Row="1"
+                                            TextBlock.TextAlignment="Center"
                                             Grid.Column="0"
                                             Width="200"
                                             FontSize="15"
                                             Margin="0,15,0,15"
                                             BorderThickness="0" SelectedDateChanged="SelectedEndDate">
-                                    <DatePicker.Resources>
-                                        <Style TargetType="DatePickerTextBox">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
-                                                        <Grid>
-                                                            <Grid.Resources>
-                                                                <SolidColorBrush x:Key="WatermarkBrush" Color="#FFAAAAAA"/>
-                                                            </Grid.Resources>
-                                                            <VisualStateManager.VisualStateGroups>
-                                                                <VisualStateGroup x:Name="CommonStates">
-                                                                    <VisualStateGroup.Transitions>
-                                                                        <VisualTransition GeneratedDuration="0"/>
-                                                                        <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                                                    </VisualStateGroup.Transitions>
-                                                                    <VisualState x:Name="Normal"/>
-                                                                    <VisualState x:Name="MouseOver">
-                                                                        <Storyboard>
-                                                                            <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="ContentElement"/>
-                                                                            <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="watermark_decorator"/>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                                <VisualStateGroup x:Name="WatermarkStates">
-                                                                    <VisualStateGroup.Transitions>
-                                                                        <VisualTransition GeneratedDuration="0"/>
-                                                                    </VisualStateGroup.Transitions>
-                                                                    <VisualState x:Name="Unwatermarked"/>
-                                                                    <VisualState x:Name="Watermarked">
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ContentElement"/>
-                                                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Watermark"/>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                                <VisualStateGroup x:Name="FocusStates">
-                                                                    <VisualStateGroup.Transitions>
-                                                                        <VisualTransition GeneratedDuration="0"/>
-                                                                    </VisualStateGroup.Transitions>
-                                                                    <VisualState x:Name="Unfocused"/>
-                                                                    <VisualState x:Name="Focused">
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisual"/>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                            </VisualStateManager.VisualStateGroups>
-                                                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="1" Opacity="1" Padding="{TemplateBinding Padding}">
-                                                                <Grid x:Name="WatermarkContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                                                                    <Border x:Name="ContentElement" BorderBrush="#FFFFFFFF" BorderThickness="1"/>
-                                                                    <Border x:Name="watermark_decorator" BorderBrush="#FFFFFFFF" BorderThickness="1">
-                                                                        <ContentControl x:Name="PART_Watermark" Focusable="False" IsHitTestVisible="False" Opacity="0" Padding="2">
-                                                                            <ContentControl.Template>
-                                                                                <ControlTemplate>
-                                                                                    <TextBlock Text="Date d'archivage" HorizontalAlignment="Center" Opacity="0.30"/>
-                                                                                </ControlTemplate>
-                                                                            </ContentControl.Template>
-                                                                        </ContentControl>
-                                                                    </Border>
-                                                                    <ScrollViewer x:Name="PART_ContentHost" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                                                    <Border x:Name="FocusVisual" BorderBrush="#FF45D6FA" CornerRadius="1" IsHitTestVisible="False" Opacity="0"/>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </DatePicker.Resources>
-                                </DatePicker>
-                                <StackPanel Grid.RowSpan="2"
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
+                                                    <Grid>
+                                                        <Grid.Resources>
+                                                            <SolidColorBrush x:Key="WatermarkBrush" Color="#FFAAAAAA"/>
+                                                        </Grid.Resources>
+                                                        <VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualStateGroup.Transitions>
+                                                                    <VisualTransition GeneratedDuration="0"/>
+                                                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
+                                                                </VisualStateGroup.Transitions>
+                                                                <VisualState x:Name="Normal"/>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="ContentElement"/>
+                                                                        <ColorAnimation Duration="0" To="#FF99C1E2" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="watermark_decorator"/>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="WatermarkStates">
+                                                                <VisualStateGroup.Transitions>
+                                                                    <VisualTransition GeneratedDuration="0"/>
+                                                                </VisualStateGroup.Transitions>
+                                                                <VisualState x:Name="Unwatermarked"/>
+                                                                <VisualState x:Name="Watermarked">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ContentElement"/>
+                                                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Watermark"/>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="FocusStates">
+                                                                <VisualStateGroup.Transitions>
+                                                                    <VisualTransition GeneratedDuration="0"/>
+                                                                </VisualStateGroup.Transitions>
+                                                                <VisualState x:Name="Unfocused"/>
+                                                                <VisualState x:Name="Focused">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisual"/>
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="1" Opacity="1" Padding="{TemplateBinding Padding}">
+                                                            <Grid x:Name="WatermarkContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                                <Border x:Name="ContentElement" BorderBrush="#FFFFFFFF" BorderThickness="1"/>
+                                                                <Border x:Name="watermark_decorator" BorderBrush="#FFFFFFFF" BorderThickness="1">
+                                                                    <ContentControl x:Name="PART_Watermark" Focusable="False" IsHitTestVisible="False" Opacity="0" Padding="2">
+                                                                        <ContentControl.Template>
+                                                                            <ControlTemplate>
+                                                                                <TextBlock Text="Date d'archivage" HorizontalAlignment="Center" Opacity="0.30"/>
+                                                                            </ControlTemplate>
+                                                                        </ContentControl.Template>
+                                                                    </ContentControl>
+                                                                </Border>
+                                                                <ScrollViewer x:Name="PART_ContentHost" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                                <Border x:Name="FocusVisual" BorderBrush="#FF45D6FA" CornerRadius="1" IsHitTestVisible="False" Opacity="0"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+                            </DatePicker>
+                            <StackPanel Grid.RowSpan="2"
                                             Grid.Column="1"
                                             Orientation="Vertical"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center" Margin="0,0,0,15">
-                                    <TextBlock Text="Libellé"
+                                <TextBlock Text="Libellé"
                                                Foreground="Black"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" 
                                                Margin="0,0,0,5"/>
-                                    <TextBox x:Name="SearchedLibelle" 
+                                <TextBox x:Name="SearchedLibelle" 
                                              Width="300"
                                              Margin="0,5,0,0"
                                              HorizontalContentAlignment="Center"
                                              FontWeight="Regular" 
                                              TextChanged="searchedLibelleChanged"/>
-                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Expander>
 
-                            </Grid>
-                        </Expander>
-                        
-                        <DataGrid x:Name="ArchiveDataGrid" Grid.Row="1" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
+                    <DataGrid x:Name="ArchiveDataGrid" 
+                                  Grid.Row="1" SelectionMode="Single" SelectionUnit="FullRow" FontSize="16" FontWeight="Regular" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True" IsReadOnly="True" TextBlock.TextAlignment="Center" HorizontalAlignment="Center"
                                   RowDetailsVisibilityMode="VisibleWhenSelected" AllowDrop="False" RowHeaderWidth="0" DataGrid.CanUserResizeColumns="False" DataGrid.CanUserResizeRows="False" CanUserAddRows="false" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="ArchiveLineSelected">
-                            <DataGrid.Resources>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DoSelectedRow"/>
-                                </Style>
-                            </DataGrid.Resources>
-                            <DataGrid.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
-                                </ContextMenu>
-                            </DataGrid.ContextMenu>
-                            <DataGrid.Columns >
-                                <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
-                                <DataGridTextColumn Width="0.16*" Header="Mis en ligne" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}" />
-                                <DataGridTextColumn Width="0.16*" Header="Archivé" Binding="{Binding dateSortie, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                                <DataGridTextColumn Width="0.53*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                                <DataGridTextColumn Width="0.15*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                            </DataGrid.Columns>
-                            <DataGrid.RowDetailsTemplate>
-                                <DataTemplate >
-                                    <Border BorderThickness="0" Padding="10">
-                                        <WrapPanel HorizontalAlignment="Center" Width="700" VerticalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" >
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
-                                                <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                            </StackPanel>
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DoSelectedRow"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Ouvrir dans le navigateur" Click="OpenURLinNav"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
+                            <DataGridTextColumn Width="0.16*" Header="Mis en ligne" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}" />
+                            <DataGridTextColumn Width="0.16*" Header="Archivé" Binding="{Binding dateSortie, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                            <DataGridTextColumn Width="0.53*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                            <DataGridTextColumn Width="0.15*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate >
+                                <Border BorderThickness="0" Padding="10">
+                                    <WrapPanel HorizontalAlignment="Center" Width="700" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" >
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
+                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
-                                                <TextBlock  Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                            </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                            <TextBlock  Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
-                                                <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
-                                            </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
+                                            <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
-                                                <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
-                                            </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
+                                            <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
+                                        </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
-                                                <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
-                                                <TextBlock  Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </WrapPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </DataGrid.RowDetailsTemplate>
-                        </DataGrid>
-                        
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </DockPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
+                                            <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
+                                            <TextBlock  Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </WrapPanel>
+                                </Border>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
         <Grid Grid.Row="3"
               Grid.ColumnSpan="2"
               Background="LightGray">
@@ -480,21 +476,18 @@
                        Grid.Column="0"
                        HorizontalAlignment="Left" 
                        VerticalAlignment="Center"
-                       Margin="10,0,0,0"
-                       >
-                
+                       Margin="10,0,0,0">
             </TextBlock>
-            <TextBlock
-                   Panel.ZIndex="90"
-                   Grid.Column="1"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center"
-                   x:Name="ProgressTextBlock"
-                   Height="20"
-                   Width="200"
-                   Background="Transparent"
-                   Visibility="Hidden"/>
+            <TextBlock x:Name="ProgressTextBlock"
+                       Panel.ZIndex="90"
+                       Grid.Column="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Height="20"
+                       Width="200"
+                       Background="Transparent"
+                       Visibility="Hidden"/>
             <ProgressBar Grid.Column="1"
                          x:Name="ProgressBar"
                          Height="20"
