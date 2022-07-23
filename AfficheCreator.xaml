@@ -426,9 +426,9 @@
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns >
                                 <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
-                                <DataGridTextColumn Width="0.15*" Header="Entrée" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}" />
-                                <DataGridTextColumn Width="0.15*" Header="Sortie" Binding="{Binding dateSortie, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                                <DataGridTextColumn Width="0.55*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                                <DataGridTextColumn Width="0.16*" Header="Mis en ligne" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}" />
+                                <DataGridTextColumn Width="0.16*" Header="Archivé" Binding="{Binding dateSortie, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                                <DataGridTextColumn Width="0.53*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                                 <DataGridTextColumn Width="0.15*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                             </DataGrid.Columns>
                             <DataGrid.RowDetailsTemplate>
