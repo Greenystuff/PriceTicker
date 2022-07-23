@@ -158,7 +158,8 @@
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding id}" IsReadOnly="True" Visibility="Hidden"/>
-                                <DataGridTextColumn Width="0.60*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                                <DataGridTextColumn Width="0.16*" Header="Mis en ligne" Binding="{Binding dateEntree, StringFormat='{}{0:dd/MM/yyyy}'}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                                <DataGridTextColumn Width="0.44*" Header="Libellé" Binding="{Binding name}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                                 <DataGridTextColumn Width="0.20*" Header="Prix Barré" Binding="{Binding prixBarre, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                                 <DataGridTextColumn Width="0.20*" Header="Prix" Binding="{Binding prix, StringFormat={}{0} €}" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                             </DataGrid.Columns>

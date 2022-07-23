@@ -67,6 +67,7 @@ namespace PriceTicker
                     IEnumerable _bind = sortedProducts.Select(product => new
                     {
                         id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
                         name = product.getName(),
                         prix = product.getPrix(),
                         prixBarre = product.getPrixBarre(),
@@ -459,6 +460,7 @@ namespace PriceTicker
                     IEnumerable _bind = sortedProducts.Select(product => new
                     {
                         id = product.getIdConfig(),
+                        dateEntree = product.getDateEntree(),
                         name = product.getName(),
                         prix = product.getPrix(),
                         prixBarre = product.getPrixBarre(),
