@@ -170,22 +170,18 @@
                                             <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Boitier.png" VerticalAlignment="Center" Margin="30,0,0,0"/>
                                             <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding boitier}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
                                         </StackPanel>
-
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_mere.png" VerticalAlignment="Center" Margin="0,0,0,0"/>
                                             <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding carteMere}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
                                         </StackPanel>
-
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/CPU.png" VerticalAlignment="Center" />
                                             <TextBlock Width="150" Height="50" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding processeur}" VerticalAlignment="Center" TextAlignment="Left"/>
                                         </StackPanel>
-
                                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                             <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/RAM.png" VerticalAlignment="Center" Margin="160,0,0,0"/>
                                             <TextBlock Width="150" Height="60" TextWrapping="Wrap" FontSize="11" Foreground="MidnightBlue" Text="{Binding ram}" VerticalAlignment="Center" Margin="0,0,30,0" TextAlignment="Left"/>
                                         </StackPanel>
-
                                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
                                             <Image Width="50" Height="50" Source="/PriceTicker;component/Img/ComposantsPC/Carte_Graphique.png"/>
                                             <TextBlock Width="150" Height="50" TextWrapping="Wrap" TextBlock.FontSize="11" Foreground="MidnightBlue" Text="{Binding carteGraphique}" TextAlignment="Left" VerticalAlignment="Center"/>
