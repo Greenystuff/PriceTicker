@@ -221,7 +221,7 @@ namespace PriceTicker
                 graphics.CompositingMode = CompositingMode.SourceOver;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
                 graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
                 graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
@@ -299,7 +299,7 @@ namespace PriceTicker
                 graphics.CompositingMode = CompositingMode.SourceOver;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
                 graphics.DrawString(Libelle, LibelleFont, Brushes.Black, rectLibelle, LibelleFormat);
                 graphics.DrawString(Prix, PrixFont, Brushes.Red, rectPrix, PrixFormat);
@@ -511,7 +511,6 @@ namespace PriceTicker
                         CarteMere = CarteMere.Substring(0, Index);
                     }
                 }
-
             }
 
             if(Processeur.Length > 35)
@@ -616,7 +615,7 @@ namespace PriceTicker
                 graphics.CompositingMode = CompositingMode.SourceOver;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
                 graphics.DrawString("PC monté", IntroFont, Brushes.Black, rectIntro, IntroFormat);
                 graphics.DrawString(Libelle, NameFont, Brushes.Black, rectLibelle, LibelleFormat);
@@ -629,7 +628,7 @@ namespace PriceTicker
                 graphics.DrawString("Stockage", CategorieFont, Brushes.Gray, rectCategorieStockage, CategorieStockageFormat);
                 graphics.DrawString("Alimentation", CategorieFont, Brushes.Gray, rectCategorieAlim, CategorieAlimFormat);
                 graphics.DrawString("Système d'exploitation", CategorieFont, Brushes.Gray, rectCategorieOS, CategorieOSFormat);
-
+                
                 graphics.DrawString(Boitier, CaracFont, Brushes.Black, rectCaracBoitier, CaracBoitierFormat);
                 graphics.DrawString(CarteMere, CaracFont, Brushes.Black, rectCaracCM, CaracCMFormat);
                 graphics.DrawString(Processeur, CaracFont, Brushes.Black, rectCaracProc, CaracProcFormat);
@@ -694,6 +693,12 @@ namespace PriceTicker
                 Bitmap bitmapFeuilleFinale = (Bitmap)System.Drawing.Image.FromFile(FeuilleFinalePath);
                 using (Graphics graphics = Graphics.FromImage(bitmapFeuilleFinale))
                 {
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    graphics.CompositingMode = CompositingMode.SourceOver;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                    graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     graphics.DrawImage(bitmapEtiquette, Etiquette);
                     graphics.Dispose();
 
@@ -798,6 +803,12 @@ namespace PriceTicker
                 Bitmap bitmapFeuilleFinale = (Bitmap)System.Drawing.Image.FromFile(FeuilleFinalePath);
                 using (Graphics graphics = Graphics.FromImage(bitmapFeuilleFinale))
                 {
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    graphics.CompositingMode = CompositingMode.SourceOver;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                    graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     graphics.DrawImage(bitmapEtiquette, Etiquette);
                     graphics.Dispose();
 
