@@ -38,6 +38,17 @@ namespace PriceTicker
                 XmlTextReader ProduitsXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
                 XmlTextReader PrixXml = new(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Tarif_Produit.xml");
 
+                DateTime lastModified = File.GetLastWriteTime(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\JAJACD\\Temp_xml\\Produit.xml");
+                TimeSpan updateDelay = DateTime.Now.Subtract(lastModified);
+
+                if(updateDelay.Days == 1)
+                {
+                    MessageBox.Show("Attention ! Les données provenant de JAJACD n'ont pas été mises à jour depuis " + updateDelay.Days + " jour ! Veuillez Lancer JAJACD.");
+                }
+                if (updateDelay.Days > 1)
+                {
+                    MessageBox.Show("Attention ! Les données provenant de JAJACD n'ont pas été mises à jour depuis " + updateDelay.Days + " jours ! Veuillez Lancer JAJACD.");
+                }
 
                 String? Product_ID = null;
 
