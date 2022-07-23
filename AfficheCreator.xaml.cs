@@ -64,6 +64,12 @@ namespace PriceTicker
             {
                 scraping.worker.CancelAsync();
             }
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+            double windowWidth = MainWindow.gui.Width;
+            double windowHeight = MainWindow.gui.Height;
+            MainWindow.gui.Left = (screenWidth / 2) - (windowWidth / 2);
+            MainWindow.gui.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
         private void timer_Tick(object sender, EventArgs e)

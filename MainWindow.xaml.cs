@@ -233,11 +233,20 @@ namespace PriceTicker
 
         private void NouvelleAffiche(object sender, RoutedEventArgs e)
         {
+            var desktopWorkingArea = SystemParameters.WorkArea;
+            double screenWidth = desktopWorkingArea.Width;
+            double screenHeight = desktopWorkingArea.Height;
             AfficheCreator creator = new AfficheCreator();
             creator.Owner = this;
+            double creatorWindowWidth = creator.Width;
+            double creatorWindowHeight = creator.Height;
+            creator.Top = (screenHeight / 2) - (creatorWindowHeight / 2);
+            creator.Left = (screenWidth / 2) - (creatorWindowWidth * 77 / 100);
             creator.Show();
-            Window thisWindow = this;
-            thisWindow.Left = 1650;
+            double thisWindowWidth = Width;
+            double thisWindowHeight = Height;
+            Left = (screenWidth * 77 / 100) - (thisWindowWidth / 2);
+            Top = (screenHeight / 2) - (thisWindowHeight / 2);
         }
 
         private void ShowPreviousAffiche(object sender, RoutedEventArgs e)
