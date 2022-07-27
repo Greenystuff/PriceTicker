@@ -94,7 +94,7 @@ namespace PriceTicker
         {
 
             // Selection de l'imprimante et des paramètres
-            PrintDialog pd = new PrintDialog();
+            System.Windows.Controls.PrintDialog pd = new System.Windows.Controls.PrintDialog();
             if (pd.ShowDialog() != true) return;
 
             // Creation du Document
@@ -147,7 +147,7 @@ namespace PriceTicker
         {
 
             // Selection de l'imprimante et des paramètres
-            PrintDialog pd = new PrintDialog();
+            System.Windows.Controls.PrintDialog pd = new System.Windows.Controls.PrintDialog();
             if (pd.ShowDialog() != true) return;
 
             // Creation du Document
@@ -267,7 +267,7 @@ namespace PriceTicker
         private void PrintAffiches(object sender, RoutedEventArgs e)
         {
             // Selection de l'imprimante et des paramètres
-            PrintDialog pd = new PrintDialog();
+            System.Windows.Controls.PrintDialog pd = new System.Windows.Controls.PrintDialog();
             if (pd.ShowDialog() != true) return;
 
             // Creation du Document
